@@ -1,0 +1,1399 @@
+product_id,restaurant_id,product_name,category_id,base_price,cost,portion_size,available
+1,1,Chicken Sandwich,11,3500,1500,400g,True
+2,1,Mineral Water,9,900,400,350ml,True
+3,1,Quattro Formaggi,4,4500,2000,300ml,True
+4,1,Guacamole Toast,3,4200,1700,200ml,True
+5,1,Fresh Orange Juice,9,2300,1000,250ml,True
+6,1,Fresh Orange Juice,9,2400,1100,200ml,True
+7,1,Quattro Formaggi,4,4600,2300,250g,True
+8,1,Eggs Benedict,3,3900,1600,250ml,True
+9,1,Macchiato,1,1800,800,200ml,True
+10,1,Cappuccino,1,1500,600,350ml,True
+11,1,Chicken Sandwich,11,3800,1900,200ml,True
+12,1,Cheesecake,7,2800,1300,300ml,True
+13,1,Macchiato,1,1700,700,200ml,True
+14,1,Macchiato,1,1500,600,350ml,True
+15,1,Chicken Caesar,6,5300,2400,300ml,True
+16,1,Ventricina Pizza,4,4400,2200,200ml,True
+17,1,Chicken Sandwich,11,3000,1200,250ml,True
+18,1,Fresh Orange Juice,9,2200,1000,400g,True
+19,1,Mineral Water,9,600,300,200ml,True
+20,1,Espresso,1,1300,500,300ml,True
+21,1,Tarte Tatin,7,3000,1400,350ml,True
+22,1,Macchiato,1,1400,600,250g,True
+23,1,Beef Steak,5,12400,6200,400g,True
+24,1,Fresh Orange Juice,9,2200,1100,300ml,True
+25,1,Cold Brew,1,2700,1200,350ml,True
+26,1,Fresh Orange Juice,9,2300,1100,350ml,True
+27,1,Latte,1,2200,900,300ml,True
+28,1,Omelet / Scramble,3,2300,900,350ml,True
+29,1,Cheesecake,7,3400,1700,400g,True
+30,1,Quattro Formaggi,4,5500,2600,400g,True
+31,1,Flat White,1,2600,1200,400g,True
+32,1,Hummus Plate,10,3400,1700,350ml,True
+33,1,Cold Brew,1,1900,800,200ml,True
+34,1,Parma Pizza,4,4800,2000,200ml,True
+35,1,Omelet / Scramble,3,2100,1000,300ml,True
+36,1,Caprese Croissant,3,3200,1300,250g,True
+37,1,Mineral Water,9,700,300,250ml,True
+38,1,Black Tea,2,1400,700,200ml,True
+39,2,Greek Salad,6,4400,2100,300ml,True
+40,2,Beef Steak,5,18000,7700,350ml,True
+41,2,Bruschetta,10,3200,1400,250ml,True
+42,2,Chicken Pasta,5,8800,4300,200ml,True
+43,2,Quattro Formaggi,4,5300,2200,250ml,True
+44,2,Salmon Croissant,3,3100,1300,250g,True
+45,2,Raf,1,1800,800,400g,True
+46,2,Club Sandwich,11,3400,1700,400g,True
+47,2,Brownie,7,2100,900,350ml,True
+48,2,Espresso,1,1400,600,250g,True
+49,2,Matcha Latte,2,1500,600,400g,True
+50,2,Caprese Croissant,3,3000,1300,250g,True
+51,2,Ricotta Croissant,3,2900,1300,250ml,True
+52,2,Eggs Benedict,3,4000,1900,350ml,True
+53,2,Ventricina Pizza,4,4200,1900,250ml,True
+54,2,Guacamole Toast,3,4400,2000,250ml,True
+55,2,Chicken Caesar,6,4000,1600,300ml,True
+56,2,Hummus Plate,10,3300,1600,400g,True
+57,2,Macchiato,1,1500,700,250ml,True
+58,2,Fresh Orange Juice,9,2000,900,300ml,True
+59,2,Ventricina Pizza,4,4800,2200,300ml,True
+60,2,Parma Pizza,4,5100,2300,300ml,True
+61,2,Chicken Pasta,5,8200,3800,200ml,True
+62,2,Parma Pizza,4,5500,2700,350ml,True
+63,2,Parma Pizza,4,4800,2000,250g,True
+64,2,Cold Brew,1,1500,600,300ml,True
+65,2,Guacamole Toast,3,4200,2000,400g,True
+66,2,Chicken Sandwich,11,4300,1700,250ml,True
+67,2,Mineral Water,9,600,300,250ml,True
+68,2,Matcha Latte,2,2900,1300,400g,True
+69,2,Flat White,1,1500,700,400g,True
+70,2,Latte,1,1700,700,200ml,True
+71,2,Cold Brew,1,2400,1100,300ml,True
+72,2,Fresh Orange Juice,9,2200,1000,250g,True
+73,2,Aperol Spritz,8,4600,1900,400g,True
+74,2,Bruschetta,10,3200,1400,250g,True
+75,2,Caprese Croissant,3,3400,1500,200ml,True
+76,2,Salmon Croissant,3,3300,1600,200ml,True
+77,3,Eggs Benedict,3,4000,1900,400g,True
+78,3,Tarte Tatin,7,3000,1300,400g,True
+79,3,Eggs Benedict,3,3600,1700,200ml,True
+80,3,Black Tea,2,1100,500,350ml,True
+81,3,Raf,1,1800,900,250g,True
+82,3,Chicken Caesar,6,4900,2100,300ml,True
+83,3,Ricotta Croissant,3,2600,1200,400g,True
+84,3,Mojito,8,4300,2000,350ml,True
+85,3,Tarte Tatin,7,2800,1200,200ml,True
+86,3,Caprese Croissant,3,3300,1500,350ml,True
+87,3,Flat White,1,2700,1200,200ml,True
+88,3,Bruschetta,10,2600,1200,400g,True
+89,3,Eggs Benedict,3,4200,1700,400g,True
+90,3,Chicken Pasta,5,4700,2300,250g,True
+91,3,Margarita Pizza,4,4400,2200,350ml,True
+92,3,Club Sandwich,11,3800,1900,250ml,True
+93,3,Ventricina Pizza,4,4200,1800,200ml,True
+94,3,Caprese Croissant,3,3300,1500,200ml,True
+95,3,Ricotta Croissant,3,3000,1500,250g,True
+96,3,Mojito,8,4400,2000,250ml,True
+97,3,Flat White,1,1600,700,250ml,True
+98,3,Bruschetta,10,2700,1200,400g,True
+99,3,Ventricina Pizza,4,5000,2500,250g,True
+100,3,Greek Salad,6,2600,1100,400g,True
+101,3,Omelet / Scramble,3,2400,1100,400g,True
+102,3,Chocolate Mousse,7,2500,1000,250g,True
+103,3,Eggs Benedict,3,4100,1900,200ml,True
+104,3,Black Tea,2,1000,500,250ml,True
+105,3,Herbal Tea,2,1500,600,200ml,True
+106,3,Cheesecake,7,3300,1500,200ml,True
+107,3,Raf,1,2300,1100,200ml,True
+108,3,Salmon Croissant,3,3800,1800,400g,True
+109,3,Black Tea,2,700,300,200ml,True
+110,4,Cold Brew,1,2700,1200,400g,True
+111,4,Chicken Caesar,6,4700,2200,300ml,True
+112,4,Cheesecake,7,3400,1600,250ml,True
+113,4,Flat White,1,1900,900,250g,True
+114,4,Mojito,8,4600,1900,250ml,True
+115,4,Flat White,1,1900,900,350ml,True
+116,4,Cappuccino,1,1600,700,200ml,True
+117,4,Ventricina Pizza,4,4900,2000,200ml,True
+118,4,Chicken Sandwich,11,3700,1600,400g,True
+119,4,Chicken Sandwich,11,4500,2000,400g,True
+120,4,Herbal Tea,2,1100,500,300ml,True
+121,4,Herbal Tea,2,900,400,300ml,True
+122,4,Tarte Tatin,7,2800,1300,350ml,True
+123,4,Cheesecake,7,2800,1400,300ml,True
+124,4,Margarita Pizza,4,4200,2100,400g,True
+125,4,Ricotta Croissant,3,2600,1100,400g,True
+126,4,Black Tea,2,900,400,250g,True
+127,4,Espresso,1,900,400,200ml,True
+128,4,Salmon Croissant,3,3300,1600,200ml,True
+129,4,Latte,1,2000,900,200ml,True
+130,4,Espresso,1,900,400,250g,True
+131,4,Fresh Orange Juice,9,2000,1000,400g,True
+132,4,Hummus Plate,10,2500,1200,200ml,True
+133,4,Chicken Caesar,6,4700,2300,250g,True
+134,4,Mojito,8,4000,1900,250g,True
+135,4,Matcha Latte,2,2400,1100,250g,True
+136,4,Beef Steak,5,11500,4800,300ml,True
+137,4,Hummus Plate,10,3800,1700,350ml,True
+138,4,Cappuccino,1,1300,600,300ml,True
+139,4,Eggs Benedict,3,3600,1500,400g,True
+140,4,Espresso,1,1000,500,200ml,True
+141,4,Flat White,1,1700,700,350ml,True
+142,4,Aperol Spritz,8,4000,1700,200ml,True
+143,4,Aperol Spritz,8,4900,2300,400g,True
+144,5,Club Sandwich,11,3900,1900,250g,True
+145,5,Parma Pizza,4,5500,2500,250g,True
+146,5,Hummus Plate,10,3500,1700,300ml,True
+147,5,Matcha Latte,2,2600,1100,350ml,True
+148,5,Tarte Tatin,7,2800,1400,350ml,True
+149,5,Chicken Sandwich,11,3600,1600,200ml,True
+150,5,Cold Brew,1,2300,1100,250g,True
+151,5,Beef Steak,5,12900,5900,300ml,True
+152,5,Hummus Plate,10,3900,1700,300ml,True
+153,5,Cold Brew,1,1600,700,250ml,True
+154,5,Chicken Sandwich,11,3800,1700,250ml,True
+155,5,Mineral Water,9,700,300,200ml,True
+156,5,Parma Pizza,4,4600,1800,200ml,True
+157,5,Margarita Pizza,4,4200,1900,300ml,True
+158,5,Cold Brew,1,2000,1000,250g,True
+159,5,Cold Brew,1,2600,1100,400g,True
+160,5,Latte,1,2300,1100,350ml,True
+161,5,Aperol Spritz,8,4300,2100,250g,True
+162,5,Omelet / Scramble,3,1800,900,300ml,True
+163,5,Aperol Spritz,8,5100,2100,250g,True
+164,5,Mojito,8,5200,2200,300ml,True
+165,5,Quattro Formaggi,4,5200,2400,350ml,True
+166,5,Black Tea,2,900,400,250ml,True
+167,5,Cappuccino,1,2300,1000,250g,True
+168,5,Mojito,8,5300,2500,200ml,True
+169,5,Chicken Sandwich,11,4100,1800,200ml,True
+170,5,Club Sandwich,11,3500,1500,250ml,True
+171,5,Quattro Formaggi,4,5100,2500,300ml,True
+172,5,Mojito,8,4600,2000,300ml,True
+173,5,Cold Brew,1,2400,1000,350ml,True
+174,5,Macchiato,1,1600,700,350ml,True
+175,6,Salmon Steak,5,10400,4400,250ml,True
+176,6,Club Sandwich,11,4400,1800,400g,True
+177,6,Greek Salad,6,2800,1100,200ml,True
+178,6,Mineral Water,9,500,200,350ml,True
+179,6,Chicken Sandwich,11,3200,1600,400g,True
+180,6,Salmon Steak,5,14500,6800,250ml,True
+181,6,Mineral Water,9,900,400,200ml,True
+182,6,Latte,1,1900,900,200ml,True
+183,6,Parma Pizza,4,5400,2400,250g,True
+184,6,Macchiato,1,1200,500,350ml,True
+185,6,Herbal Tea,2,900,400,250g,True
+186,6,Flat White,1,2100,1000,400g,True
+187,6,Herbal Tea,2,1300,600,250ml,True
+188,6,Mineral Water,9,900,400,200ml,True
+189,6,Salmon Croissant,3,3100,1400,250ml,True
+190,6,Mojito,8,5300,2300,250ml,True
+191,6,Club Sandwich,11,3700,1800,300ml,True
+192,6,Quattro Formaggi,4,4500,2200,250g,True
+193,6,Guacamole Toast,3,4100,1800,250g,True
+194,6,Greek Salad,6,2600,1100,400g,True
+195,6,Matcha Latte,2,2700,1300,350ml,True
+196,6,Flat White,1,1700,800,200ml,True
+197,6,Greek Salad,6,4400,1800,250g,True
+198,6,Latte,1,2400,1100,200ml,True
+199,6,Eggs Benedict,3,3500,1500,250g,True
+200,6,Macchiato,1,1600,700,300ml,True
+201,6,Salmon Steak,5,10400,4600,200ml,True
+202,6,Mojito,8,3600,1600,300ml,True
+203,6,Club Sandwich,11,3100,1500,250ml,True
+204,6,Club Sandwich,11,3800,1700,250ml,True
+205,6,Beef Steak,5,15000,7100,350ml,True
+206,6,Salmon Steak,5,9300,4500,300ml,True
+207,6,Flat White,1,1900,800,250g,True
+208,6,Brownie,7,2000,1000,350ml,True
+209,6,Omelet / Scramble,3,2400,1200,200ml,True
+210,6,Herbal Tea,2,1500,600,300ml,True
+211,7,Chicken Sandwich,11,3100,1500,400g,True
+212,7,Cappuccino,1,1700,800,250ml,True
+213,7,Mineral Water,9,900,400,250ml,True
+214,7,Chicken Caesar,6,5000,2100,250ml,True
+215,7,Matcha Latte,2,2600,1300,200ml,True
+216,7,Hummus Plate,10,3200,1400,200ml,True
+217,7,Bruschetta,10,3000,1400,200ml,True
+218,7,Fresh Orange Juice,9,2100,1000,350ml,True
+219,7,Quattro Formaggi,4,4600,2300,250ml,True
+220,7,Ricotta Croissant,3,2700,1100,250ml,True
+221,7,Fresh Orange Juice,9,2300,1100,200ml,True
+222,7,Caprese Croissant,3,3100,1400,200ml,True
+223,7,Latte,1,1900,900,400g,True
+224,7,Chicken Sandwich,11,3000,1200,200ml,True
+225,7,Margarita Pizza,4,4000,1900,250ml,True
+226,7,Ricotta Croissant,3,2900,1400,250ml,True
+227,7,Mojito,8,5300,2300,350ml,True
+228,7,Chocolate Mousse,7,2900,1300,250ml,True
+229,7,Raf,1,1900,900,300ml,True
+230,7,Herbal Tea,2,900,400,400g,True
+231,7,Raf,1,2300,1000,350ml,True
+232,7,Mineral Water,9,900,400,300ml,True
+233,7,Ventricina Pizza,4,4900,2200,250g,True
+234,7,Margarita Pizza,4,3900,1700,250ml,True
+235,7,Tarte Tatin,7,2700,1200,300ml,True
+236,7,Tarte Tatin,7,3100,1500,300ml,True
+237,7,Club Sandwich,11,3900,1700,250ml,True
+238,7,Greek Salad,6,3400,1500,200ml,True
+239,7,Chocolate Mousse,7,2600,1200,250ml,True
+240,7,Macchiato,1,1400,600,250ml,True
+241,7,Espresso,1,1600,800,250g,True
+242,7,Flat White,1,1400,600,400g,True
+243,7,Brownie,7,1600,800,400g,True
+244,7,Omelet / Scramble,3,2400,1100,200ml,True
+245,7,Macchiato,1,1100,500,300ml,True
+246,7,Cappuccino,1,2200,1100,400g,True
+247,7,Ventricina Pizza,4,4700,2300,200ml,True
+248,8,Chicken Pasta,5,5500,2300,250ml,True
+249,8,Eggs Benedict,3,4100,1900,250ml,True
+250,8,Guacamole Toast,3,4400,1800,200ml,True
+251,8,Beef Steak,5,15400,7200,400g,True
+252,8,Beef Steak,5,16300,8000,250ml,True
+253,8,Fresh Orange Juice,9,2400,1100,300ml,True
+254,8,Herbal Tea,2,1800,700,400g,True
+255,8,Caprese Croissant,3,3200,1600,300ml,True
+256,8,Raf,1,1800,700,400g,True
+257,8,Cheesecake,7,3300,1500,400g,True
+258,8,Ventricina Pizza,4,4500,2100,350ml,True
+259,8,Beef Steak,5,19800,9400,200ml,True
+260,8,Margarita Pizza,4,4000,1800,200ml,True
+261,8,Parma Pizza,4,4700,1900,250g,True
+262,8,Raf,1,2100,1000,250ml,True
+263,8,Ricotta Croissant,3,2600,1100,200ml,True
+264,8,Guacamole Toast,3,4500,1800,200ml,True
+265,8,Raf,1,2300,900,300ml,True
+266,8,Black Tea,2,1500,700,300ml,True
+267,8,Matcha Latte,2,2700,1300,250g,True
+268,8,Ventricina Pizza,4,4600,2300,250ml,True
+269,8,Greek Salad,6,2800,1400,300ml,True
+270,8,Chocolate Mousse,7,2600,1300,250g,True
+271,8,Mojito,8,4700,2100,250ml,True
+272,8,Aperol Spritz,8,3600,1600,200ml,True
+273,8,Bruschetta,10,2700,1300,250g,True
+274,8,Chocolate Mousse,7,2900,1300,200ml,True
+275,8,Cheesecake,7,3000,1400,200ml,True
+276,8,Ricotta Croissant,3,2600,1100,250ml,True
+277,8,Mojito,8,4500,2200,300ml,True
+278,8,Quattro Formaggi,4,5400,2300,400g,True
+279,9,Black Tea,2,1400,700,300ml,True
+280,9,Latte,1,2400,1000,300ml,True
+281,9,Ricotta Croissant,3,3000,1400,300ml,True
+282,9,Chicken Sandwich,11,3400,1700,350ml,True
+283,9,Hummus Plate,10,3400,1600,400g,True
+284,9,Omelet / Scramble,3,2400,1200,300ml,True
+285,9,Cappuccino,1,2300,900,300ml,True
+286,9,Chicken Caesar,6,4000,2000,250ml,True
+287,9,Greek Salad,6,4100,2000,400g,True
+288,9,Black Tea,2,800,300,400g,True
+289,9,Cappuccino,1,2000,1000,200ml,True
+290,9,Chicken Pasta,5,5000,2200,400g,True
+291,9,Hummus Plate,10,3700,1500,250g,True
+292,9,Eggs Benedict,3,3200,1400,250ml,True
+293,9,Black Tea,2,900,400,250g,True
+294,9,Guacamole Toast,3,4500,2200,350ml,True
+295,9,Chicken Pasta,5,7600,3100,300ml,True
+296,9,Flat White,1,1600,800,200ml,True
+297,9,Omelet / Scramble,3,2200,1000,250ml,True
+298,9,Hummus Plate,10,2600,1300,250g,True
+299,9,Quattro Formaggi,4,5600,2800,350ml,True
+300,9,Guacamole Toast,3,4400,2000,350ml,True
+301,9,Matcha Latte,2,1500,600,250g,True
+302,9,Flat White,1,1900,900,300ml,True
+303,9,Beef Steak,5,16800,7500,250g,True
+304,9,Chocolate Mousse,7,2700,1300,300ml,True
+305,9,Cold Brew,1,2200,900,400g,True
+306,9,Chicken Sandwich,11,4000,1700,250ml,True
+307,9,Salmon Croissant,3,3600,1500,300ml,True
+308,9,Chicken Caesar,6,4000,2000,350ml,True
+309,9,Flat White,1,1400,700,400g,True
+310,9,Salmon Croissant,3,3500,1500,200ml,True
+311,9,Cheesecake,7,2900,1300,250ml,True
+312,9,Fresh Orange Juice,9,2400,1000,400g,True
+313,9,Greek Salad,6,2900,1400,350ml,True
+314,9,Cappuccino,1,1900,800,300ml,True
+315,9,Hummus Plate,10,4000,1700,200ml,True
+316,9,Salmon Steak,5,8600,3600,300ml,True
+317,10,Raf,1,3000,1400,300ml,True
+318,10,Cappuccino,1,1800,700,200ml,True
+319,10,Greek Salad,6,2700,1200,250g,True
+320,10,Quattro Formaggi,4,5200,2400,250ml,True
+321,10,Cappuccino,1,2200,1100,200ml,True
+322,10,Brownie,7,2000,800,400g,True
+323,10,Guacamole Toast,3,4000,1900,250ml,True
+324,10,Chicken Pasta,5,6300,2600,250ml,True
+325,10,Aperol Spritz,8,4900,2400,250ml,True
+326,10,Ricotta Croissant,3,2500,1200,300ml,True
+327,10,Raf,1,1900,900,200ml,True
+328,10,Cheesecake,7,3400,1400,200ml,True
+329,10,Brownie,7,2200,1100,250ml,True
+330,10,Club Sandwich,11,3900,1900,300ml,True
+331,10,Black Tea,2,1000,500,350ml,True
+332,10,Parma Pizza,4,5100,2400,300ml,True
+333,10,Macchiato,1,1000,400,250g,True
+334,10,Quattro Formaggi,4,4600,1900,350ml,True
+335,10,Matcha Latte,2,1800,900,250ml,True
+336,10,Omelet / Scramble,3,2000,900,400g,True
+337,10,Salmon Croissant,3,3100,1500,300ml,True
+338,10,Cheesecake,7,2700,1100,300ml,True
+339,10,Matcha Latte,2,2000,1000,200ml,True
+340,10,Margarita Pizza,4,4100,1700,300ml,True
+341,10,Chocolate Mousse,7,2800,1100,200ml,True
+342,10,Aperol Spritz,8,5200,2200,400g,True
+343,10,Chocolate Mousse,7,2800,1300,350ml,True
+344,10,Mojito,8,4800,2300,250g,True
+345,10,Fresh Orange Juice,9,2500,1000,200ml,True
+346,10,Omelet / Scramble,3,2200,1000,250ml,True
+347,10,Chicken Pasta,5,7800,3500,250ml,True
+348,11,Club Sandwich,11,3500,1700,350ml,True
+349,11,Cold Brew,1,3000,1300,300ml,True
+350,11,Eggs Benedict,3,4100,1800,250ml,True
+351,11,Cappuccino,1,1800,800,200ml,True
+352,11,Chocolate Mousse,7,2700,1100,300ml,True
+353,11,Margarita Pizza,4,4500,1900,250g,True
+354,11,Guacamole Toast,3,4100,1700,400g,True
+355,11,Mineral Water,9,700,300,200ml,True
+356,11,Bruschetta,10,3300,1600,350ml,True
+357,11,Beef Steak,5,18600,8500,300ml,True
+358,11,Matcha Latte,2,1700,700,250ml,True
+359,11,Club Sandwich,11,3200,1400,250ml,True
+360,11,Aperol Spritz,8,3600,1500,250g,True
+361,11,Ventricina Pizza,4,4200,1700,200ml,True
+362,11,Ricotta Croissant,3,2800,1100,250ml,True
+363,11,Ricotta Croissant,3,2700,1200,300ml,True
+364,11,Macchiato,1,1000,500,250ml,True
+365,11,Chicken Sandwich,11,4500,2100,300ml,True
+366,11,Flat White,1,2000,900,350ml,True
+367,11,Ricotta Croissant,3,2600,1100,350ml,True
+368,11,Chicken Pasta,5,7700,3200,250ml,True
+369,11,Brownie,7,1700,800,400g,True
+370,11,Macchiato,1,1400,700,250g,True
+371,11,Cold Brew,1,1900,900,250ml,True
+372,11,Cheesecake,7,2900,1200,250ml,True
+373,11,Chicken Pasta,5,7300,3600,200ml,True
+374,11,Chicken Caesar,6,3600,1800,250g,True
+375,11,Macchiato,1,1700,800,250g,True
+376,11,Bruschetta,10,2900,1300,250ml,True
+377,11,Chicken Sandwich,11,3500,1500,250g,True
+378,11,Flat White,1,1800,900,200ml,True
+379,12,Salmon Croissant,3,3400,1500,250ml,True
+380,12,Mojito,8,5400,2600,350ml,True
+381,12,Omelet / Scramble,3,1800,800,350ml,True
+382,12,Latte,1,1500,700,350ml,True
+383,12,Hummus Plate,10,3200,1400,250g,True
+384,12,Latte,1,2300,1100,300ml,True
+385,12,Tarte Tatin,7,2700,1100,400g,True
+386,12,Cold Brew,1,2800,1200,300ml,True
+387,12,Hummus Plate,10,3100,1300,400g,True
+388,12,Chocolate Mousse,7,2600,1100,400g,True
+389,12,Salmon Croissant,3,3500,1600,250g,True
+390,12,Ventricina Pizza,4,4300,2100,300ml,True
+391,12,Tarte Tatin,7,3000,1200,250g,True
+392,12,Omelet / Scramble,3,2300,1000,350ml,True
+393,12,Espresso,1,1600,700,350ml,True
+394,12,Quattro Formaggi,4,4700,2100,200ml,True
+395,12,Raf,1,2600,1100,350ml,True
+396,12,Chicken Pasta,5,6400,2600,250g,True
+397,12,Margarita Pizza,4,4200,1700,250ml,True
+398,12,Guacamole Toast,3,4100,1600,250g,True
+399,12,Espresso,1,1600,800,200ml,True
+400,12,Eggs Benedict,3,4000,1900,250ml,True
+401,12,Raf,1,2200,1100,200ml,True
+402,12,Guacamole Toast,3,4100,2000,250ml,True
+403,12,Margarita Pizza,4,4300,2100,250ml,True
+404,12,Tarte Tatin,7,3100,1500,250ml,True
+405,12,Greek Salad,6,3400,1600,200ml,True
+406,12,Chicken Pasta,5,7800,3800,400g,True
+407,12,Mineral Water,9,500,200,300ml,True
+408,12,Fresh Orange Juice,9,2300,1000,250ml,True
+409,12,Bruschetta,10,2800,1300,200ml,True
+410,12,Beef Steak,5,15000,7500,300ml,True
+411,12,Omelet / Scramble,3,2200,1000,250ml,True
+412,12,Bruschetta,10,2900,1400,200ml,True
+413,12,Matcha Latte,2,1500,700,250g,True
+414,12,Ricotta Croissant,3,2600,1200,250ml,True
+415,12,Herbal Tea,2,1900,900,350ml,True
+416,12,Macchiato,1,1100,500,300ml,True
+417,13,Matcha Latte,2,3500,1600,250g,True
+418,13,Mineral Water,9,600,300,250g,True
+419,13,Cold Brew,1,3000,1500,350ml,True
+420,13,Latte,1,1600,700,350ml,True
+421,13,Salmon Croissant,3,3500,1400,200ml,True
+422,13,Macchiato,1,1500,700,350ml,True
+423,13,Flat White,1,2300,900,200ml,True
+424,13,Salmon Steak,5,9600,4200,200ml,True
+425,13,Fresh Orange Juice,9,2000,1000,200ml,True
+426,13,Margarita Pizza,4,4200,2000,250g,True
+427,13,Matcha Latte,2,2400,1100,250g,True
+428,13,Matcha Latte,2,3300,1500,250g,True
+429,13,Cappuccino,1,1900,800,350ml,True
+430,13,Cappuccino,1,2400,1000,250ml,True
+431,13,Parma Pizza,4,5100,2400,250ml,True
+432,13,Cold Brew,1,2800,1300,350ml,True
+433,13,Macchiato,1,1700,700,300ml,True
+434,13,Ventricina Pizza,4,4200,2000,250ml,True
+435,13,Macchiato,1,1800,800,250ml,True
+436,13,Cheesecake,7,3300,1400,250g,True
+437,13,Bruschetta,10,2800,1300,200ml,True
+438,13,Hummus Plate,10,3400,1600,400g,True
+439,13,Ventricina Pizza,4,4300,2100,250g,True
+440,13,Aperol Spritz,8,3800,1700,400g,True
+441,13,Matcha Latte,2,1600,700,350ml,True
+442,13,Parma Pizza,4,4600,2200,350ml,True
+443,13,Club Sandwich,11,3500,1600,250ml,True
+444,13,Flat White,1,1800,900,400g,True
+445,13,Salmon Croissant,3,3000,1400,300ml,True
+446,13,Greek Salad,6,3300,1500,250ml,True
+447,13,Mojito,8,4400,1800,300ml,True
+448,13,Caprese Croissant,3,3400,1600,200ml,True
+449,13,Aperol Spritz,8,4400,1800,400g,True
+450,13,Caprese Croissant,3,3000,1300,300ml,True
+451,13,Eggs Benedict,3,3400,1600,200ml,True
+452,13,Cheesecake,7,3000,1500,200ml,True
+453,13,Caprese Croissant,3,3000,1300,400g,True
+454,13,Eggs Benedict,3,3800,1700,250ml,True
+455,14,Bruschetta,10,2800,1300,300ml,True
+456,14,Raf,1,2300,1000,250g,True
+457,14,Salmon Steak,5,10700,5300,200ml,True
+458,14,Chicken Caesar,6,5400,2600,200ml,True
+459,14,Parma Pizza,4,5400,2600,400g,True
+460,14,Ricotta Croissant,3,2700,1300,350ml,True
+461,14,Raf,1,2900,1400,250ml,True
+462,14,Chicken Sandwich,11,3600,1600,200ml,True
+463,14,Parma Pizza,4,5100,2100,400g,True
+464,14,Flat White,1,1600,800,200ml,True
+465,14,Macchiato,1,1400,600,200ml,True
+466,14,Salmon Steak,5,13200,6100,300ml,True
+467,14,Margarita Pizza,4,3800,1500,400g,True
+468,14,Guacamole Toast,3,4300,1900,250g,True
+469,14,Margarita Pizza,4,4500,2200,300ml,True
+470,14,Herbal Tea,2,1600,700,300ml,True
+471,14,Ventricina Pizza,4,4400,2000,250g,True
+472,14,Flat White,1,2400,1000,250g,True
+473,14,Espresso,1,900,400,200ml,True
+474,14,Salmon Croissant,3,3200,1500,200ml,True
+475,14,Margarita Pizza,4,4500,2100,300ml,True
+476,14,Beef Steak,5,11200,5200,250g,True
+477,14,Margarita Pizza,4,3800,1900,250g,True
+478,14,Chocolate Mousse,7,2900,1300,350ml,True
+479,14,Chicken Sandwich,11,3400,1700,250g,True
+480,14,Fresh Orange Juice,9,2200,1100,350ml,True
+481,14,Club Sandwich,11,3200,1300,200ml,True
+482,14,Cheesecake,7,3400,1400,200ml,True
+483,14,Bruschetta,10,2900,1300,250ml,True
+484,14,Omelet / Scramble,3,2200,1100,250g,True
+485,14,Margarita Pizza,4,4400,2100,300ml,True
+486,14,Beef Steak,5,18900,8800,300ml,True
+487,14,Latte,1,2200,900,200ml,True
+488,14,Hummus Plate,10,2900,1300,400g,True
+489,15,Matcha Latte,2,2400,1000,200ml,True
+490,15,Raf,1,2800,1400,350ml,True
+491,15,Ventricina Pizza,4,4100,1800,250ml,True
+492,15,Fresh Orange Juice,9,2300,1000,400g,True
+493,15,Omelet / Scramble,3,2300,1100,300ml,True
+494,15,Parma Pizza,4,5200,2300,200ml,True
+495,15,Parma Pizza,4,5100,2000,250ml,True
+496,15,Chicken Pasta,5,8300,4000,250g,True
+497,15,Parma Pizza,4,4700,2300,200ml,True
+498,15,Chicken Caesar,6,4900,2300,250g,True
+499,15,Greek Salad,6,4300,2100,350ml,True
+500,15,Salmon Croissant,3,3300,1500,250ml,True
+501,15,Chocolate Mousse,7,2900,1300,400g,True
+502,15,Macchiato,1,1500,600,400g,True
+503,15,Greek Salad,6,2600,1100,350ml,True
+504,15,Margarita Pizza,4,4400,1800,350ml,True
+505,15,Guacamole Toast,3,4300,2000,400g,True
+506,15,Salmon Steak,5,12100,5500,350ml,True
+507,15,Mojito,8,3600,1600,250g,True
+508,15,Guacamole Toast,3,4500,1900,350ml,True
+509,15,Ventricina Pizza,4,4300,2000,300ml,True
+510,15,Quattro Formaggi,4,4600,2000,250g,True
+511,15,Salmon Croissant,3,3800,1600,350ml,True
+512,15,Parma Pizza,4,5000,2200,350ml,True
+513,15,Chicken Sandwich,11,3200,1500,200ml,True
+514,15,Mineral Water,9,500,200,300ml,True
+515,15,Cappuccino,1,2200,1000,200ml,True
+516,15,Tarte Tatin,7,3200,1500,200ml,True
+517,15,Ventricina Pizza,4,4600,2100,300ml,True
+518,15,Greek Salad,6,3900,1900,350ml,True
+519,15,Aperol Spritz,8,4300,2000,400g,True
+520,15,Chicken Pasta,5,5300,2300,250ml,True
+521,15,Chicken Sandwich,11,3200,1500,250g,True
+522,15,Matcha Latte,2,3200,1400,200ml,True
+523,16,Tarte Tatin,7,2800,1200,350ml,True
+524,16,Bruschetta,10,2500,1000,250ml,True
+525,16,Beef Steak,5,15600,6800,250ml,True
+526,16,Flat White,1,1900,800,250ml,True
+527,16,Greek Salad,6,4000,1800,400g,True
+528,16,Chicken Sandwich,11,3100,1400,250g,True
+529,16,Brownie,7,2200,1100,250ml,True
+530,16,Margarita Pizza,4,3900,1800,400g,True
+531,16,Herbal Tea,2,1500,700,200ml,True
+532,16,Flat White,1,2600,1300,400g,True
+533,16,Club Sandwich,11,3200,1300,350ml,True
+534,16,Cold Brew,1,2100,900,250g,True
+535,16,Beef Steak,5,15600,7100,400g,True
+536,16,Latte,1,1600,700,300ml,True
+537,16,Bruschetta,10,2600,1200,200ml,True
+538,16,Espresso,1,1400,600,250ml,True
+539,16,Quattro Formaggi,4,5000,2100,250ml,True
+540,16,Club Sandwich,11,4000,1700,250ml,True
+541,16,Cold Brew,1,2200,1000,400g,True
+542,16,Mojito,8,5000,2100,250g,True
+543,16,Brownie,7,2300,1000,300ml,True
+544,16,Quattro Formaggi,4,5400,2300,400g,True
+545,16,Chicken Pasta,5,5200,2300,250g,True
+546,16,Club Sandwich,11,4100,1600,400g,True
+547,16,Margarita Pizza,4,4300,1800,250g,True
+548,16,Aperol Spritz,8,4000,1800,250ml,True
+549,16,Quattro Formaggi,4,5300,2400,250ml,True
+550,16,Aperol Spritz,8,3600,1600,350ml,True
+551,16,Parma Pizza,4,5000,2200,250g,True
+552,16,Chicken Caesar,6,4200,1900,300ml,True
+553,16,Raf,1,2300,1100,300ml,True
+554,16,Bruschetta,10,2700,1100,350ml,True
+555,16,Chicken Caesar,6,5100,2300,400g,True
+556,16,Ricotta Croissant,3,2700,1300,250g,True
+557,16,Herbal Tea,2,1400,600,350ml,True
+558,16,Caprese Croissant,3,3200,1300,300ml,True
+559,16,Caprese Croissant,3,3100,1500,300ml,True
+560,16,Mojito,8,5500,2300,200ml,True
+561,16,Chicken Pasta,5,4700,2100,350ml,True
+562,16,Salmon Croissant,3,3700,1600,250g,True
+563,17,Tarte Tatin,7,2800,1300,350ml,True
+564,17,Fresh Orange Juice,9,2200,900,400g,True
+565,17,Black Tea,2,700,300,200ml,True
+566,17,Eggs Benedict,3,3400,1400,200ml,True
+567,17,Omelet / Scramble,3,2300,1000,300ml,True
+568,17,Caprese Croissant,3,3300,1500,250g,True
+569,17,Espresso,1,1500,700,250g,True
+570,17,Margarita Pizza,4,4500,2100,350ml,True
+571,17,Aperol Spritz,8,5000,2100,300ml,True
+572,17,Salmon Croissant,3,3500,1400,250g,True
+573,17,Hummus Plate,10,3800,1600,300ml,True
+574,17,Latte,1,2200,1000,250g,True
+575,17,Chicken Caesar,6,4200,1700,200ml,True
+576,17,Mojito,8,4100,1900,250g,True
+577,17,Salmon Steak,5,14300,6100,200ml,True
+578,17,Flat White,1,2400,1100,250ml,True
+579,17,Chicken Pasta,5,7400,3600,300ml,True
+580,17,Cappuccino,1,1900,800,250g,True
+581,17,Mineral Water,9,700,300,250g,True
+582,17,Latte,1,1800,900,250g,True
+583,17,Chicken Pasta,5,6700,2700,250g,True
+584,17,Brownie,7,2400,1000,200ml,True
+585,17,Hummus Plate,10,2900,1400,250ml,True
+586,17,Beef Steak,5,17000,8200,400g,True
+587,17,Flat White,1,2700,1300,300ml,True
+588,17,Bruschetta,10,3100,1400,300ml,True
+589,17,Chicken Caesar,6,5200,2100,250g,True
+590,17,Greek Salad,6,2700,1100,200ml,True
+591,17,Black Tea,2,800,300,350ml,True
+592,17,Cold Brew,1,2000,900,300ml,True
+593,17,Tarte Tatin,7,2800,1300,200ml,True
+594,17,Omelet / Scramble,3,1800,900,250ml,True
+595,17,Macchiato,1,1500,700,200ml,True
+596,17,Black Tea,2,1500,700,400g,True
+597,17,Margarita Pizza,4,4400,1900,350ml,True
+598,18,Omelet / Scramble,3,1900,800,400g,True
+599,18,Margarita Pizza,4,4500,1900,250ml,True
+600,18,Margarita Pizza,4,4100,2000,250g,True
+601,18,Flat White,1,1500,600,200ml,True
+602,18,Brownie,7,1500,700,300ml,True
+603,18,Chicken Sandwich,11,3200,1400,200ml,True
+604,18,Cappuccino,1,1800,800,300ml,True
+605,18,Mineral Water,9,600,300,400g,True
+606,18,Black Tea,2,1000,500,400g,True
+607,18,Black Tea,2,600,200,250g,True
+608,18,Latte,1,2400,1200,200ml,True
+609,18,Bruschetta,10,2800,1300,200ml,True
+610,18,Cheesecake,7,2700,1200,250g,True
+611,18,Hummus Plate,10,3900,1700,400g,True
+612,18,Quattro Formaggi,4,4800,2300,400g,True
+613,18,Fresh Orange Juice,9,2200,1000,200ml,True
+614,18,Espresso,1,800,400,250g,True
+615,18,Matcha Latte,2,3500,1400,250g,True
+616,18,Ventricina Pizza,4,4200,1800,300ml,True
+617,18,Eggs Benedict,3,3600,1800,400g,True
+618,18,Eggs Benedict,3,3500,1600,200ml,True
+619,18,Guacamole Toast,3,4500,2200,250ml,True
+620,18,Tarte Tatin,7,3100,1500,250g,True
+621,18,Beef Steak,5,10500,4500,200ml,True
+622,18,Greek Salad,6,3700,1700,250ml,True
+623,18,Parma Pizza,4,5200,2500,350ml,True
+624,18,Margarita Pizza,4,4100,1700,350ml,True
+625,18,Brownie,7,2000,1000,350ml,True
+626,18,Greek Salad,6,2700,1200,250ml,True
+627,18,Latte,1,2200,1000,250ml,True
+628,18,Raf,1,3000,1400,250g,True
+629,18,Chicken Caesar,6,4800,2400,200ml,True
+630,19,Chicken Caesar,6,5000,2000,300ml,True
+631,19,Cappuccino,1,2000,900,200ml,True
+632,19,Brownie,7,1500,700,250ml,True
+633,19,Cold Brew,1,1800,800,350ml,True
+634,19,Salmon Steak,5,8300,4000,350ml,True
+635,19,Macchiato,1,1300,600,250ml,True
+636,19,Greek Salad,6,3800,1600,300ml,True
+637,19,Cappuccino,1,1700,700,250g,True
+638,19,Caprese Croissant,3,3400,1500,350ml,True
+639,19,Aperol Spritz,8,4700,2100,350ml,True
+640,19,Macchiato,1,1100,500,250g,True
+641,19,Cheesecake,7,2500,1100,300ml,True
+642,19,Eggs Benedict,3,3300,1400,250g,True
+643,19,Bruschetta,10,2500,1100,250ml,True
+644,19,Espresso,1,1200,500,400g,True
+645,19,Guacamole Toast,3,4300,1800,400g,True
+646,19,Beef Steak,5,18400,8000,350ml,True
+647,19,Chicken Sandwich,11,3500,1700,350ml,True
+648,19,Margarita Pizza,4,4500,2000,400g,True
+649,19,Mojito,8,4100,2000,350ml,True
+650,19,Chicken Pasta,5,4600,2300,250g,True
+651,19,Ventricina Pizza,4,4500,1900,200ml,True
+652,19,Quattro Formaggi,4,5100,2100,400g,True
+653,19,Chicken Caesar,6,5200,2300,250ml,True
+654,19,Margarita Pizza,4,4400,2100,250ml,True
+655,19,Chocolate Mousse,7,2400,1000,350ml,True
+656,19,Club Sandwich,11,3400,1600,350ml,True
+657,19,Bruschetta,10,2800,1300,400g,True
+658,19,Black Tea,2,1000,500,300ml,True
+659,19,Aperol Spritz,8,3900,1900,300ml,True
+660,19,Hummus Plate,10,3800,1800,200ml,True
+661,19,Fresh Orange Juice,9,2400,1100,400g,True
+662,19,Cappuccino,1,1400,700,400g,True
+663,19,Cappuccino,1,1900,800,300ml,True
+664,19,Chicken Caesar,6,5300,2500,400g,True
+665,19,Guacamole Toast,3,4300,1700,250g,True
+666,20,Chicken Caesar,6,5000,2500,250g,True
+667,20,Flat White,1,2300,1100,250ml,True
+668,20,Cheesecake,7,3100,1400,350ml,True
+669,20,Brownie,7,2300,1000,250g,True
+670,20,Eggs Benedict,3,4200,1700,300ml,True
+671,20,Cold Brew,1,1800,900,250g,True
+672,20,Cheesecake,7,2500,1200,200ml,True
+673,20,Tarte Tatin,7,3000,1200,400g,True
+674,20,Beef Steak,5,17500,8300,200ml,True
+675,20,Fresh Orange Juice,9,2400,1200,250ml,True
+676,20,Cold Brew,1,1700,700,250ml,True
+677,20,Club Sandwich,11,3100,1400,250g,True
+678,20,Omelet / Scramble,3,1800,800,300ml,True
+679,20,Mineral Water,9,800,400,250ml,True
+680,20,Quattro Formaggi,4,4500,1800,250g,True
+681,20,Ventricina Pizza,4,4300,1800,250ml,True
+682,20,Guacamole Toast,3,4500,2100,350ml,True
+683,20,Salmon Steak,5,9000,4200,350ml,True
+684,20,Omelet / Scramble,3,2400,1100,250g,True
+685,20,Cheesecake,7,2700,1200,250g,True
+686,20,Ricotta Croissant,3,2700,1200,200ml,True
+687,20,Salmon Steak,5,11800,5000,400g,True
+688,20,Chocolate Mousse,7,2800,1200,200ml,True
+689,20,Chicken Caesar,6,5000,2100,250g,True
+690,20,Latte,1,1900,900,250g,True
+691,20,Raf,1,1800,800,250g,True
+692,20,Bruschetta,10,3000,1300,400g,True
+693,20,Black Tea,2,1300,600,350ml,True
+694,20,Matcha Latte,2,1800,900,250ml,True
+695,20,Cheesecake,7,2900,1200,250ml,True
+696,20,Cheesecake,7,2600,1200,300ml,True
+697,20,Mineral Water,9,600,300,200ml,True
+698,20,Fresh Orange Juice,9,2000,900,250ml,True
+699,20,Matcha Latte,2,2900,1300,200ml,True
+700,20,Tarte Tatin,7,2700,1300,200ml,True
+701,20,Cappuccino,1,1600,800,400g,True
+702,20,Flat White,1,2600,1300,300ml,True
+703,20,Salmon Croissant,3,3200,1500,350ml,True
+704,20,Mojito,8,4600,2300,300ml,True
+705,20,Caprese Croissant,3,3200,1600,350ml,True
+706,21,Chicken Sandwich,11,3700,1600,250g,True
+707,21,Cheesecake,7,3300,1300,200ml,True
+708,21,Ventricina Pizza,4,4200,1900,350ml,True
+709,21,Beef Steak,5,18500,7800,200ml,True
+710,21,Greek Salad,6,4200,2000,250g,True
+711,21,Mineral Water,9,600,300,400g,True
+712,21,Salmon Steak,5,8300,3600,350ml,True
+713,21,Chicken Pasta,5,7800,3400,350ml,True
+714,21,Herbal Tea,2,900,400,250g,True
+715,21,Ventricina Pizza,4,4200,2100,350ml,True
+716,21,Margarita Pizza,4,3800,1800,200ml,True
+717,21,Margarita Pizza,4,3900,1800,350ml,True
+718,21,Salmon Croissant,3,3100,1500,400g,True
+719,21,Chicken Sandwich,11,3600,1600,250g,True
+720,21,Mineral Water,9,900,400,300ml,True
+721,21,Quattro Formaggi,4,5000,2200,200ml,True
+722,21,Omelet / Scramble,3,2400,1000,400g,True
+723,21,Cheesecake,7,3000,1500,350ml,True
+724,21,Latte,1,1800,900,350ml,True
+725,21,Chicken Pasta,5,5700,2400,350ml,True
+726,21,Aperol Spritz,8,5500,2300,400g,True
+727,21,Black Tea,2,700,300,200ml,True
+728,21,Margarita Pizza,4,3900,1700,400g,True
+729,21,Brownie,7,1800,900,350ml,True
+730,21,Tarte Tatin,7,3000,1400,300ml,True
+731,21,Tarte Tatin,7,3000,1400,350ml,True
+732,21,Eggs Benedict,3,4000,1600,300ml,True
+733,21,Chicken Sandwich,11,4200,1900,400g,True
+734,21,Cheesecake,7,2900,1200,300ml,True
+735,21,Chicken Sandwich,11,4100,2000,250ml,True
+736,21,Chicken Caesar,6,4500,2100,350ml,True
+737,21,Bruschetta,10,2600,1300,200ml,True
+738,22,Flat White,1,2200,1100,250g,True
+739,22,Fresh Orange Juice,9,2200,1000,400g,True
+740,22,Brownie,7,2000,900,250g,True
+741,22,Omelet / Scramble,3,2100,900,300ml,True
+742,22,Guacamole Toast,3,4400,1800,300ml,True
+743,22,Fresh Orange Juice,9,2400,1200,350ml,True
+744,22,Chicken Caesar,6,4800,2000,350ml,True
+745,22,Parma Pizza,4,5500,2700,300ml,True
+746,22,Cheesecake,7,3500,1600,300ml,True
+747,22,Beef Steak,5,14600,7200,250g,True
+748,22,Raf,1,2600,1300,350ml,True
+749,22,Beef Steak,5,18300,8700,400g,True
+750,22,Chicken Pasta,5,8700,4300,400g,True
+751,22,Herbal Tea,2,1900,900,400g,True
+752,22,Tarte Tatin,7,3100,1500,350ml,True
+753,22,Omelet / Scramble,3,2000,900,200ml,True
+754,22,Salmon Croissant,3,3100,1400,250g,True
+755,22,Matcha Latte,2,3200,1500,400g,True
+756,22,Latte,1,1300,600,350ml,True
+757,22,Mojito,8,4000,1900,250ml,True
+758,22,Chicken Caesar,6,4100,2000,300ml,True
+759,22,Omelet / Scramble,3,2000,800,400g,True
+760,22,Espresso,1,1300,600,250ml,True
+761,22,Quattro Formaggi,4,5500,2300,300ml,True
+762,22,Mojito,8,5400,2400,200ml,True
+763,22,Beef Steak,5,17600,7700,350ml,True
+764,22,Flat White,1,1500,600,300ml,True
+765,22,Brownie,7,2500,1100,250g,True
+766,22,Omelet / Scramble,3,2200,1100,400g,True
+767,22,Mineral Water,9,800,300,350ml,True
+768,22,Salmon Steak,5,13900,6800,250ml,True
+769,22,Hummus Plate,10,3900,1600,250ml,True
+770,22,Guacamole Toast,3,4500,2100,400g,True
+771,22,Fresh Orange Juice,9,2000,800,250ml,True
+772,22,Margarita Pizza,4,4300,1800,350ml,True
+773,22,Flat White,1,2200,1000,300ml,True
+774,23,Bruschetta,10,3000,1300,400g,True
+775,23,Eggs Benedict,3,3500,1500,400g,True
+776,23,Beef Steak,5,13900,6300,200ml,True
+777,23,Tarte Tatin,7,2700,1200,250g,True
+778,23,Raf,1,2200,1000,250g,True
+779,23,Raf,1,1700,800,300ml,True
+780,23,Beef Steak,5,10500,4400,350ml,True
+781,23,Flat White,1,1700,800,200ml,True
+782,23,Margarita Pizza,4,4400,1900,250ml,True
+783,23,Ricotta Croissant,3,3000,1400,300ml,True
+784,23,Latte,1,1700,700,300ml,True
+785,23,Ventricina Pizza,4,5000,2200,250g,True
+786,23,Brownie,7,1900,900,200ml,True
+787,23,Guacamole Toast,3,4200,1900,250ml,True
+788,23,Greek Salad,6,3900,1600,250g,True
+789,23,Matcha Latte,2,2700,1300,250ml,True
+790,23,Tarte Tatin,7,2900,1300,350ml,True
+791,23,Chicken Caesar,6,4800,2000,400g,True
+792,23,Salmon Steak,5,8700,3900,200ml,True
+793,23,Latte,1,1500,700,250ml,True
+794,23,Guacamole Toast,3,4400,2100,300ml,True
+795,23,Bruschetta,10,3300,1400,250ml,True
+796,23,Chicken Sandwich,11,4100,2000,200ml,True
+797,23,Espresso,1,800,300,200ml,True
+798,23,Cappuccino,1,1600,700,350ml,True
+799,23,Quattro Formaggi,4,4700,1900,200ml,True
+800,23,Salmon Steak,5,13100,6000,200ml,True
+801,23,Club Sandwich,11,3500,1600,350ml,True
+802,23,Hummus Plate,10,3700,1800,250ml,True
+803,23,Greek Salad,6,2500,1200,300ml,True
+804,23,Quattro Formaggi,4,4500,2100,250g,True
+805,23,Quattro Formaggi,4,5400,2200,300ml,True
+806,23,Latte,1,2000,900,200ml,True
+807,23,Cappuccino,1,2500,1000,200ml,True
+808,24,Salmon Steak,5,10300,4900,250g,True
+809,24,Caprese Croissant,3,3300,1400,200ml,True
+810,24,Cold Brew,1,1900,800,300ml,True
+811,24,Salmon Croissant,3,3500,1400,250g,True
+812,24,Bruschetta,10,2900,1400,400g,True
+813,24,Tarte Tatin,7,3100,1500,250g,True
+814,24,Eggs Benedict,3,4000,1900,400g,True
+815,24,Caprese Croissant,3,3000,1300,250ml,True
+816,24,Herbal Tea,2,1900,900,250ml,True
+817,24,Chicken Pasta,5,6500,3200,250ml,True
+818,24,Brownie,7,2500,1000,250g,True
+819,24,Mojito,8,4600,1900,350ml,True
+820,24,Latte,1,1800,800,350ml,True
+821,24,Ventricina Pizza,4,4100,1900,250ml,True
+822,24,Macchiato,1,1400,600,350ml,True
+823,24,Parma Pizza,4,5000,2300,250ml,True
+824,24,Chicken Sandwich,11,3900,1600,400g,True
+825,24,Matcha Latte,2,3400,1400,200ml,True
+826,24,Raf,1,1800,800,350ml,True
+827,24,Ricotta Croissant,3,2600,1200,400g,True
+828,24,Cappuccino,1,1200,600,300ml,True
+829,24,Caprese Croissant,3,3300,1600,250g,True
+830,24,Tarte Tatin,7,2900,1200,350ml,True
+831,24,Chocolate Mousse,7,2400,1000,300ml,True
+832,24,Caprese Croissant,3,3000,1200,300ml,True
+833,24,Matcha Latte,2,3000,1500,300ml,True
+834,24,Mineral Water,9,900,400,250g,True
+835,24,Eggs Benedict,3,3900,1700,200ml,True
+836,24,Omelet / Scramble,3,2100,1000,200ml,True
+837,24,Flat White,1,2000,1000,350ml,True
+838,24,Salmon Steak,5,13100,6000,250g,True
+839,24,Eggs Benedict,3,4200,1700,250ml,True
+840,24,Cheesecake,7,3200,1400,350ml,True
+841,24,Cold Brew,1,2600,1300,350ml,True
+842,25,Greek Salad,6,4100,1800,350ml,True
+843,25,Black Tea,2,900,400,200ml,True
+844,25,Salmon Steak,5,8200,3900,250ml,True
+845,25,Beef Steak,5,16300,6900,350ml,True
+846,25,Tarte Tatin,7,3100,1400,250ml,True
+847,25,Chicken Caesar,6,4800,2400,350ml,True
+848,25,Cheesecake,7,2900,1300,300ml,True
+849,25,Brownie,7,2100,900,250g,True
+850,25,Ventricina Pizza,4,4500,1800,250g,True
+851,25,Fresh Orange Juice,9,2000,800,200ml,True
+852,25,Mineral Water,9,900,400,250ml,True
+853,25,Flat White,1,1900,900,400g,True
+854,25,Hummus Plate,10,2700,1100,250ml,True
+855,25,Omelet / Scramble,3,2500,1200,300ml,True
+856,25,Cappuccino,1,2300,1100,300ml,True
+857,25,Mineral Water,9,900,400,350ml,True
+858,25,Omelet / Scramble,3,2000,900,200ml,True
+859,25,Caprese Croissant,3,3100,1300,350ml,True
+860,25,Chocolate Mousse,7,2900,1400,250g,True
+861,25,Aperol Spritz,8,5300,2600,350ml,True
+862,25,Herbal Tea,2,1600,700,250ml,True
+863,25,Chocolate Mousse,7,3000,1500,400g,True
+864,25,Tarte Tatin,7,3200,1300,400g,True
+865,25,Club Sandwich,11,3800,1600,250g,True
+866,25,Salmon Croissant,3,3600,1800,350ml,True
+867,25,Cappuccino,1,2300,1100,200ml,True
+868,25,Herbal Tea,2,800,300,400g,True
+869,25,Espresso,1,1200,600,350ml,True
+870,25,Salmon Steak,5,9600,4000,200ml,True
+871,25,Matcha Latte,2,3000,1500,400g,True
+872,25,Cheesecake,7,3200,1400,250g,True
+873,25,Black Tea,2,1100,500,250g,True
+874,25,Cold Brew,1,1700,800,250g,True
+875,26,Herbal Tea,2,1600,700,400g,True
+876,26,Club Sandwich,11,3900,1800,350ml,True
+877,26,Hummus Plate,10,3800,1800,200ml,True
+878,26,Black Tea,2,1100,500,200ml,True
+879,26,Chicken Caesar,6,5200,2200,350ml,True
+880,26,Omelet / Scramble,3,2000,1000,250g,True
+881,26,Ricotta Croissant,3,2800,1300,200ml,True
+882,26,Tarte Tatin,7,3100,1400,400g,True
+883,26,Guacamole Toast,3,4200,2000,250ml,True
+884,26,Chicken Caesar,6,5300,2200,250g,True
+885,26,Quattro Formaggi,4,5000,2100,350ml,True
+886,26,Matcha Latte,2,3200,1500,200ml,True
+887,26,Black Tea,2,700,300,400g,True
+888,26,Mineral Water,9,1000,400,400g,True
+889,26,Mineral Water,9,800,300,300ml,True
+890,26,Tarte Tatin,7,2700,1300,300ml,True
+891,26,Cappuccino,1,2100,900,350ml,True
+892,26,Herbal Tea,2,1700,800,300ml,True
+893,26,Espresso,1,1700,700,250ml,True
+894,26,Greek Salad,6,3800,1700,350ml,True
+895,26,Hummus Plate,10,3400,1400,200ml,True
+896,26,Salmon Croissant,3,3500,1500,250ml,True
+897,26,Espresso,1,1600,800,250ml,True
+898,26,Hummus Plate,10,3600,1400,300ml,True
+899,26,Greek Salad,6,3700,1800,350ml,True
+900,26,Salmon Croissant,3,3200,1600,400g,True
+901,26,Greek Salad,6,2800,1200,300ml,True
+902,26,Quattro Formaggi,4,5000,2400,250ml,True
+903,26,Beef Steak,5,15800,7300,250ml,True
+904,26,Cheesecake,7,2800,1200,300ml,True
+905,26,Raf,1,2100,900,300ml,True
+906,26,Salmon Croissant,3,3100,1400,250ml,True
+907,26,Flat White,1,2000,1000,350ml,True
+908,26,Beef Steak,5,17500,8000,250ml,True
+909,26,Cappuccino,1,2100,900,250ml,True
+910,26,Raf,1,2400,1200,200ml,True
+911,26,Espresso,1,1100,500,300ml,True
+912,26,Cheesecake,7,3400,1600,200ml,True
+913,26,Chicken Pasta,5,6900,3300,400g,True
+914,27,Salmon Croissant,3,3500,1400,300ml,True
+915,27,Salmon Steak,5,15000,6500,300ml,True
+916,27,Club Sandwich,11,4200,2000,400g,True
+917,27,Raf,1,2400,1100,400g,True
+918,27,Parma Pizza,4,4800,2400,300ml,True
+919,27,Herbal Tea,2,1200,600,300ml,True
+920,27,Guacamole Toast,3,4000,1600,400g,True
+921,27,Guacamole Toast,3,4100,1600,250g,True
+922,27,Latte,1,2500,1200,350ml,True
+923,27,Fresh Orange Juice,9,2000,1000,300ml,True
+924,27,Ventricina Pizza,4,4000,2000,400g,True
+925,27,Cold Brew,1,2800,1300,200ml,True
+926,27,Quattro Formaggi,4,4600,2100,300ml,True
+927,27,Brownie,7,1900,900,300ml,True
+928,27,Chicken Sandwich,11,3900,1800,300ml,True
+929,27,Brownie,7,2400,1000,400g,True
+930,27,Eggs Benedict,3,3800,1700,400g,True
+931,27,Mineral Water,9,1000,500,200ml,True
+932,27,Chicken Caesar,6,4400,2200,250g,True
+933,27,Matcha Latte,2,1600,700,250ml,True
+934,27,Espresso,1,1200,600,300ml,True
+935,27,Chicken Sandwich,11,3300,1500,200ml,True
+936,27,Parma Pizza,4,5100,2500,250g,True
+937,27,Cold Brew,1,1900,800,350ml,True
+938,27,Margarita Pizza,4,4100,1700,250g,True
+939,27,Fresh Orange Juice,9,2200,1000,400g,True
+940,27,Bruschetta,10,3400,1400,250ml,True
+941,27,Guacamole Toast,3,4500,2100,300ml,True
+942,27,Flat White,1,2000,900,350ml,True
+943,27,Cold Brew,1,2900,1300,250ml,True
+944,27,Chicken Pasta,5,6300,2600,400g,True
+945,27,Greek Salad,6,4200,1900,250g,True
+946,27,Raf,1,2600,1200,300ml,True
+947,27,Salmon Croissant,3,3000,1200,250ml,True
+948,27,Chocolate Mousse,7,2500,1200,350ml,True
+949,27,Macchiato,1,1200,600,300ml,True
+950,27,Matcha Latte,2,1900,900,300ml,True
+951,27,Omelet / Scramble,3,2300,1000,200ml,True
+952,27,Mineral Water,9,1000,400,250ml,True
+953,28,Mojito,8,3500,1700,350ml,True
+954,28,Matcha Latte,2,2200,1000,350ml,True
+955,28,Guacamole Toast,3,4100,2000,250ml,True
+956,28,Mojito,8,4200,2000,250g,True
+957,28,Aperol Spritz,8,4500,1900,350ml,True
+958,28,Brownie,7,2100,900,250g,True
+959,28,Eggs Benedict,3,4000,1700,300ml,True
+960,28,Cheesecake,7,2500,1000,200ml,True
+961,28,Aperol Spritz,8,4400,2200,250ml,True
+962,28,Greek Salad,6,4100,1700,250ml,True
+963,28,Tarte Tatin,7,2900,1400,250ml,True
+964,28,Omelet / Scramble,3,2300,1100,250ml,True
+965,28,Hummus Plate,10,3000,1400,400g,True
+966,28,Raf,1,3200,1600,350ml,True
+967,28,Hummus Plate,10,2500,1100,400g,True
+968,28,Brownie,7,2200,1000,350ml,True
+969,28,Quattro Formaggi,4,5300,2500,200ml,True
+970,28,Herbal Tea,2,1800,800,350ml,True
+971,28,Fresh Orange Juice,9,2200,1000,400g,True
+972,28,Guacamole Toast,3,4500,2200,250g,True
+973,28,Chicken Sandwich,11,3900,1800,250ml,True
+974,28,Brownie,7,2400,1100,350ml,True
+975,28,Cappuccino,1,1900,800,300ml,True
+976,28,Chicken Sandwich,11,3200,1500,350ml,True
+977,28,Matcha Latte,2,1800,900,300ml,True
+978,28,Ventricina Pizza,4,4200,2000,250g,True
+979,28,Omelet / Scramble,3,2200,1000,250g,True
+980,28,Matcha Latte,2,1800,800,300ml,True
+981,28,Greek Salad,6,4400,2200,350ml,True
+982,28,Aperol Spritz,8,4600,2200,400g,True
+983,29,Chicken Pasta,5,8000,3500,250g,True
+984,29,Mojito,8,4500,2100,250g,True
+985,29,Margarita Pizza,4,3900,1700,300ml,True
+986,29,Brownie,7,2100,1000,250ml,True
+987,29,Parma Pizza,4,5300,2200,350ml,True
+988,29,Latte,1,1700,800,200ml,True
+989,29,Salmon Croissant,3,3700,1500,300ml,True
+990,29,Brownie,7,2300,1000,350ml,True
+991,29,Salmon Croissant,3,3600,1500,200ml,True
+992,29,Cheesecake,7,2700,1300,350ml,True
+993,29,Club Sandwich,11,3600,1700,250g,True
+994,29,Mineral Water,9,500,200,200ml,True
+995,29,Espresso,1,1000,500,400g,True
+996,29,Guacamole Toast,3,4300,2100,250g,True
+997,29,Salmon Croissant,3,3300,1400,400g,True
+998,29,Cheesecake,7,3300,1500,200ml,True
+999,29,Quattro Formaggi,4,4800,2100,200ml,True
+1000,29,Matcha Latte,2,2200,900,300ml,True
+1001,29,Salmon Steak,5,12500,5700,250g,True
+1002,29,Ventricina Pizza,4,4700,2000,250ml,True
+1003,29,Matcha Latte,2,2700,1200,350ml,True
+1004,29,Matcha Latte,2,3000,1300,300ml,True
+1005,29,Beef Steak,5,13400,6000,250ml,True
+1006,29,Salmon Croissant,3,3600,1700,350ml,True
+1007,29,Chicken Sandwich,11,4500,1900,300ml,True
+1008,29,Chicken Caesar,6,3800,1600,350ml,True
+1009,29,Chicken Pasta,5,5700,2500,200ml,True
+1010,29,Caprese Croissant,3,3500,1500,250ml,True
+1011,29,Macchiato,1,1700,700,200ml,True
+1012,29,Chocolate Mousse,7,2500,1200,250g,True
+1013,29,Cheesecake,7,2900,1400,300ml,True
+1014,29,Aperol Spritz,8,4000,1800,250ml,True
+1015,29,Salmon Croissant,3,3700,1700,250ml,True
+1016,30,Cappuccino,1,1400,600,400g,True
+1017,30,Quattro Formaggi,4,4900,2000,350ml,True
+1018,30,Flat White,1,2400,1100,250ml,True
+1019,30,Cappuccino,1,1300,600,300ml,True
+1020,30,Salmon Steak,5,10900,5000,350ml,True
+1021,30,Caprese Croissant,3,2900,1400,400g,True
+1022,30,Guacamole Toast,3,4500,1800,400g,True
+1023,30,Bruschetta,10,3000,1200,400g,True
+1024,30,Eggs Benedict,3,3800,1600,300ml,True
+1025,30,Beef Steak,5,15900,7500,350ml,True
+1026,30,Hummus Plate,10,3400,1700,350ml,True
+1027,30,Ventricina Pizza,4,4100,1700,300ml,True
+1028,30,Mojito,8,5000,2300,400g,True
+1029,30,Brownie,7,2300,1100,200ml,True
+1030,30,Eggs Benedict,3,3200,1500,250ml,True
+1031,30,Ventricina Pizza,4,4100,1700,350ml,True
+1032,30,Latte,1,2000,800,400g,True
+1033,30,Ventricina Pizza,4,4600,2000,250ml,True
+1034,30,Espresso,1,1200,600,200ml,True
+1035,30,Chicken Pasta,5,4800,2400,250g,True
+1036,30,Macchiato,1,1600,700,250ml,True
+1037,30,Aperol Spritz,8,3800,1800,250g,True
+1038,30,Cappuccino,1,2400,1100,250g,True
+1039,30,Margarita Pizza,4,4100,2000,250g,True
+1040,30,Chicken Pasta,5,7900,3800,400g,True
+1041,30,Brownie,7,1700,700,400g,True
+1042,30,Parma Pizza,4,5400,2500,200ml,True
+1043,30,Margarita Pizza,4,4200,2100,250ml,True
+1044,30,Mineral Water,9,700,300,250ml,True
+1045,30,Guacamole Toast,3,4600,2100,250g,True
+1046,30,Guacamole Toast,3,4500,1900,350ml,True
+1047,30,Chicken Pasta,5,5000,2300,300ml,True
+1048,31,Cheesecake,7,3500,1500,400g,True
+1049,31,Bruschetta,10,3300,1300,350ml,True
+1050,31,Tarte Tatin,7,3200,1500,200ml,True
+1051,31,Brownie,7,1800,700,250g,True
+1052,31,Club Sandwich,11,3800,1800,400g,True
+1053,31,Bruschetta,10,2900,1300,250g,True
+1054,31,Fresh Orange Juice,9,2100,1000,250g,True
+1055,31,Quattro Formaggi,4,5500,2300,350ml,True
+1056,31,Cheesecake,7,2900,1400,250ml,True
+1057,31,Raf,1,3000,1300,200ml,True
+1058,31,Espresso,1,1100,500,300ml,True
+1059,31,Bruschetta,10,3100,1500,300ml,True
+1060,31,Fresh Orange Juice,9,2500,1200,350ml,True
+1061,31,Club Sandwich,11,3400,1400,250g,True
+1062,31,Salmon Croissant,3,3700,1600,200ml,True
+1063,31,Cold Brew,1,2100,1000,300ml,True
+1064,31,Ricotta Croissant,3,2800,1300,200ml,True
+1065,31,Chicken Sandwich,11,3900,1800,200ml,True
+1066,31,Guacamole Toast,3,4300,1900,200ml,True
+1067,31,Latte,1,1500,700,400g,True
+1068,31,Caprese Croissant,3,3100,1400,250g,True
+1069,31,Chicken Caesar,6,5100,2100,200ml,True
+1070,31,Caprese Croissant,3,3400,1600,250g,True
+1071,31,Latte,1,1800,700,200ml,True
+1072,31,Beef Steak,5,10500,4400,250ml,True
+1073,31,Chicken Caesar,6,3700,1600,400g,True
+1074,31,Fresh Orange Juice,9,2400,1200,200ml,True
+1075,31,Macchiato,1,1200,600,350ml,True
+1076,31,Mojito,8,3600,1800,300ml,True
+1077,31,Cappuccino,1,1300,600,250ml,True
+1078,31,Matcha Latte,2,3200,1500,250g,True
+1079,31,Quattro Formaggi,4,5400,2300,250ml,True
+1080,32,Macchiato,1,1600,700,400g,True
+1081,32,Beef Steak,5,15700,7500,300ml,True
+1082,32,Salmon Steak,5,14400,6500,200ml,True
+1083,32,Salmon Steak,5,9900,4300,250g,True
+1084,32,Guacamole Toast,3,4100,1700,250g,True
+1085,32,Matcha Latte,2,1600,700,250ml,True
+1086,32,Raf,1,2000,900,400g,True
+1087,32,Eggs Benedict,3,3500,1500,350ml,True
+1088,32,Salmon Croissant,3,3100,1300,250g,True
+1089,32,Cheesecake,7,2700,1300,200ml,True
+1090,32,Cheesecake,7,2600,1200,250ml,True
+1091,32,Club Sandwich,11,3600,1500,250g,True
+1092,32,Margarita Pizza,4,4200,1700,350ml,True
+1093,32,Matcha Latte,2,2000,800,250ml,True
+1094,32,Flat White,1,2000,900,350ml,True
+1095,32,Beef Steak,5,19800,9500,300ml,True
+1096,32,Caprese Croissant,3,3200,1600,300ml,True
+1097,32,Club Sandwich,11,4500,2100,300ml,True
+1098,32,Chicken Caesar,6,4300,1900,350ml,True
+1099,32,Greek Salad,6,3800,1700,250g,True
+1100,32,Eggs Benedict,3,3200,1400,200ml,True
+1101,32,Chicken Sandwich,11,3200,1300,250ml,True
+1102,32,Aperol Spritz,8,4500,1900,200ml,True
+1103,32,Ventricina Pizza,4,4900,2400,200ml,True
+1104,32,Caprese Croissant,3,3300,1600,250ml,True
+1105,32,Ricotta Croissant,3,2900,1300,300ml,True
+1106,32,Herbal Tea,2,1000,500,300ml,True
+1107,32,Raf,1,3100,1300,300ml,True
+1108,32,Chicken Sandwich,11,4000,1800,250ml,True
+1109,32,Greek Salad,6,4000,1600,250g,True
+1110,32,Cappuccino,1,1800,800,200ml,True
+1111,32,Guacamole Toast,3,4000,1800,250ml,True
+1112,32,Club Sandwich,11,3300,1500,200ml,True
+1113,33,Chicken Sandwich,11,3800,1700,250ml,True
+1114,33,Caprese Croissant,3,3200,1500,250g,True
+1115,33,Parma Pizza,4,5300,2600,250g,True
+1116,33,Brownie,7,1600,800,350ml,True
+1117,33,Salmon Steak,5,13100,6300,400g,True
+1118,33,Caprese Croissant,3,3400,1600,200ml,True
+1119,33,Hummus Plate,10,3800,1800,250g,True
+1120,33,Fresh Orange Juice,9,2100,800,300ml,True
+1121,33,Beef Steak,5,10800,5300,400g,True
+1122,33,Chicken Pasta,5,7400,3400,250g,True
+1123,33,Macchiato,1,1600,700,400g,True
+1124,33,Eggs Benedict,3,4000,1700,250g,True
+1125,33,Black Tea,2,700,300,200ml,True
+1126,33,Eggs Benedict,3,3700,1700,400g,True
+1127,33,Beef Steak,5,11000,4800,300ml,True
+1128,33,Black Tea,2,900,400,400g,True
+1129,33,Herbal Tea,2,1700,700,300ml,True
+1130,33,Fresh Orange Juice,9,2100,900,400g,True
+1131,33,Hummus Plate,10,3900,1800,200ml,True
+1132,33,Brownie,7,2100,1000,250g,True
+1133,33,Macchiato,1,1500,700,300ml,True
+1134,33,Espresso,1,1000,400,350ml,True
+1135,33,Club Sandwich,11,3200,1300,250g,True
+1136,33,Quattro Formaggi,4,5000,2300,250ml,True
+1137,33,Salmon Steak,5,8500,4200,300ml,True
+1138,33,Macchiato,1,1600,700,200ml,True
+1139,33,Mojito,8,4300,2000,250g,True
+1140,33,Ricotta Croissant,3,2900,1400,200ml,True
+1141,33,Macchiato,1,1500,600,300ml,True
+1142,33,Greek Salad,6,2700,1200,350ml,True
+1143,33,Guacamole Toast,3,4500,2200,250g,True
+1144,33,Eggs Benedict,3,4200,1700,300ml,True
+1145,33,Chicken Sandwich,11,3300,1300,250g,True
+1146,33,Chicken Caesar,6,4100,1800,400g,True
+1147,33,Brownie,7,2300,1000,350ml,True
+1148,34,Beef Steak,5,19300,9000,250ml,True
+1149,34,Beef Steak,5,14100,7000,400g,True
+1150,34,Ventricina Pizza,4,4100,1900,200ml,True
+1151,34,Salmon Croissant,3,3300,1300,300ml,True
+1152,34,Chicken Caesar,6,3700,1500,300ml,True
+1153,34,Black Tea,2,1200,600,250g,True
+1154,34,Brownie,7,1900,800,250g,True
+1155,34,Tarte Tatin,7,3100,1400,250ml,True
+1156,34,Eggs Benedict,3,3800,1800,250g,True
+1157,34,Guacamole Toast,3,4400,1800,200ml,True
+1158,34,Mojito,8,5400,2500,250ml,True
+1159,34,Ricotta Croissant,3,2600,1100,200ml,True
+1160,34,Omelet / Scramble,3,2200,1000,250g,True
+1161,34,Beef Steak,5,18700,8000,350ml,True
+1162,34,Salmon Steak,5,10700,4500,200ml,True
+1163,34,Omelet / Scramble,3,2200,1000,350ml,True
+1164,34,Hummus Plate,10,3300,1500,200ml,True
+1165,34,Tarte Tatin,7,2700,1100,300ml,True
+1166,34,Cold Brew,1,1900,900,300ml,True
+1167,34,Chicken Caesar,6,4600,2300,250ml,True
+1168,34,Espresso,1,1000,500,300ml,True
+1169,34,Bruschetta,10,2700,1200,350ml,True
+1170,34,Matcha Latte,2,2700,1200,250g,True
+1171,34,Raf,1,2800,1300,350ml,True
+1172,34,Omelet / Scramble,3,1900,800,250ml,True
+1173,34,Latte,1,2100,1000,250ml,True
+1174,34,Chicken Pasta,5,5900,2500,400g,True
+1175,34,Eggs Benedict,3,3300,1600,250ml,True
+1176,34,Beef Steak,5,11800,5600,250g,True
+1177,34,Eggs Benedict,3,3700,1600,250g,True
+1178,34,Chicken Sandwich,11,4400,2100,200ml,True
+1179,34,Quattro Formaggi,4,4700,2200,250g,True
+1180,34,Caprese Croissant,3,2900,1400,400g,True
+1181,34,Salmon Croissant,3,3000,1300,300ml,True
+1182,34,Chicken Pasta,5,5100,2300,350ml,True
+1183,34,Latte,1,1300,500,250ml,True
+1184,34,Omelet / Scramble,3,2200,1100,350ml,True
+1185,35,Chicken Sandwich,11,3300,1400,250g,True
+1186,35,Mineral Water,9,700,300,400g,True
+1187,35,Mojito,8,4500,2000,250ml,True
+1188,35,Omelet / Scramble,3,1900,900,400g,True
+1189,35,Latte,1,1300,600,400g,True
+1190,35,Chocolate Mousse,7,3000,1300,250g,True
+1191,35,Latte,1,2500,1000,250g,True
+1192,35,Hummus Plate,10,3700,1800,200ml,True
+1193,35,Greek Salad,6,3800,1500,300ml,True
+1194,35,Quattro Formaggi,4,5100,2300,200ml,True
+1195,35,Parma Pizza,4,4600,1900,200ml,True
+1196,35,Macchiato,1,1600,800,250g,True
+1197,35,Cold Brew,1,1900,800,300ml,True
+1198,35,Chicken Pasta,5,7600,3600,200ml,True
+1199,35,Margarita Pizza,4,3900,1700,250g,True
+1200,35,Caprese Croissant,3,3100,1400,200ml,True
+1201,35,Mojito,8,3600,1600,200ml,True
+1202,35,Ricotta Croissant,3,2700,1100,200ml,True
+1203,35,Chicken Caesar,6,3500,1700,300ml,True
+1204,35,Fresh Orange Juice,9,2500,1100,250g,True
+1205,35,Chicken Caesar,6,4500,1900,350ml,True
+1206,35,Black Tea,2,800,400,250ml,True
+1207,35,Parma Pizza,4,5100,2100,350ml,True
+1208,35,Fresh Orange Juice,9,2000,900,200ml,True
+1209,35,Flat White,1,2200,1100,400g,True
+1210,35,Ventricina Pizza,4,4700,2300,400g,True
+1211,35,Flat White,1,1700,700,300ml,True
+1212,35,Fresh Orange Juice,9,2400,1100,250g,True
+1213,35,Herbal Tea,2,1000,500,350ml,True
+1214,35,Guacamole Toast,3,4300,2000,300ml,True
+1215,35,Raf,1,2500,1000,250g,True
+1216,35,Greek Salad,6,2600,1200,250ml,True
+1217,35,Cappuccino,1,2000,900,250g,True
+1218,35,Tarte Tatin,7,2900,1300,250g,True
+1219,35,Herbal Tea,2,900,400,300ml,True
+1220,36,Parma Pizza,4,5200,2200,250ml,True
+1221,36,Margarita Pizza,4,3800,1700,200ml,True
+1222,36,Beef Steak,5,12400,5100,300ml,True
+1223,36,Margarita Pizza,4,4200,2100,400g,True
+1224,36,Chicken Pasta,5,6600,2700,250ml,True
+1225,36,Espresso,1,1500,700,400g,True
+1226,36,Cold Brew,1,1900,900,200ml,True
+1227,36,Ventricina Pizza,4,4000,1900,300ml,True
+1228,36,Ventricina Pizza,4,4600,2000,400g,True
+1229,36,Ventricina Pizza,4,4800,2100,250g,True
+1230,36,Fresh Orange Juice,9,2500,1100,300ml,True
+1231,36,Aperol Spritz,8,3800,1600,250ml,True
+1232,36,Salmon Croissant,3,3200,1500,250g,True
+1233,36,Chocolate Mousse,7,2800,1100,200ml,True
+1234,36,Ventricina Pizza,4,4100,1700,250ml,True
+1235,36,Guacamole Toast,3,4500,2100,250ml,True
+1236,36,Mineral Water,9,600,300,200ml,True
+1237,36,Margarita Pizza,4,4200,1800,200ml,True
+1238,36,Ventricina Pizza,4,4300,1800,200ml,True
+1239,36,Salmon Steak,5,8100,3400,350ml,True
+1240,36,Chocolate Mousse,7,2800,1300,250ml,True
+1241,36,Quattro Formaggi,4,5500,2600,350ml,True
+1242,36,Raf,1,3200,1500,200ml,True
+1243,36,Brownie,7,2400,1000,250g,True
+1244,36,Salmon Steak,5,8400,3500,300ml,True
+1245,36,Cold Brew,1,1800,700,400g,True
+1246,36,Salmon Steak,5,9500,4200,400g,True
+1247,36,Black Tea,2,800,400,350ml,True
+1248,36,Mojito,8,4500,2100,350ml,True
+1249,36,Margarita Pizza,4,3900,1900,400g,True
+1250,36,Beef Steak,5,19300,8300,300ml,True
+1251,36,Salmon Croissant,3,3700,1500,250ml,True
+1252,36,Ventricina Pizza,4,4300,1700,400g,True
+1253,36,Brownie,7,2200,1000,350ml,True
+1254,36,Chicken Sandwich,11,3300,1500,250ml,True
+1255,36,Chicken Caesar,6,3800,1600,350ml,True
+1256,36,Cheesecake,7,3200,1400,300ml,True
+1257,37,Caprese Croissant,3,3300,1400,200ml,True
+1258,37,Quattro Formaggi,4,5200,2200,300ml,True
+1259,37,Latte,1,1700,700,300ml,True
+1260,37,Guacamole Toast,3,4500,1900,250ml,True
+1261,37,Chicken Pasta,5,4900,2300,250g,True
+1262,37,Bruschetta,10,3400,1700,250g,True
+1263,37,Ricotta Croissant,3,3000,1200,200ml,True
+1264,37,Tarte Tatin,7,3000,1200,250g,True
+1265,37,Club Sandwich,11,3400,1700,250g,True
+1266,37,Raf,1,2200,1100,200ml,True
+1267,37,Aperol Spritz,8,4500,2200,350ml,True
+1268,37,Tarte Tatin,7,2800,1300,250ml,True
+1269,37,Chicken Pasta,5,7000,2900,350ml,True
+1270,37,Caprese Croissant,3,3200,1400,200ml,True
+1271,37,Matcha Latte,2,2400,1200,300ml,True
+1272,37,Chocolate Mousse,7,2800,1100,350ml,True
+1273,37,Chicken Caesar,6,4400,2100,400g,True
+1274,37,Caprese Croissant,3,3100,1500,350ml,True
+1275,37,Tarte Tatin,7,2800,1200,250g,True
+1276,37,Cheesecake,7,2800,1100,300ml,True
+1277,37,Salmon Croissant,3,3500,1600,300ml,True
+1278,37,Raf,1,2600,1300,250ml,True
+1279,37,Salmon Steak,5,13400,5900,250g,True
+1280,37,Herbal Tea,2,1900,800,250ml,True
+1281,37,Hummus Plate,10,3100,1400,200ml,True
+1282,37,Club Sandwich,11,3300,1400,400g,True
+1283,37,Chicken Pasta,5,4600,1900,200ml,True
+1284,37,Cold Brew,1,1700,800,250g,True
+1285,37,Quattro Formaggi,4,5000,2200,200ml,True
+1286,37,Chocolate Mousse,7,2800,1200,400g,True
+1287,37,Ventricina Pizza,4,4400,2100,400g,True
+1288,37,Cold Brew,1,2700,1300,200ml,True
+1289,38,Cheesecake,7,3400,1400,250ml,True
+1290,38,Caprese Croissant,3,2900,1200,200ml,True
+1291,38,Macchiato,1,1300,600,400g,True
+1292,38,Latte,1,2300,1100,400g,True
+1293,38,Margarita Pizza,4,4200,2000,250g,True
+1294,38,Hummus Plate,10,2500,1200,250ml,True
+1295,38,Aperol Spritz,8,3600,1700,250ml,True
+1296,38,Cold Brew,1,3000,1400,250g,True
+1297,38,Cheesecake,7,3300,1600,200ml,True
+1298,38,Chicken Pasta,5,8400,3400,400g,True
+1299,38,Flat White,1,2100,1000,350ml,True
+1300,38,Flat White,1,2600,1100,250g,True
+1301,38,Brownie,7,1800,900,250g,True
+1302,38,Caprese Croissant,3,3500,1700,200ml,True
+1303,38,Chicken Sandwich,11,3400,1400,300ml,True
+1304,38,Black Tea,2,1000,400,350ml,True
+1305,38,Flat White,1,1900,800,250g,True
+1306,38,Macchiato,1,1800,900,300ml,True
+1307,38,Black Tea,2,900,400,250g,True
+1308,38,Club Sandwich,11,3100,1300,200ml,True
+1309,38,Parma Pizza,4,4800,2200,250g,True
+1310,38,Parma Pizza,4,5400,2500,300ml,True
+1311,38,Parma Pizza,4,4800,1900,250ml,True
+1312,38,Hummus Plate,10,2800,1300,400g,True
+1313,38,Greek Salad,6,2700,1100,200ml,True
+1314,38,Mineral Water,9,600,300,350ml,True
+1315,38,Chocolate Mousse,7,2700,1200,250ml,True
+1316,38,Raf,1,2500,1200,250ml,True
+1317,38,Espresso,1,1300,500,300ml,True
+1318,38,Mineral Water,9,900,400,350ml,True
+1319,38,Espresso,1,1100,500,350ml,True
+1320,38,Quattro Formaggi,4,5300,2400,300ml,True
+1321,38,Latte,1,2200,900,200ml,True
+1322,38,Latte,1,2000,1000,200ml,True
+1323,38,Chocolate Mousse,7,2800,1200,400g,True
+1324,38,Salmon Steak,5,10800,5200,250g,True
+1325,38,Fresh Orange Juice,9,2200,900,250ml,True
+1326,38,Mineral Water,9,600,300,300ml,True
+1327,38,Chicken Caesar,6,4200,1700,400g,True
+1328,38,Club Sandwich,11,4300,1800,400g,True
+1329,39,Mineral Water,9,800,300,200ml,True
+1330,39,Caprese Croissant,3,3000,1300,250ml,True
+1331,39,Ventricina Pizza,4,4600,2300,200ml,True
+1332,39,Caprese Croissant,3,3200,1500,350ml,True
+1333,39,Ricotta Croissant,3,2600,1200,250ml,True
+1334,39,Greek Salad,6,3400,1500,250ml,True
+1335,39,Beef Steak,5,18800,8200,350ml,True
+1336,39,Bruschetta,10,2500,1200,200ml,True
+1337,39,Guacamole Toast,3,4500,2100,300ml,True
+1338,39,Cappuccino,1,1300,500,250g,True
+1339,39,Ventricina Pizza,4,4300,1800,400g,True
+1340,39,Greek Salad,6,4200,1800,350ml,True
+1341,39,Hummus Plate,10,2700,1200,200ml,True
+1342,39,Mineral Water,9,600,300,250g,True
+1343,39,Ventricina Pizza,4,4200,2000,400g,True
+1344,39,Raf,1,2400,1000,250ml,True
+1345,39,Cappuccino,1,1900,800,350ml,True
+1346,39,Fresh Orange Juice,9,2500,1100,200ml,True
+1347,39,Mojito,8,5300,2200,350ml,True
+1348,39,Chocolate Mousse,7,3000,1400,300ml,True
+1349,39,Raf,1,1800,800,300ml,True
+1350,39,Espresso,1,1300,500,300ml,True
+1351,39,Ricotta Croissant,3,2600,1200,250ml,True
+1352,39,Fresh Orange Juice,9,2200,1100,250ml,True
+1353,39,Cold Brew,1,2700,1100,200ml,True
+1354,39,Herbal Tea,2,1900,900,200ml,True
+1355,39,Raf,1,2300,1000,300ml,True
+1356,39,Beef Steak,5,14300,6900,300ml,True
+1357,39,Hummus Plate,10,4000,1900,250g,True
+1358,39,Aperol Spritz,8,4700,2200,400g,True
+1359,39,Club Sandwich,11,4100,1800,200ml,True
+1360,40,Caprese Croissant,3,3000,1400,250g,True
+1361,40,Caprese Croissant,3,3000,1400,350ml,True
+1362,40,Matcha Latte,2,3000,1400,350ml,True
+1363,40,Greek Salad,6,3900,1900,250g,True
+1364,40,Chicken Caesar,6,4600,2000,400g,True
+1365,40,Cold Brew,1,2300,1000,350ml,True
+1366,40,Caprese Croissant,3,3000,1300,300ml,True
+1367,40,Brownie,7,2100,900,300ml,True
+1368,40,Caprese Croissant,3,3100,1500,300ml,True
+1369,40,Raf,1,1800,800,400g,True
+1370,40,Ricotta Croissant,3,2600,1200,250ml,True
+1371,40,Beef Steak,5,17400,8300,200ml,True
+1372,40,Beef Steak,5,16400,6900,200ml,True
+1373,40,Ricotta Croissant,3,2800,1300,200ml,True
+1374,40,Raf,1,2500,1200,400g,True
+1375,40,Mineral Water,9,700,300,250g,True
+1376,40,Beef Steak,5,17000,7100,250g,True
+1377,40,Brownie,7,2000,1000,200ml,True
+1378,40,Cappuccino,1,1400,600,300ml,True
+1379,40,Latte,1,1900,800,250ml,True
+1380,40,Beef Steak,5,11700,5100,250g,True
+1381,40,Omelet / Scramble,3,2400,1100,300ml,True
+1382,40,Macchiato,1,1700,800,250ml,True
+1383,40,Ricotta Croissant,3,2600,1100,300ml,True
+1384,40,Aperol Spritz,8,4700,2200,200ml,True
+1385,40,Eggs Benedict,3,3600,1500,350ml,True
+1386,40,Beef Steak,5,15200,6400,350ml,True
+1387,40,Mineral Water,9,600,300,250ml,True
+1388,40,Salmon Croissant,3,3300,1500,250g,True
+1389,40,Ricotta Croissant,3,2900,1400,350ml,True
+1390,40,Quattro Formaggi,4,4900,2400,200ml,True
+1391,40,Hummus Plate,10,3000,1400,250g,True
+1392,40,Beef Steak,5,18600,8000,250ml,True
+1393,40,Margarita Pizza,4,4400,1800,200ml,True
+1394,40,Chicken Caesar,6,4700,1900,300ml,True
+1395,40,Club Sandwich,11,3100,1500,250g,True
+1396,40,Macchiato,1,1500,600,200ml,True
+1397,40,Black Tea,2,1000,400,200ml,True
+1398,40,Ventricina Pizza,4,4500,2200,250ml,True
