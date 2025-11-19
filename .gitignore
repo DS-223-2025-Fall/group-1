@@ -4,6 +4,7 @@ data/
 # Custom 
 postgres_data/
 pgadmin_data/
+data/
 
 *.DS_Store
 
