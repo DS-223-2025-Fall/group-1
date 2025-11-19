@@ -79,15 +79,21 @@ The system will use:
 # 🏗️ Repository Structure (Service-Based Architecture)
 
 ```
-services/
-    api/          # FastAPI backend service
-    app/          # Streamlit frontend dashboard
-    db/           # Database service (DDL, seeders, migrations)
-    analytics/    # Data science models, notebooks, simulations
+yerevan_pricing/
+    backend/            # FastAPI backend service
+    frontend/           # Streamlit dashboard (UI)
+    db/                 # Database schemas, models, seeders
+    ds/                 # Data science code, notebooks, simulations
 
-docker-compose.yaml
-.env
-README.md
+
+docs/                   # mkdocs documentation folder
+.github/workflows/      # CI/CD workflows (GitHub Actions)
+
+docker-compose.yml      # Multi-service orchestration
+requirements.txt        # Python dependencies
+README.md               # Project overview
+.gitignore              # Ignore rules
+
 ```
 
 ---
