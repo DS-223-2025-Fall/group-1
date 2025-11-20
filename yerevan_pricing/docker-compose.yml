@@ -1,0 +1,122 @@
+services:
+  # ---------------------------------------------
+  # POSTGRES DATABASE
+  # ---------------------------------------------
+  postgres:
+    image: postgres:17
+    container_name: postgres_db
+    restart: always
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin123
+      POSTGRES_DB: pricing_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./etl/init/init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin -d pricing_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ---------------------------------------------
+  # PGADMIN
+  # ---------------------------------------------
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "5050:80"
+    depends_on:
+      - postgres
+
+  # ---------------------------------------------
+  # FASTAPI BACKEND
+  # ---------------------------------------------
+  api:
+    container_name: fastapi_backend
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    volumes:
+      - ./api:/api
+    environment:
+      DATABASE_URL: postgresql+psycopg2://admin:admin123@postgres:5432/pricing_db
+      DB_HOST: postgres
+      DB_NAME: pricing_db
+      DB_USER: admin
+      DB_PASSWORD: admin123
+    ports:
+      - "8008:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    command: ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+
+  # ---------------------------------------------
+  # STREAMLIT FRONTEND
+  # ---------------------------------------------
+  app:
+    container_name: streamlit_frontend
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+    volumes:
+      - ./app:/app
+    ports:
+      - "8501:8501"
+    environment:
+      API_URL: http://api:8000
+    depends_on:
+      - api
+
+  # ---------------------------------------------
+  # ETL SERVICE
+  # ---------------------------------------------
+  etl:
+    container_name: etl_service
+    build:
+      context: ./etl
+      dockerfile: Dockerfile
+    volumes:
+      - ./etl:/etl
+    environment:
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: pricing_db
+      DB_USER: admin
+      DB_PASSWORD: admin123
+    depends_on:
+      postgres:
+        condition: service_healthy
+    command: ["python", "database/load_data.py"]
+
+  # ---------------------------------------------
+  # ANALYTICS SERVICE
+  # ---------------------------------------------
+  analytics:
+    container_name: analytics_service
+    build:
+      context: ./analytics
+      dockerfile: Dockerfile
+    volumes:
+      - ./analytics:/analytics
+    environment:
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: pricing_db
+      DB_USER: admin
+      DB_PASSWORD: admin123
+    depends_on:
+      etl:
+        condition: service_completed_successfully
+    command: ["python", "run_baseline.py"]
+
+volumes:
+  postgres_data:

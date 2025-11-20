@@ -80,19 +80,42 @@ The system will use:
 
 ```
 yerevan_pricing/
-    backend/            # FastAPI backend service
-    frontend/           # Streamlit dashboard (UI)
-    db/                 # Database schemas, models, seeders
-    ds/                 # Data science code, notebooks, simulations
+│
+├── api/                     # FastAPI backend service
+│   ├── main.py
+│   ├── routers/
+│   ├── models/
+│   ├── database/
+│   └── Dockerfile
+│
+├── app/                     # Streamlit frontend service
+│   ├── pages/
+│   ├── utils/
+│   └── Dockerfile
+│
+├── etl/                     # ETL service (data loading → Postgres)
+│   ├── database/
+│   │   ├── data/            # CSV files
+│   │   ├── load_data.py     # ETL loader
+│   │   └── helpers.py
+│   ├── init/                # initial SQL schemas
+│   │   └── init.sql
+│   └── Dockerfile
+│
+├── analytics/               # Data Science & Modeling service
+│   ├── baseline_models.py
+│   ├── run_baseline.py
+│   ├── utils/
+│   │   └── db_connect.py
+│   └── Dockerfile
+│
+│
+├── docker-compose.yml       # Multi-service orchestration
+├── .env                     # Environment variables (DB, API, App)
+├── requirements.txt         # Python dependencies
+├── README.md                # Project overview
+└── .gitignore               # Ignore rules
 
-
-docs/                   # mkdocs documentation folder
-.github/workflows/      # CI/CD workflows (GitHub Actions)
-
-docker-compose.yml      # Multi-service orchestration
-requirements.txt        # Python dependencies
-README.md               # Project overview
-.gitignore              # Ignore rules
 
 ```
 
@@ -119,4 +142,3 @@ README.md               # Project overview
 - **Docker & docker-compose**  
 - **GitHub PR workflow**  
 - **Figma** (roadmap & UI prototype)
-
