@@ -135,6 +135,11 @@ def run_models(verbose=True):
     if verbose:
         print(f"Final dataset shape: X={X.shape}, y={y.shape}")
 
+    # If dataset is empty or too small, skip training and exit gracefully
+    if X.shape[0] < 10:
+        print("Not enough data to train models (rows < 10). Skipping model training.")
+        return
+
     # Train-test split
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
