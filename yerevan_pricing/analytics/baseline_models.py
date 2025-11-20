@@ -161,17 +161,24 @@ def run_models(verbose=True):
         max_depth=8,
         max_samples=0.5 if hasattr(RandomForestRegressor, 'max_samples') else None,
         random_state=42,
-        n_jobs=-1,
+        n_jobs=1,
         warm_start=False
     )
     # If max_samples isn't supported, ignore the kwarg by creating without it
     try:
         rf.fit(X_train, y_train)
     except TypeError:
-        rf = RandomForestRegressor(n_estimators=10, max_depth=8, random_state=42, n_jobs=-1)
+        rf = RandomForestRegressor(n_estimators=10, max_depth=8, random_state=42, n_jobs=1)
         rf.fit(X_train, y_train)
-
-    pred_rf = rf.predict(X_test)
+    except MemoryError:
+        print("RandomForest training failed with MemoryError; falling back to DecisionTree predictions for RF slot.")
+        pred_rf = pred_dt
+    except Exception as e:
+        print("RandomForest training failed:", e)
+        pred_rf = pred_dt
+    else:
+        pred_rf = rf.predict(X_test)
+    
 
     # Metrics
     results = []
