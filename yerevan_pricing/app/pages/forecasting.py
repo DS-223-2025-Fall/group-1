@@ -1,4 +1,5 @@
 import streamlit as st
+from app.components.navigation import render_nav_row
 from app.theme import apply_global_style
 
 LOCATIONS = ["Ajapnyak", "Arabkir", "Kentron", "Malatia-Sebastia", "Nor Nork"]
@@ -33,7 +34,15 @@ CAFE_TYPES = [
 ]
 PROPORTIONS = ["Small", "Medium", "Large"]
 
+st.set_page_config(
+    page_title="Forecasting",
+    layout="wide",
+    initial_sidebar_state="collapsed",
+)
+
 apply_global_style()
+
+render_nav_row()
 
 st.markdown('<div class="page-title">Forecasting</div>', unsafe_allow_html=True)
 st.caption("Set a scenario, preview the price path, and keep margin guardrails in view.")
@@ -78,6 +87,8 @@ with left:
             key="forecast_horizon",
         )
         st.form_submit_button("Run forecast", use_container_width=True, key="run_forecast_btn")
+    with st.expander("Forecast", expanded=False):
+        st.caption("Now you can forecast the predicted value for as many days as you want.")
     st.markdown("</div>", unsafe_allow_html=True)
 
 with right:

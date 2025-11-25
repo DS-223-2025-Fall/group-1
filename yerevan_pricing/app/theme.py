@@ -1,6 +1,23 @@
+import base64
+from pathlib import Path
+
 import streamlit as st
 
 FONT_STACK = "'Segoe UI', 'Helvetica Neue', Arial, sans-serif"
+APP_DIR = Path(__file__).resolve().parent
+BACKGROUND_IMAGE = APP_DIR / "background photo_1.jpg"
+
+
+def _background_data_url() -> str:
+    """Return a base64 data URL for the shared background image."""
+    try:
+        encoded = base64.b64encode(BACKGROUND_IMAGE.read_bytes()).decode()
+        return f"data:image/jpeg;base64,{encoded}"
+    except FileNotFoundError:
+        return ""
+
+
+BACKGROUND_URL = _background_data_url()
 
 
 def apply_global_style():
@@ -19,16 +36,20 @@ def apply_global_style():
         }}
         html, body, [class*="css"] {{
             font-family: {FONT_STACK};
-            background: #050505;
+            background: transparent;
             color: var(--text-main);
         }}
         .stApp {{
-            background: transparent;
+            background: linear-gradient(180deg, rgba(5, 5, 5, 0.78), rgba(5, 5, 5, 0.86)), url("{BACKGROUND_URL}");
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
         }}
         .block-container {{
-            padding-top: 2.2rem;
+            padding-top: 2.6rem;
             padding-bottom: 2rem;
-            max-width: 1120px;
+            max-width: 1180px;
+            margin: 0 auto;
         }}
         h1, h2, h3, h4, h5, h6 {{
             color: var(--text-main);
@@ -37,11 +58,11 @@ def apply_global_style():
             color: var(--text-muted);
         }}
         .card {{
-            background: var(--bg-card);
-            border: 1px solid var(--border-subtle);
-            padding: 20px;
+            background: rgba(14, 16, 22, 0.88);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 22px;
             border-radius: 16px;
-            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
+            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
             backdrop-filter: blur(4px);
         }}
         .page-title {{
@@ -49,6 +70,33 @@ def apply_global_style():
             font-weight: 800;
             letter-spacing: 0.3px;
             color: var(--text-main);
+            margin-bottom: 8px;
+        }}
+        .lede {{
+            font-size: 17px;
+            line-height: 1.6;
+            color: #d8d9e0;
+        }}
+        /* Hide the default Streamlit sidebar/page picker */
+        [data-testid="stSidebar"], [data-testid="stSidebarNav"], [data-testid="stSidebarHeader"] {{
+            display: none !important;
+        }}
+        [data-testid="collapsedControl"] {{
+            display: none !important;
+        }}
+        /* Top navigation buttons */
+        .nav-row .stPageLink a {{
+            display: inline-flex;
+            width: 100%;
+            justify-content: center;
+            padding: 14px 12px;
+            border-radius: 14px;
+            background: linear-gradient(120deg, #8bbcfb, #cbe2ff);
+            border: 1px solid #9cc5ff;
+            box-shadow: 0 14px 30px rgba(0,0,0,0.25);
+        }}
+        .nav-row .stPageLink:hover a {{
+            transform: translateY(-1px) scale(1.01);
         }}
         /* Buttons */
         .stButton button,

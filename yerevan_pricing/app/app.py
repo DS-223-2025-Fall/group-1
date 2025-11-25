@@ -9,66 +9,71 @@ if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
 import streamlit as st
-from app.components.sidebar import render_sidebar
+from app.components.navigation import render_nav_row
 from app.theme import apply_global_style
 
-st.set_page_config(page_title="Pricing UI", layout="wide")
+st.set_page_config(
+    page_title="Yerevan Dynamic Pricing",
+    layout="wide",
+    initial_sidebar_state="collapsed",
+)
 
 
 def main():
     apply_global_style()
-    render_sidebar()
 
-    st.markdown('<div class="page-title">Pricing Workspace</div>', unsafe_allow_html=True)
-    st.caption("Calm, neutral dashboard for forecasting, history, and setup using native Streamlit components.")
+    st.markdown('<div class="page-title">Yerevan Dynamic Pricing</div>', unsafe_allow_html=True)
+    st.markdown(
+        """
+        <div class="card">
+            <p class="lede">
+            The Yerevan Dynamic Pricing App helps restaurants, cafes, and food businesses set smarter menu prices using real market data.
+            Powered by menus from 35+ Yerevan restaurants, the application predicts optimal prices for any menu item and provides a clear comparison
+            between your predicted price and the actual prices in the market. You can also forecast future price trends, allowing you to plan adjustments,
+            stay competitive, and make data-driven pricing decisions with confidence.
+            </p>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+    st.markdown("#### Jump to a page")
+    render_nav_row()
 
     hero_left, hero_right = st.columns([1.2, 1])
     with hero_left:
         st.markdown(
             """
             <div class="card">
-                <div class="pill">Workspace overview</div>
+                <div class="pill">Start here</div>
                 <h3 style="margin:8px 0 6px;">Plan the next price move</h3>
-                <p style="margin:0;">Open Forecasting, adjust scenario inputs, and watch the preview update.</p>
+                <p style="margin:0;">Use forecasting to predict optimal menu prices and keep pace with Yerevan's market.</p>
             </div>
             """,
             unsafe_allow_html=True,
         )
+        st.page_link("pages/forecasting.py", label="Get Started")
     with hero_right:
         st.markdown(
             """
             <div class="card">
-                <div class="pill">Quick actions</div>
-                <p style="margin:0;">Jump into a page or review the fast stats below.</p>
+                <div class="pill">Why it matters</div>
+                <p style="margin:0;">Predicted prices meet real menu data so you can compare, adjust, and keep margins healthy.</p>
             </div>
             """,
             unsafe_allow_html=True,
         )
 
-    st.subheader("Navigate", divider="gray")
-    grid1, grid2, grid3 = st.columns(3)
-    with grid1:
-        st.page_link("pages/forecasting.py", label="Forecasting", icon="📈")
-        st.caption("Scenario inputs and preview chart.")
-    with grid2:
-        st.page_link("pages/historical.py", label="Historical", icon="📁")
-        st.caption("Historical placeholder until data sync.")
-    with grid3:
-        st.page_link("pages/settings.py", label="Settings", icon="⚙️")
-        st.caption("Backend URL control.")
-
-    st.divider()
-
     st.subheader("At a glance", divider="gray")
     s1, s2, s3 = st.columns(3)
     with s1:
-        st.metric("Locations loaded", "5")
-        st.caption("Ajapnyak, Arabkir, Kentron, Malatia-Sebastia, Nor Nork")
+        st.metric("Restaurants tracked", "35+")
+        st.caption("Coverage across central Yerevan.")
     with s2:
         st.metric("Menu items", "18")
-        st.caption("Cafe staples ready for testing.")
+        st.caption("Ready for prediction and comparison.")
     with s3:
-        st.metric("Default horizon", "30 days")
+        st.metric("Forecast horizon", "Up to 365 days")
         st.caption("Adjust in Forecasting.")
 
 
