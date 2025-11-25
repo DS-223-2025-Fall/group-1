@@ -1,9 +1,3 @@
-data/
-.DS_Store
-.DS_Store
-# Custom 
-postgres_data/
-pgadmin_data/
 
 *.DS_Store
 
