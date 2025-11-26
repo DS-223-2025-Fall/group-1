@@ -1,0 +1,5 @@
+outputs/* filter=lfs diff=lfs merge=lfs -text
+outputs/** filter=lfs diff=lfs merge=lfs -text
+random_forest_model.pkl filter=lfs diff=lfs merge=lfs -text
+*.pkl filter=lfs diff=lfs merge=lfs -text
+yerevan_pricing/analytics/outputs/*.pkl filter=lfs diff=lfs merge=lfs -text

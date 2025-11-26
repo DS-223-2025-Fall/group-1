@@ -301,10 +301,10 @@ def save_models(cat_model, rf_model, output_dir="outputs"):
     cat_model.save_model(cat_path)
     print(f"Saved CatBoost model to: {cat_path}")
 
-    # Save RandomForest using joblib with compression to reduce size
+    # Save RandomForest using joblib without compression (faster to load)
     rf_path = os.path.join(output_dir, "random_forest_model.pkl")
-    dump(rf_model, rf_path, compress=3)
-    print(f"Saved compressed RandomForest model to: {rf_path}")
+    dump(rf_model, rf_path)
+    print(f"Saved RandomForest model to: {rf_path}")
 
 
 
