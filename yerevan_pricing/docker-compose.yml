@@ -46,6 +46,8 @@ services:
       dockerfile: Dockerfile
     volumes:
       - ./api:/api
+      - ./etl/database/data:/api/data
+      - ./analytics/outputs:/api/model
     environment:
       DATABASE_URL: postgresql+psycopg2://admin:admin123@postgres:5432/pricing_db
       DB_HOST: postgres

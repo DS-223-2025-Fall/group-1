@@ -5,3 +5,7 @@ SQLAlchemy
 psycopg2-binary
 python-dotenv
 loguru
+pandas
+scikit-learn
+catboost
+numpy
