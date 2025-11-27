@@ -39,40 +39,8 @@ The system will use:
 - **Python analytics stack**  
 - **PostgreSQL/SQLite** for data storage  
 
----
 
-# 🧩 Milestone 2: Completed Tasks
 
-### **Product Management (PM)**
-- Review and merge PRs  
-- Transform repository to **service-based layout**  
-- Define ERD  
-- Initialize documentation structure  
-- Coordinate cross-team workflow  
-
-### **Database (DB)**
-- Create DB branch & service container  
-- Push schemas and helper functions  
-- Open PRs for review  
-
-### **Backend (API)**
-- Create backend service structure  
-- Implement CRUD endpoints  
-- Design endpoints with PM & DB  
-- PR submissions  
-
-### **Frontend (UI)**
-- Create frontend service container  
-- Push UI skeleton  
-- Coordinate design with PM & DS  
-- PR submissions  
-
-### **Data Science (DS)**
-- Create DS service container  
-- Simulate additional data  
-- Build baseline models  
-- Integrate DB functions  
-- Submit PR for review  
 
 ---
 
