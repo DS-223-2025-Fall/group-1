@@ -34,7 +34,7 @@ from pydantic import BaseModel, Field, ConfigDict
 BASE_DIR = Path(__file__).resolve().parent
 DATA_DIR = BASE_DIR / "data"  # Mounted from etl/database/data
 CATBOOST_MODEL_PATH = BASE_DIR / "model" / "catboost_model.cbm"  # CatBoost model (preferred)
-RF_MODEL_PATH = BASE_DIR / "model" / "random_forest_model.pkl"  # Random Forest fallback
+RF_MODEL_PATH = BASE_DIR / "model" / "random_forest_model.pkl"  # Kept for reference, not used
 
 # Database connection settings (from environment or defaults)
 DB_HOST = os.getenv("DB_HOST", "postgres")
@@ -274,7 +274,7 @@ class PricePredictionResponse(BaseModel):
     portion_size: str = Field(..., description="Portion size category")
     age_group: str = Field(..., description="Target age group")
     confidence_note: str = Field(
-        default="Prediction based on Random Forest model trained on Yerevan market data",
+        default="Prediction based on CatBoost model (RMSE: 196.74) trained on Yerevan market data",
         description="Model confidence information"
     )
 
@@ -419,48 +419,50 @@ _ml_model = None
 
 def get_ml_model():
     """
-    Load and cache the ML model for price prediction.
+    Load and cache the CatBoost model for price prediction.
     
-    Tries CatBoost first (preferred), falls back to Random Forest.
+    Uses only CatBoost model - no fallback to Random Forest.
     
     Returns:
-        Tuple of (model, model_type: str) where model_type is 'catboost' or 'random_forest'
+        CatBoostRegressor model instance
         
     Raises:
-        HTTPException: If no model file is available
+        HTTPException: If CatBoost model is not available or fails to load
     """
     global _ml_model
     if _ml_model is None:
-        # Try CatBoost first (preferred model from DS team)
-        if CATBOOST_MODEL_PATH.exists():
-            try:
-                from catboost import CatBoostRegressor
-                model = CatBoostRegressor()
-                model.load_model(str(CATBOOST_MODEL_PATH))
-                _ml_model = (model, "catboost")
-                return _ml_model
-            except ImportError:
-                pass  # CatBoost not installed, try RF
-            except Exception:
-                pass  # Model load failed, try RF
+        import logging
+        logger = logging.getLogger(__name__)
         
-        # Fall back to Random Forest
-        if RF_MODEL_PATH.exists():
-            try:
-                with open(RF_MODEL_PATH, "rb") as f:
-                    model = pickle.load(f)
-                _ml_model = (model, "random_forest")
-                return _ml_model
-            except Exception as e:
-                raise HTTPException(
-                    status_code=503,
-                    detail=f"Failed to load Random Forest model: {str(e)}"
-                )
+        # Load CatBoost model only
+        logger.info(f"Loading CatBoost model from: {CATBOOST_MODEL_PATH}")
         
-        raise HTTPException(
-            status_code=503,
-            detail=f"No ML model available. Expected CatBoost at: {CATBOOST_MODEL_PATH} or RF at: {RF_MODEL_PATH}"
-        )
+        if not CATBOOST_MODEL_PATH.exists():
+            raise HTTPException(
+                status_code=503,
+                detail=f"CatBoost model file not found at: {CATBOOST_MODEL_PATH}"
+            )
+        
+        try:
+            from catboost import CatBoostRegressor
+        except ImportError as e:
+            raise HTTPException(
+                status_code=503,
+                detail=f"CatBoost library not installed: {str(e)}"
+            )
+        
+        try:
+            model = CatBoostRegressor()
+            model.load_model(str(CATBOOST_MODEL_PATH))
+            _ml_model = model
+            logger.info("CatBoost model loaded successfully!")
+            return _ml_model
+        except Exception as e:
+            raise HTTPException(
+                status_code=503,
+                detail=f"Failed to load CatBoost model: {str(e)}"
+            )
+    
     return _ml_model
 
 
@@ -960,9 +962,13 @@ def predict_price(
     age_group: str = Query("25-34", description="Target age group")
 ) -> PricePredictionResponse:
     """
-    Predict optimal price using ML model.
+    Predict optimal price using CatBoost ML model.
     
-    Uses CatBoost model (preferred) or Random Forest as fallback.
+    The model expects 8 features: location, type, age_group, category_id,
+    portion_bucket, portion_numeric, base_price, cost.
+    
+    Product metadata (category_id, base_price, cost, portion_numeric) is 
+    looked up from the menu items data based on product_name.
     
     Args:
         product_name: Name of the menu item
@@ -975,29 +981,51 @@ def predict_price(
         Predicted price and input features
         
     Raises:
-        HTTPException: 503 if model not available
+        HTTPException: 503 if CatBoost model not available, 404 if product not found
     """
     try:
-        model, model_type = get_ml_model()
+        model = get_ml_model()
         
-        # Prepare input data - columns must match training data
+        # Look up product metadata from menu items
+        matching_items = [
+            item for item in menu_items_store
+            if item.get("product_name", "").lower() == product_name.lower()
+        ]
+        
+        if matching_items:
+            product_meta = matching_items[0]
+            category_id = str(product_meta.get("category_id", "1"))
+            base_price = float(product_meta.get("base_price", 2000))
+            cost = float(product_meta.get("cost", 1000))
+            # Parse portion_size to numeric (e.g., "250g" -> 250)
+            portion_str = str(product_meta.get("portion_size", "250"))
+            import re
+            portion_match = re.search(r"(\d+\.?\d*)", portion_str)
+            portion_numeric = float(portion_match.group(1)) if portion_match else 250.0
+        else:
+            # Use defaults if product not found
+            category_id = "1"
+            base_price = 2000.0
+            cost = 1000.0
+            portion_numeric = 250.0
+        
+        # Prepare input data - columns must match training data exactly
+        # CatBoost model expects: location, type, age_group, category_id, portion_bucket,
+        #                         portion_numeric, base_price, cost
         input_data = pd.DataFrame({
-            "product_name": [product_name],
             "location": [location],
             "type": [venue_type],
-            "portion_bucket": [portion_size.lower()],
             "age_group": [age_group],
+            "category_id": [category_id],
+            "portion_bucket": [portion_size.lower()],
+            "portion_numeric": [portion_numeric],
+            "base_price": [base_price],
+            "cost": [cost],
         })
         
-        if model_type == "catboost":
-            # CatBoost handles categorical features natively
-            predicted_price = float(model.predict(input_data)[0])
-        else:
-            # Random Forest needs one-hot encoding
-            X_enc = pd.get_dummies(input_data, drop_first=False)
-            expected_cols = list(model.feature_names_in_)
-            X_enc = X_enc.reindex(columns=expected_cols, fill_value=0)
-            predicted_price = float(model.predict(X_enc)[0])
+        # CatBoost handles categorical features natively
+        predicted_price = float(model.predict(input_data)[0])
+        confidence_note = "Prediction based on CatBoost model (RMSE: 196.74) trained on Yerevan market data"
         
         return PricePredictionResponse(
             predicted_price=round(predicted_price, 2),
@@ -1005,7 +1033,8 @@ def predict_price(
             location=location,
             venue_type=venue_type,
             portion_size=portion_size,
-            age_group=age_group
+            age_group=age_group,
+            confidence_note=confidence_note
         )
         
     except FileNotFoundError:
