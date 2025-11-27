@@ -46,6 +46,9 @@ def load_pricing_data():
                 r.location,
                 r.type,
                 mi.portion_size,
+                mi.base_price,
+                mi.cost,
+                mi.category_id,
                 c.age_group
             FROM fact_sales fs
             JOIN dim_menu_item mi   ON fs.product_id    = mi.product_id
@@ -73,7 +76,16 @@ def load_pricing_data():
     df = (
         dataframes["fact_sales"]
         .merge(
-            dataframes["dim_menu_item"][["product_id", "product_name", "portion_size"]],
+            dataframes["dim_menu_item"][
+                [
+                    "product_id",
+                    "product_name",
+                    "portion_size",
+                    "base_price",
+                    "cost",
+                    "category_id",
+                ]
+            ],
             on="product_id",
             how="left",
         )
@@ -95,6 +107,9 @@ def load_pricing_data():
         "location",
         "type",
         "portion_size",
+        "base_price",
+        "cost",
+        "category_id",
         "age_group",
     ]
     missing_cols = [col for col in expected_cols if col not in df.columns]
@@ -120,6 +135,7 @@ def bucket_portion_size(df: pd.DataFrame) -> pd.DataFrame:
         .str.extract(r"(\d+\.?\d*)")[0]    # get numeric part
         .astype(float)
     )
+    df["portion_numeric"] = s
 
     # Use min/max of data as guide to split into 3 equal-width bins.
     # Guard against degenerate input where every portion size is identical.
@@ -148,15 +164,32 @@ def preprocess_data(df: pd.DataFrame):
     # Create S/M/L buckets
     df = bucket_portion_size(df)
 
+    # Safe numeric conversions
+    numeric_cols = ["portion_numeric", "base_price", "cost"]
+    for col in numeric_cols:
+        df[col] = pd.to_numeric(df[col], errors="coerce")
+        df[col] = df[col].fillna(df[col].median())
+
+    df["category_id"] = df["category_id"].astype(str)
+
     # Features and target
-    feature_cols = ["product_name", "location", "type", "portion_bucket", "age_group"]
+    feature_cols = [
+        "location",
+        "type",
+        "age_group",
+        "category_id",
+        "portion_bucket",
+        "portion_numeric",
+        "base_price",
+        "cost",
+    ]
     target_col = "price_sold"
 
     X = df[feature_cols]
     y = df[target_col]
 
     # Categorical feature names (CatBoost will handle them)
-    cat_features = feature_cols
+    cat_features = ["location", "type", "age_group", "category_id", "portion_bucket"]
 
     return X, y, cat_features
 

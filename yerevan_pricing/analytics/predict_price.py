@@ -1,8 +1,10 @@
 import os
 import sys
-import pickle
 from typing import Optional
+
+import numpy as np
 import pandas as pd
+from joblib import load as joblib_load
 
 # --- project root on sys.path ---
 if "__file__" in globals():
@@ -13,6 +15,8 @@ else:
 PROJECT_ROOT = os.path.dirname(CURRENT_DIR)
 sys.path.append(PROJECT_ROOT)
 
+DATA_DIR = os.path.join(PROJECT_ROOT, "etl", "database", "data")
+
 # Use an absolute path inside analytics/outputs so the model is easy to locate
 MODEL_PATH = os.path.join(CURRENT_DIR, "outputs", "random_forest_model.pkl")
 
@@ -20,53 +24,13 @@ MODEL_PATH = os.path.join(CURRENT_DIR, "outputs", "random_forest_model.pkl")
 def load_model():
     if not os.path.exists(MODEL_PATH):
         raise FileNotFoundError(f"Model file not found at: {MODEL_PATH}")
-    with open(MODEL_PATH, "rb") as f:
-        rf = pickle.load(f)
-    return rf
+    return joblib_load(MODEL_PATH)
 
 
 # Reference vocabularies captured from the training snapshots so the CLI works
 # out-of-the-box without needing to touch the CSVs at runtime.
 REFERENCE_VALUES = {
-    "product_name": [
-        "Aperol Spritz",
-        "Beef Steak",
-        "Black Tea",
-        "Brownie",
-        "Bruschetta",
-        "Cappuccino",
-        "Caprese Croissant",
-        "Cheesecake",
-        "Chicken Caesar",
-        "Chicken Pasta",
-        "Chicken Sandwich",
-        "Chocolate Mousse",
-        "Club Sandwich",
-        "Cold Brew",
-        "Eggs Benedict",
-        "Espresso",
-        "Flat White",
-        "Fresh Orange Juice",
-        "Greek Salad",
-        "Guacamole Toast",
-        "Herbal Tea",
-        "Hummus Plate",
-        "Latte",
-        "Macchiato",
-        "Margarita Pizza",
-        "Matcha Latte",
-        "Mineral Water",
-        "Mojito",
-        "Omelet / Scramble",
-        "Parma Pizza",
-        "Quattro Formaggi",
-        "Raf",
-        "Ricotta Croissant",
-        "Salmon Croissant",
-        "Salmon Steak",
-        "Tarte Tatin",
-        "Ventricina Pizza",
-    ],
+    "product_name": [],
     "location": [
         "Ajapnyak",
         "Arabkir",
@@ -98,6 +62,76 @@ REFERENCE_VALUES = {
     "portion_bucket": ["small", "medium", "large"],
 }
 
+PRODUCT_FEATURES = {}
+
+
+def _load_product_reference() -> dict:
+    menu_path = os.path.join(DATA_DIR, "dim_menu_item.csv")
+    if not os.path.exists(menu_path):
+        raise FileNotFoundError(f"Menu metadata not found at {menu_path}")
+
+    df = pd.read_csv(menu_path)
+    required = [
+        "product_name",
+        "category_id",
+        "base_price",
+        "cost",
+        "portion_size",
+    ]
+    missing = [col for col in required if col not in df.columns]
+    if missing:
+        raise RuntimeError(f"Menu metadata missing columns: {missing}")
+
+    meta = df[required].copy()
+    meta = meta.dropna(subset=["product_name", "portion_size"])
+
+    # Parse numeric fields
+    extracted = meta["portion_size"].astype(str).str.extract(r"(\d+\.?\d*)")[0]
+    meta["portion_numeric"] = pd.to_numeric(extracted, errors="coerce")
+    for field in ("base_price", "cost"):
+        meta[field] = pd.to_numeric(meta[field], errors="coerce")
+
+    for field in ("portion_numeric", "base_price", "cost"):
+        median_val = meta[field].median()
+        if pd.isna(median_val):
+            median_val = 0.0
+        meta[field] = meta[field].fillna(median_val)
+
+    # Portion buckets consistent with training logic
+    min_v = meta["portion_numeric"].min()
+    max_v = meta["portion_numeric"].max()
+    span = max_v - min_v
+    if pd.isna(span) or span <= 0:
+        meta["portion_bucket"] = "medium"
+    else:
+        eps = max(span * 1e-6, 1e-9)
+        bins = np.linspace(min_v - eps, max_v + eps, num=4)
+        meta["portion_bucket"] = pd.cut(
+            meta["portion_numeric"], bins=bins, labels=["small", "medium", "large"]
+        )
+        meta["portion_bucket"] = meta["portion_bucket"].astype(str).replace("nan", "medium")
+
+    meta["category_id"] = meta["category_id"].astype(str)
+
+    # Keep a single record per product name (first occurrence is fine)
+    meta = meta.sort_values("product_name").drop_duplicates("product_name", keep="first")
+
+    product_map = {}
+    for _, row in meta.iterrows():
+        product_map[row["product_name"]] = {
+            "category_id": row["category_id"],
+            "portion_bucket": row["portion_bucket"],
+            "portion_numeric": float(row["portion_numeric"]),
+            "base_price": float(row["base_price"]),
+            "cost": float(row["cost"]),
+        }
+
+    return product_map
+
+
+PRODUCT_FEATURES = _load_product_reference()
+REFERENCE_VALUES["product_name"] = sorted(PRODUCT_FEATURES.keys())
+
 
 def _example_suffix(field: str, max_examples: int = 3) -> str:
     options = REFERENCE_VALUES.get(field, [])
@@ -118,15 +152,20 @@ def _suggest_alternative(bad_input: str, field: str) -> Optional[str]:
     return options[0]
 
 
-def _prompt_with_validation(field: str, prompt_label: str) -> str:
+def _prompt_with_validation(field: str, prompt_label: str, default: Optional[str] = None) -> str:
     suffix = _example_suffix(field)
-    prompt = f"  {prompt_label}{suffix}: "
+    prompt = f"  {prompt_label}{suffix}"
+    if default is not None:
+        prompt += f" [{default}]"
+    prompt += ": "
     valid_values = REFERENCE_VALUES.get(field, [])
     normalized = {val.lower(): val for val in valid_values}
 
     while True:
         value = input(prompt).strip()
         if not value:
+            if default is not None:
+                return default
             print("    Please enter a value.")
             continue
         norm_value = value.lower()
@@ -147,25 +186,49 @@ def _prompt_with_validation(field: str, prompt_label: str) -> str:
         print("    Let's try again.")
 
 
+def _prompt_numeric(prompt_label: str, default: float) -> float:
+    prompt = f"  {prompt_label} [{round(float(default), 2)}]: "
+    while True:
+        value = input(prompt).strip()
+        if not value:
+            return float(default)
+        try:
+            return float(value)
+        except ValueError:
+            print("    Please enter a numeric value (e.g. 250 or 3990).")
+
+
 def ask_user_input():
     """
-    Ask the user for feature values in the terminal and return a one-row DataFrame.
-    These must match the features used in training: product_name, location, type,
-    portion_bucket, age_group.
+    Ask the user for feature values in the terminal and return a one-row DataFrame
+    that matches the RF training schema.
     """
     print("Enter feature values for price prediction:")
     product_name = _prompt_with_validation("product_name", "product_name")
+    if product_name not in PRODUCT_FEATURES:
+        raise ValueError(f"No metadata found for '{product_name}'.")
+    product_meta = PRODUCT_FEATURES[product_name]
+
     location = _prompt_with_validation("location", "location")
     rest_type = _prompt_with_validation("type", "type")
-    portion_bucket = _prompt_with_validation("portion_bucket", "portion_bucket")
     age_group = _prompt_with_validation("age_group", "age_group")
 
+    portion_bucket = _prompt_with_validation(
+        "portion_bucket", "portion_bucket", product_meta["portion_bucket"]
+    )
+    portion_numeric = _prompt_numeric("portion_numeric (grams/ml)", product_meta["portion_numeric"])
+    base_price = _prompt_numeric("base_price", product_meta["base_price"])
+    cost = _prompt_numeric("cost", product_meta["cost"])
+
     data = {
-        "product_name": [product_name],
         "location": [location],
         "type": [rest_type],
-        "portion_bucket": [portion_bucket],
         "age_group": [age_group],
+        "category_id": [product_meta["category_id"]],
+        "portion_bucket": [portion_bucket],
+        "portion_numeric": [portion_numeric],
+        "base_price": [base_price],
+        "cost": [cost],
     }
     X = pd.DataFrame(data)
     return X

@@ -1,0 +1,41 @@
+restaurant_id,name,location,type,avg_customer_count,rating,owner_contact
+1,Gallia,Kentron,restaurant,162,4.16,+374-81-210268
+2,Afro Lab Roastery,Kentron,coffee_house,80,4.43,+374-92-621430
+3,De Angelo,Nor Nork,restaurant,147,4.08,+374-12-429365
+4,Aperitivo,Kentron,bar_bistro,317,4.2,+374-97-818315
+5,Babajanyan,Kentron,restaurant,251,4.31,+374-51-249503
+6,Vostan,Kentron,restaurant,247,4.19,+374-89-552366
+7,Louis Charden,Arabkir,bakery_cafe,249,4.36,+374-64-428947
+8,Coffeeshop Company,Kentron,coffee_chain,190,4.11,+374-60-665894
+9,The Kond House,Kentron,restaurant,80,4.23,+374-98-339931
+10,Tiziano,Arabkir,cafe,73,4.29,+374-18-517113
+11,Al Mayass,Kentron,restaurant,112,4.11,+374-69-672843
+12,Lavash,Kentron,restaurant,323,4.11,+374-56-206530
+13,Pandok Yerevan,Kentron,restaurant,265,4.0,+374-13-905889
+14,Ankyun,Kentron,cafe_bistro,113,4.2,+374-13-271829
+15,Mangiare,Malatia-Sebastia,restaurant,250,4.26,+374-83-323165
+16,Super Kidob,Ajapnyak,fast_food,329,4.6,+374-57-635822
+17,Ray's,Kentron,bar_bistro,274,4.44,+374-94-123247
+18,Caffeine Brew Lab,Arabkir,coffee_house,296,4.31,+374-91-707086
+19,Dargett,Kentron,brewpub,112,4.42,+374-69-616588
+20,Eat & Fit,Kentron,healthy_cafe,100,4.32,+374-38-937646
+21,Camilla,Arabkir,cafe_bistro,124,4.29,+374-10-233767
+22,Mayrig,Kentron,restaurant,122,4.23,+374-20-580754
+23,Seasons,Kentron,restaurant,140,4.53,+374-14-234633
+24,Limone,Arabkir,cafe_restaurant,290,4.47,+374-50-807611
+25,Amar,Kentron,wine_bar,194,4.26,+374-42-451279
+26,Wine Republic,Kentron,wine_bar,121,4.59,+374-97-747972
+27,In Vino,Kentron,wine_bar,158,3.91,+374-44-301664
+28,El Sky Bar,Kentron,bar_restaurant,286,4.46,+374-56-572525
+29,Bureaucrat Café & Books,Kentron,cafe,190,4.39,+374-23-715270
+30,Charentsi 28,Kentron,restaurant,342,4.68,+374-18-318126
+31,Pandok Yerevan Riverside,Nor Nork,restaurant,101,3.95,+374-61-285340
+32,Pizzarella,Malatia-Sebastia,pizzeria,155,4.23,+374-13-511357
+33,Dine Sky,Kentron,restaurant,290,4.67,+374-45-424767
+34,Marmelad Café,Malatia-Sebastia,cafe_dessert,246,4.17,+374-95-515515
+35,Toast Bistro,Ajapnyak,bistro,125,3.93,+374-15-981691
+36,Ponchik Monchik (Cascade),Kentron,cafe_dessert,167,4.52,+374-53-125939
+37,La Cucina,Kentron,italian_rest,345,4.21,+374-98-668550
+38,Green Bean Coffee,Arabkir,coffee_house,249,4.49,+374-10-752664
+39,Saryan Eatery,Kentron,restaurant,342,4.62,+374-12-599046
+40,GastroHouse,Ajapnyak,gastropub,257,4.23,+374-81-760890
