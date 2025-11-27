@@ -213,7 +213,7 @@ def train_catboost_model(X_train, X_valid, y_train, y_valid, cat_features):
     random_seed=42,
     verbose=100,
     od_type="Iter",
-    od_wait=100,  # early stopping patience 
+    od_wait=100, 
     )
 
 
