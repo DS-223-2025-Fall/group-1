@@ -6,6 +6,18 @@ from dotenv import load_dotenv
 load_dotenv()  #
 
 def get_connection():
+    """
+    Create a psycopg2 connection using the environment-driven credentials.
+
+    The helper automatically falls back to sensible defaults so the same code
+    works inside Docker (service hostname) and on a developer laptop. All
+    callers must close the returned connection object once they are done with
+    it to avoid leaking DB sessions.
+
+    Returns:
+        psycopg2.extensions.connection | None: Live connection when successful,
+        otherwise ``None`` after logging the failure.
+    """
     try:
         # If running inside Docker, use service name; otherwise localhost
         host = os.getenv("DB_HOST", "localhost")
