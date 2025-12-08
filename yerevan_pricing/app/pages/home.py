@@ -13,7 +13,7 @@ import os
 from app.components.navigation import render_nav_row
 from app.theme import apply_global_style
 
-API_URL = os.getenv("API_URL", "http://api:8000")
+API_URL = os.getenv("API_URL", "http://group1_api:8000")
 
 st.set_page_config(
     page_title="Home",
@@ -99,13 +99,6 @@ with col1:
     st.markdown("</div>", unsafe_allow_html=True)
 
 with col2:
-    st.markdown('<div class="card">', unsafe_allow_html=True)
-    st.markdown("### 📈 Historical")
-    st.caption("View historical pricing data")
-    st.page_link("pages/historical.py", label="Go to Historical →")
-    st.markdown("</div>", unsafe_allow_html=True)
-
-with col3:
     st.markdown('<div class="card">', unsafe_allow_html=True)
     st.markdown("### ⚖️ Comparison")
     st.caption("Compare predicted vs actual prices")

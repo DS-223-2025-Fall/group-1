@@ -47,7 +47,6 @@ services:
     volumes:
       - ./api:/api
       - ./etl/database/data:/api/data
-      - ./analytics/outputs:/api/model
     environment:
       DATABASE_URL: postgresql+psycopg2://admin:admin123@group1_postgres:5432/pricing_db
       DB_HOST: group1_postgres
@@ -75,6 +74,7 @@ services:
       - "8501:8501"
     environment:
       API_URL: http://group1_api:8000
+      # Note: group1_api is the service name in docker-compose
     depends_on:
       - group1_api
 

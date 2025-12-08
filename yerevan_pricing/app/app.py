@@ -14,7 +14,7 @@ import os
 from app.components.navigation import render_nav_row
 from app.theme import apply_global_style
 
-API_URL = os.getenv("API_URL", "http://api:8000")
+API_URL = os.getenv("API_URL", "http://group1_api:8000")
 
 st.set_page_config(
     page_title="Yerevan Dynamic Pricing",
