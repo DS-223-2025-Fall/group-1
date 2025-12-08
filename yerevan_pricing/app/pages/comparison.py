@@ -163,11 +163,11 @@ with right:
         )
         
         if difference > 0:
-            st.warning(f"⚠️ ML suggests {item_name} at {restaurant_name} could be priced {abs(difference):,.0f} AMD higher")
+            st.warning(f"ƒsÿ‹,? ML suggests {item_name} at {restaurant_name} could be priced {abs(difference):,.0f} AMD higher")
         elif difference < 0:
-            st.info(f"ℹ️ ML suggests {item_name} at {restaurant_name} is priced {abs(difference):,.0f} AMD above optimal")
+            st.info(f"ƒ,1‹,? ML suggests {item_name} at {restaurant_name} is priced {abs(difference):,.0f} AMD above optimal")
         else:
-            st.success(f"✅ {item_name} at {restaurant_name} is optimally priced!")
+            st.success(f"ƒo. {item_name} at {restaurant_name} is optimally priced!")
     else:
         st.metric("Restaurant Price", "--")
         st.metric("ML Predicted Price", "--")

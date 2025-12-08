@@ -140,7 +140,7 @@ with right:
         result = st.session_state.forecast_result
         predicted_price = result.get("predicted_price", 0)
         st.metric("Suggested price", f"{predicted_price:,.0f} AMD")
-        # Confidence window (±10% as estimate)
+        # Confidence window (approx +/- 10% as estimate)
         low = predicted_price * 0.9
         high = predicted_price * 1.1
         st.metric("Confidence window", f"{low:,.0f} - {high:,.0f} AMD")
@@ -151,7 +151,7 @@ with right:
         base = predicted_price
         trend = [base * (1 + 0.002 * i + random.uniform(-0.01, 0.01)) for i in range(horizon)]
         st.line_chart({"Predicted Price (AMD)": trend}, height=190)
-        st.success(f"✅ Forecast for {menu_item} in {location}")
+        st.success(f"ƒo. Forecast for {menu_item} in {location}")
     elif st.session_state.forecast_result and "error" in st.session_state.forecast_result:
         st.metric("Suggested price", "--")
         st.metric("Confidence window", "--")
