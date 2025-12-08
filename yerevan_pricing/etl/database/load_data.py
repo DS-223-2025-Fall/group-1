@@ -2,13 +2,24 @@ from pathlib import Path
 import csv
 from db_connect import get_connection
 
+"""
+Helper routines that bulk-load the local Postgres database from the CSV
+snapshots in ``etl/database/data``. Each loader is intentionally idempotent so
+developers can reseed their environment safely.
+"""
+
 DATA_DIR = Path(__file__).parent / "data"
 
-
-
-
-
 def to_bool(x: str):
+    """
+    Translate CSV truthy strings into ``True``/``False`` booleans.
+
+    Args:
+        x (str): Raw value from the CSV reader.
+
+    Returns:
+        bool | None: ``None`` if the cell is empty, otherwise a boolean.
+    """
     if x is None:
         return None
     s = str(x).strip().lower()
@@ -16,6 +27,12 @@ def to_bool(x: str):
 
 
 def load_dim_category(conn):
+    """
+    Load the category dimension from ``dim_category.csv``.
+
+    Args:
+        conn: psycopg2 connection used to execute INSERT statements.
+    """
     path = DATA_DIR / "dim_category.csv"
     with conn.cursor() as cur, path.open(encoding="utf-8") as f:
         reader = csv.DictReader(f)
@@ -33,6 +50,12 @@ def load_dim_category(conn):
 
 
 def load_dim_season(conn):
+    """
+    Load season metadata from ``dim_season.csv`` into ``dim_season``.
+
+    Args:
+        conn: psycopg2 connection.
+    """
     path = DATA_DIR / "dim_season.csv"
     with conn.cursor() as cur, path.open(encoding="utf-8") as f:
         reader = csv.DictReader(f)
@@ -50,6 +73,12 @@ def load_dim_season(conn):
 
 
 def load_dim_time(conn):
+    """
+    Populate ``dim_time`` from ``dim_time.csv`` with day-level metadata.
+
+    Args:
+        conn: psycopg2 connection.
+    """
     path = DATA_DIR / "dim_time.csv"
     with conn.cursor() as cur, path.open(encoding="utf-8") as f:
         reader = csv.DictReader(f)
@@ -74,6 +103,12 @@ def load_dim_time(conn):
 
 
 def load_dim_market(conn):
+    """
+    Load ``dim_market`` with administrative and geo metadata.
+
+    Args:
+        conn: psycopg2 connection.
+    """
     path = DATA_DIR / "dim_market.csv"
     with conn.cursor() as cur, path.open(encoding="utf-8") as f:
         reader = csv.DictReader(f)
@@ -98,6 +133,12 @@ def load_dim_market(conn):
 
 
 def load_dim_restaurant(conn):
+    """
+    Load restaurant properties from ``dim_restaurant.csv``.
+
+    Args:
+        conn: psycopg2 connection.
+    """
     path = DATA_DIR / "dim_restaurant.csv"
     with conn.cursor() as cur, path.open(encoding="utf-8") as f:
         reader = csv.DictReader(f)
@@ -124,6 +165,12 @@ def load_dim_restaurant(conn):
 
 
 def load_dim_customer(conn):
+    """
+    Load ``dim_customer`` from ``dim_customer.csv``.
+
+    Args:
+        conn: psycopg2 connection.
+    """
     path = DATA_DIR / "dim_customer.csv"
     with conn.cursor() as cur, path.open(encoding="utf-8") as f:
         reader = csv.DictReader(f)
@@ -148,6 +195,12 @@ def load_dim_customer(conn):
 
 
 def load_dim_menu_item(conn):
+    """
+    Load ``dim_menu_item`` by parsing ``dim_menu_item.csv`` records.
+
+    Args:
+        conn: psycopg2 connection.
+    """
     path = DATA_DIR / "dim_menu_item.csv"
     with conn.cursor() as cur, path.open(encoding="utf-8") as f:
         reader = csv.DictReader(f)
@@ -176,6 +229,12 @@ def load_dim_menu_item(conn):
 
 
 def load_fact_market_prices(conn):
+    """
+    Load ``fact_market_prices`` from ``fact_market_prices.csv``.
+
+    Args:
+        conn: psycopg2 connection.
+    """
     path = DATA_DIR / "fact_market_prices.csv"
     with conn.cursor() as cur, path.open(encoding="utf-8") as f:
         reader = csv.DictReader(f)
@@ -207,6 +266,12 @@ def load_fact_market_prices(conn):
 
 
 def load_fact_sales(conn):
+    """
+    Load ``fact_sales`` from ``fact_sales.csv`` for downstream analytics.
+
+    Args:
+        conn: psycopg2 connection.
+    """
     path = DATA_DIR / "fact_sales.csv"  # make sure the file has these columns
     with conn.cursor() as cur, path.open(encoding="utf-8") as f:
         reader = csv.DictReader(f)
@@ -235,6 +300,12 @@ def load_fact_sales(conn):
 
 
 def main():
+    """
+    CLI entry point to populate every dimension and fact table.
+
+    Opens a single connection and sequentially executes all loaders so a local
+    developer can run ``python load_data.py`` and get a ready-to-use schema.
+    """
     conn = get_connection()
     try:
         load_dim_category(conn)

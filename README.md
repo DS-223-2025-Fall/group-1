@@ -1,93 +1,45 @@
 # 📊 Dynamic Pricing for Yerevan Cafés & Restaurants  
-### **DS223 — Marketing Analytics (Milestone 2)**  
+### **DS223 — Marketing Analytics (Milestone 3)**  
 ### American University of Armenia
 
-This repository contains the **second milestone** of the team project *Dynamic Pricing in Yerevan*, developed for **DS223 – Marketing Analytics** under the supervision of **Instructor Karen Hovhannisyan**.
+This repository contains **Milestone 3** of the team project *Dynamic Pricing in Yerevan*, developed for **DS223 – Marketing Analytics**, under the supervision of **Instructor Karen Hovhannisyan**.
 
-Our goal is to build a modular, scalable, service-based architecture for a pricing optimization system designed specifically for **Armenian cafés and restaurants**, integrating analytics, backend services, database infrastructure, and UI components.
-
----
-
-# 🚦 Project Roadmap & UI Prototype
-
-### 📍 **Roadmap (Figma)**  
-🔗 https://www.figma.com/make/DA2iRGczqJoVTTSvkeQVn1/Project-Roadmap-Timeline
-
-### 🎨 **UI Prototype (Figma)**  
-🔗 https://www.figma.com/make/05Xegl324Lppf6OZrCHz8V/Pricing-Optimization-Dashboard
+The project implements a complete **service-based architecture** for predicting and forecasting menu item prices for Yerevan restaurants, including a CatBoost ML model, ETL pipelines, API services, and an interactive Streamlit UI.
 
 ---
 
-# 📘 Problem Definition
+# 🚀 Milestone 3 Summary
 
-*(summarized from the uploaded document)*  
+Milestone 3 connects all components of the system and delivers a fully working end-to-end pipeline across **Database**, **ETL**, **Data Science**, **Backend**, and **Frontend** services.
 
-Armenia’s café and restaurant sector often relies on intuition rather than data-driven pricing strategies. Businesses rarely evaluate how price changes influence demand, customer satisfaction, or revenue. This leads to unstable profit margins, poor forecasting, and reactive decision-making.
+##  Data Science (DS)
+- Built the **final CatBoost regression model** for price prediction  
+- Implemented forecasting for menu items (short-term projections)  
+- Exported clean model outputs for backend consumption  
+- Delivered final DS work to the `ds` branch  
 
-The objective of this project is to build a **data-driven pricing optimization framework** capable of:
+##  Backend (FastAPI)
+- Implemented all API endpoints defined by PM specifications  
+- Added **Pydantic request/response models**  
+- Connected the CatBoost model outputs to `/predict-price` and `/forecast-price`  
+- Added docstrings and internal documentation  
+- Delivered backend work to the `backend` branch  
 
-- Modeling price elasticity  
-- Simulating demand  
-- Quantifying the effects of promotions  
-- Forecasting pricing outcomes  
-- Providing visual tools for decision-making  
+##  Database (DB)
+- Finalized the ERD and updated the database schema  
+- Added complete table definitions and descriptions  
+- Enabled clean ingestion of restaurant/menu datasets  
+- Delivered DB work to the `db` branch  
 
-The system will use:
-
-- **FastAPI** for backend APIs  
-- **Streamlit** for UI and visualization  
-- **Python analytics stack**  
-- **PostgreSQL/SQLite** for data storage  
-
-
-
-
----
-
-# 🏗️ Repository Structure (Service-Based Architecture)
-
-```
-yerevan_pricing/
-│
-├── api/                     # FastAPI backend service
-│   ├── main.py
-│   ├── routers/
-│   ├── models/
-│   ├── database/
-│   └── Dockerfile
-│
-├── app/                     # Streamlit frontend service
-│   ├── pages/
-│   ├── utils/
-│   └── Dockerfile
-│
-├── etl/                     # ETL service (data loading → Postgres)
-│   ├── database/
-│   │   ├── data/            # CSV files
-│   │   ├── load_data.py     # ETL loader
-│   │   └── helpers.py
-│   ├── init/                # initial SQL schemas
-│   │   └── init.sql
-│   └── Dockerfile
-│
-├── analytics/               # Data Science & Modeling service
-│   ├── baseline_models.py
-│   ├── run_baseline.py
-│   ├── utils/
-│   │   └── db_connect.py
-│   └── Dockerfile
-│
-│
-├── docker-compose.yml       # Multi-service orchestration
-├── .env                     # Environment variables (DB, API, App)
-├── requirements.txt         # Python dependencies
-├── README.md                # Project overview
-└── .gitignore               # Ignore rules
-
-
-```
+##  Frontend (Streamlit)
+- Updated the full UI based on PM requirements  
+- Added **prediction + forecasting pages** with redesigned layouts  
+- Integrated API responses into user-friendly UI components  
+- Applied consistent **dark green theme** across the application  
+- Delivered final UI work to the `front` branch  
 
 ---
+
 
 # 👥 Team Members
 

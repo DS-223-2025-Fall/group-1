@@ -2,9 +2,9 @@ services:
   # ---------------------------------------------
   # POSTGRES DATABASE
   # ---------------------------------------------
-  postgres:
+  group1_postgres:
     image: postgres:17
-    container_name: postgres_db
+    container_name: group1_postgres_db
     restart: always
     environment:
       POSTGRES_USER: admin
@@ -13,7 +13,7 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - group1_postgres_data:/var/lib/postgresql/data
       - ./etl/init/init.sql:/docker-entrypoint-initdb.d/init.sql
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U admin -d pricing_db"]
@@ -24,9 +24,9 @@ services:
   # ---------------------------------------------
   # PGADMIN
   # ---------------------------------------------
-  pgadmin:
+  group1_pgadmin:
     image: dpage/pgadmin4
-    container_name: pgadmin
+    container_name: group1_pgadmin
     restart: always
     environment:
       PGADMIN_DEFAULT_EMAIL: admin@admin.com
@@ -34,36 +34,38 @@ services:
     ports:
       - "5050:80"
     depends_on:
-      - postgres
+      - group1_postgres
 
   # ---------------------------------------------
   # FASTAPI BACKEND
   # ---------------------------------------------
-  api:
-    container_name: fastapi_backend
+  group1_api:
+    container_name: group1_fastapi_backend
     build:
       context: ./api
       dockerfile: Dockerfile
     volumes:
       - ./api:/api
+      - ./etl/database/data:/api/data
+      - ./analytics/outputs:/api/model
     environment:
-      DATABASE_URL: postgresql+psycopg2://admin:admin123@postgres:5432/pricing_db
-      DB_HOST: postgres
+      DATABASE_URL: postgresql+psycopg2://admin:admin123@group1_postgres:5432/pricing_db
+      DB_HOST: group1_postgres
       DB_NAME: pricing_db
       DB_USER: admin
       DB_PASSWORD: admin123
     ports:
       - "8008:8000"
     depends_on:
-      postgres:
+      group1_postgres:
         condition: service_healthy
     command: ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
 
   # ---------------------------------------------
   # STREAMLIT FRONTEND
   # ---------------------------------------------
-  app:
-    container_name: streamlit_frontend
+  group1_app:
+    container_name: group1_streamlit_frontend
     build:
       context: ./app
       dockerfile: Dockerfile
@@ -72,51 +74,51 @@ services:
     ports:
       - "8501:8501"
     environment:
-      API_URL: http://api:8000
+      API_URL: http://group1_api:8000
     depends_on:
-      - api
+      - group1_api
 
   # ---------------------------------------------
   # ETL SERVICE
   # ---------------------------------------------
-  etl:
-    container_name: etl_service
+  group1_etl:
+    container_name: group1_etl_service
     build:
       context: ./etl
       dockerfile: Dockerfile
     volumes:
       - ./etl:/etl
     environment:
-      DB_HOST: postgres
+      DB_HOST: group1_postgres
       DB_PORT: 5432
       DB_NAME: pricing_db
       DB_USER: admin
       DB_PASSWORD: admin123
     depends_on:
-      postgres:
+      group1_postgres:
         condition: service_healthy
     command: ["python", "database/load_data.py"]
 
   # ---------------------------------------------
   # ANALYTICS SERVICE
   # ---------------------------------------------
-  analytics:
-    container_name: analytics_service
+  group1_analytics:
+    container_name: group1_analytics_service
     build:
       context: ./analytics
       dockerfile: Dockerfile
     volumes:
       - ./analytics:/analytics
     environment:
-      DB_HOST: postgres
+      DB_HOST: group1_postgres
       DB_PORT: 5432
       DB_NAME: pricing_db
       DB_USER: admin
       DB_PASSWORD: admin123
     depends_on:
-      etl:
+      group1_etl:
         condition: service_completed_successfully
     command: ["python", "run_baseline.py"]
 
 volumes:
-  postgres_data:
+  group1_postgres_data:

@@ -1,8 +1,12 @@
 import streamlit as st
-from components.filters import render_filters
+from app.theme import apply_global_style
+
 
 def render_sidebar():
-    st.sidebar.title('Filters')
-    render_filters()
-    st.sidebar.markdown('---')
-    st.sidebar.radio('Pages', ['Home','Historical Data','Forecasting','Settings'], key='nav')
+    apply_global_style()
+    st.sidebar.title("Pricing UI")
+    st.sidebar.markdown(
+        "Use the page selector above to jump to Forecasting, Historical, or Settings."
+    )
+    st.sidebar.markdown("---")
+    st.sidebar.caption("Filters will be added when APIs are wired up.")
