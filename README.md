@@ -1,47 +1,74 @@
 # 📊 Dynamic Pricing for Yerevan Cafés & Restaurants  
-### **DS223 — Marketing Analytics (Milestone 3)**  
+### **DS223 — Marketing Analytics**  
 ### American University of Armenia
 
-This repository contains **Milestone 3** of the team project *Dynamic Pricing in Yerevan*, developed for **DS223 – Marketing Analytics**, under the supervision of **Instructor Karen Hovhannisyan**.
+---
 
-The project implements a complete **service-based architecture** for predicting and forecasting menu item prices for Yerevan restaurants, including a CatBoost ML model, ETL pipelines, API services, and an interactive Streamlit UI.
+## 📚 Documentation
+
+**[📖 View Full Documentation](https://ds-223-2025-fall.github.io/group-1/)**
 
 ---
 
-# 🚀 Milestone 3 Summary
+## 📖 Project Description
 
-Milestone 3 connects all components of the system and delivers a fully working end-to-end pipeline across **Database**, **ETL**, **Data Science**, **Backend**, and **Frontend** services.
+This project implements a complete **dynamic pricing platform** for Yerevan cafés and restaurants, developed for **DS223 – Marketing Analytics** under the supervision of **Instructor Karen Hovhannisyan**.
 
-##  Data Science (DS)
-- Built the **final CatBoost regression model** for price prediction  
-- Implemented forecasting for menu items (short-term projections)  
-- Exported clean model outputs for backend consumption  
-- Delivered final DS work to the `ds` branch  
+The platform provides **ML-powered price predictions** and **forecasting** for menu items using a service-based architecture that includes:
 
-##  Backend (FastAPI)
-- Implemented all API endpoints defined by PM specifications  
-- Added **Pydantic request/response models**  
-- Connected the CatBoost model outputs to `/predict-price` and `/forecast-price`  
-- Added docstrings and internal documentation  
-- Delivered backend work to the `backend` branch  
-
-##  Database (DB)
-- Finalized the ERD and updated the database schema  
-- Added complete table definitions and descriptions  
-- Enabled clean ingestion of restaurant/menu datasets  
-- Delivered DB work to the `db` branch  
-
-##  Frontend (Streamlit)
-- Updated the full UI based on PM requirements  
-- Added **prediction + forecasting pages** with redesigned layouts  
-- Integrated API responses into user-friendly UI components  
-- Applied consistent **dark green theme** across the application  
-- Delivered final UI work to the `front` branch  
+- **CatBoost ML Model** for price prediction
+- **ETL Pipeline** for data processing
+- **FastAPI Backend** with RESTful endpoints
+- **Streamlit Frontend** for interactive dashboards
+- **PostgreSQL Database** with star schema design
 
 ---
 
+## 📸 Screenshots
 
-# 👥 Team Members
+![Screenshot 1](images/5312493994329705742.jpg)
+
+![Screenshot 2](images/5312493994329705743.jpg)
+
+![Screenshot 3](images/5312493994329705744.jpg)
+
+![Screenshot 4](images/5312493994329705746.jpg)
+
+![Screenshot 5](images/5312493994329705750.jpg)
+
+![Screenshot 6](images/5312493994329705751.jpg)
+
+---
+
+## 🚀 Running Instructions
+
+### Prerequisites
+- Docker & Docker Compose installed
+- Git
+
+### Quick Start
+
+```bash
+# Clone the repository
+git clone https://github.com/DS-223-2025-Fall/group-1.git
+cd group-1
+
+# Start all services
+cd yerevan_pricing
+docker-compose up --build
+```
+
+### Access the Services
+
+| Service | URL | Description |
+|---------|-----|-------------|
+| **Streamlit UI** | http://localhost:8501 | Interactive pricing dashboard |
+| **FastAPI Swagger** | http://localhost:8008 | API documentation & testing |
+| **PgAdmin** | http://localhost:5050 | Database management |
+
+---
+
+## 👥 Team Members
 
 | Role | Name |
 |------|------|
@@ -53,12 +80,12 @@ Milestone 3 connects all components of the system and delivers a fully working e
 
 ---
 
-# 🛠️ Technologies Used
+## 🛠️ Technologies Used
 
-- **Python** (Pandas, NumPy, scikit-learn)  
+- **Python** (Pandas, NumPy, scikit-learn, CatBoost)  
 - **FastAPI**  
 - **Streamlit**  
-- **PostgreSQL / SQLite**  
-- **Docker & docker-compose**  
+- **PostgreSQL**  
+- **Docker & Docker Compose**  
+- **MkDocs Material**
 - **GitHub PR workflow**  
-- **Figma** (roadmap & UI prototype)

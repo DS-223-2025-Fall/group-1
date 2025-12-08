@@ -23,6 +23,7 @@ from typing import List, Optional, Literal
 import numpy as np
 import pandas as pd
 from fastapi import FastAPI, HTTPException, Response, Query
+from fastapi.responses import RedirectResponse
 
 # Import all schemas and enums from schema.py
 from schema import (
@@ -370,6 +371,17 @@ No rate limits enforced in development.
         "name": "MIT",
     },
 )
+
+
+# ==============================================================================
+# Root Redirect
+# ==============================================================================
+
+
+@app.get("/", include_in_schema=False)
+def root_redirect():
+    """Redirect root to Swagger documentation."""
+    return RedirectResponse(url="/docs")
 
 
 # ==============================================================================

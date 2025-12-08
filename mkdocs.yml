@@ -1,11 +1,12 @@
-site_name: My Docs
-site_description: Documentation hub for the DS223 Milestone 3 dynamic pricing platform.
+site_name: Yerevan Dynamic Pricing Platform
+site_description: Documentation hub for the DS223 dynamic pricing platform.
 site_author: DS223 Group 1
 repo_name: DS-223-2025-Fall/group-1
 repo_url: https://github.com/DS-223-2025-Fall/group-1
 docs_dir: docs
 nav:
   - Home: index.md
+  - Demo: demo.md
   - ETL: etl.md
   - API: api.md
   - APP: app.md
