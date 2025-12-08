@@ -6,7 +6,6 @@ This FastAPI service provides endpoints for:
 - Menu item management (CRUD operations)
 - Customer data access (read-only)
 - Price prediction using ML model
-- Historical analytics
 - Price forecasting
 
 Author: Backend Team (NarekN7)
@@ -20,12 +19,40 @@ import pickle
 from copy import deepcopy
 from pathlib import Path
 from typing import List, Optional, Literal
-from enum import Enum
 
 import numpy as np
 import pandas as pd
 from fastapi import FastAPI, HTTPException, Response, Query
-from pydantic import BaseModel, Field, ConfigDict
+
+# Import all schemas and enums from schema.py
+from schema import (
+    LocationEnum,
+    VenueTypeEnum,
+    AgeGroupEnum,
+    PortionSizeEnum,
+    RestaurantCreate,
+    RestaurantUpdate,
+    MenuItemCreate,
+    MenuItemUpdate,
+    PricePredictionRequest,
+    Restaurant,
+    MenuItem,
+    Customer,
+    PricePredictionResponse,
+    ForecastResponse,
+    HealthResponse,
+    CategoryResponse,
+    PriceDistributionResponse,
+    PriceDistributionItem,
+    MarketComparisonResponse,
+    MarketComparisonItem,
+    CategoryAnalyticsResponse,
+    CategoryAnalyticsItem,
+    RevenueAnalyticsResponse,
+    RevenueAnalyticsItem,
+    TimeSeriesResponse,
+    TimeSeriesDataPoint,
+)
 
 # ==============================================================================
 # Configuration
@@ -44,291 +71,61 @@ DB_USER = os.getenv("DB_USER", "admin")
 DB_PASSWORD = os.getenv("DB_PASSWORD", "admin123")
 
 # ==============================================================================
-# Enums for validation
+# Logging Configuration
 # ==============================================================================
 
+import logging
 
-class LocationEnum(str, Enum):
-    """Valid locations in Yerevan for pricing analysis."""
-    AJAPNYAK = "Ajapnyak"
-    ARABKIR = "Arabkir"
-    KENTRON = "Kentron"
-    MALATIA_SEBASTIA = "Malatia-Sebastia"
-    NOR_NORK = "Nor Nork"
-
-
-class VenueTypeEnum(str, Enum):
-    """Types of food service venues."""
-    RESTAURANT = "restaurant"
-    COFFEE_HOUSE = "coffee_house"
-    BAR_BISTRO = "bar_bistro"
-    BAKERY_CAFE = "bakery_cafe"
-    COFFEE_CHAIN = "coffee_chain"
-    CAFE = "cafe"
-    CAFE_BISTRO = "cafe_bistro"
-    CAFE_DESSERT = "cafe_dessert"
-    CAFE_RESTAURANT = "cafe_restaurant"
-    FAST_FOOD = "fast_food"
-    GASTROPUB = "gastropub"
-    HEALTHY_CAFE = "healthy_cafe"
-    ITALIAN_REST = "italian_rest"
-    PIZZERIA = "pizzeria"
-    WINE_BAR = "wine_bar"
-    BAR_RESTAURANT = "bar_restaurant"
-    BISTRO = "bistro"
-    BREWPUB = "brewpub"
-
-
-class AgeGroupEnum(str, Enum):
-    """Customer age group categories."""
-    AGE_0_17 = "0-17"
-    AGE_18_24 = "18-24"
-    AGE_25_34 = "25-34"
-    AGE_35_44 = "35-44"
-    AGE_45_54 = "45-54"
-    AGE_55_PLUS = "55+"
-
-
-class PortionSizeEnum(str, Enum):
-    """Portion size categories."""
-    SMALL = "small"
-    MEDIUM = "medium"
-    LARGE = "large"
-
-
-# ==============================================================================
-# Pydantic Models - Requests
-# ==============================================================================
-
-
-class RestaurantCreate(BaseModel):
-    """
-    Request model for creating a new restaurant.
-    
-    Attributes:
-        name: Restaurant name (required)
-        location: District in Yerevan
-        venue_type: Type of establishment
-        avg_customer_count: Average daily customers
-        rating: Customer rating (0-5 scale)
-        owner_contact: Contact phone number
-    """
-    model_config = ConfigDict(json_schema_extra={
-        "example": {
-            "name": "Cafe Central",
-            "location": "Kentron",
-            "venue_type": "cafe",
-            "avg_customer_count": 150,
-            "rating": 4.5,
-            "owner_contact": "+374-10-123456"
-        }
-    })
-    
-    name: str = Field(..., min_length=1, max_length=255, description="Restaurant name")
-    location: str = Field(..., description="District in Yerevan")
-    venue_type: str = Field(..., description="Type of venue (restaurant, cafe, etc.)")
-    avg_customer_count: int = Field(..., ge=0, description="Average daily customer count")
-    rating: float = Field(..., ge=0, le=5, description="Rating on 0-5 scale")
-    owner_contact: str = Field(..., description="Owner contact phone number")
-
-
-class RestaurantUpdate(RestaurantCreate):
-    """Request model for updating an existing restaurant."""
-    pass
-
-
-class MenuItemCreate(BaseModel):
-    """
-    Request model for creating a new menu item.
-    
-    Attributes:
-        restaurant_id: ID of the restaurant this item belongs to
-        product_name: Name of the menu item
-        category_id: Category identifier
-        base_price: Base price in AMD
-        cost: Cost to produce in AMD
-        portion_size: Size description (e.g., "250ml", "400g")
-        available: Whether item is currently available
-    """
-    model_config = ConfigDict(json_schema_extra={
-        "example": {
-            "restaurant_id": 1,
-            "product_name": "Cappuccino",
-            "category_id": 1,
-            "base_price": 1500,
-            "cost": 600,
-            "portion_size": "250ml",
-            "available": True
-        }
-    })
-    
-    restaurant_id: int = Field(..., ge=1, description="Restaurant ID")
-    product_name: str = Field(..., min_length=1, max_length=255, description="Product name")
-    category_id: int = Field(..., ge=1, description="Category ID")
-    base_price: float = Field(..., ge=0, description="Base price in AMD")
-    cost: float = Field(..., ge=0, description="Production cost in AMD")
-    portion_size: str = Field(..., description="Portion size (e.g., 250ml, 400g)")
-    available: bool = Field(True, description="Is item available for sale")
-
-
-class MenuItemUpdate(MenuItemCreate):
-    """Request model for updating an existing menu item."""
-    pass
-
-
-class PricePredictionRequest(BaseModel):
-    """
-    Request model for price prediction.
-    
-    The ML model uses these features to predict optimal pricing.
-    
-    Attributes:
-        product_name: Name of the menu item to price
-        location: District in Yerevan
-        venue_type: Type of establishment
-        portion_size: Size category (small/medium/large)
-        age_group: Target customer age group
-    """
-    model_config = ConfigDict(json_schema_extra={
-        "example": {
-            "product_name": "Cappuccino",
-            "location": "Kentron",
-            "venue_type": "coffee_house",
-            "portion_size": "medium",
-            "age_group": "25-34"
-        }
-    })
-    
-    product_name: str = Field(..., description="Menu item name")
-    location: str = Field(..., description="Location in Yerevan")
-    venue_type: str = Field(..., alias="type", description="Venue type")
-    portion_size: str = Field(..., alias="portion_bucket", description="Portion size category")
-    age_group: str = Field(..., description="Target age group")
-
-
-# ==============================================================================
-# Pydantic Models - Responses
-# ==============================================================================
-
-
-class Restaurant(BaseModel):
-    """
-    Response model for restaurant data.
-    
-    Includes all restaurant attributes plus the unique identifier.
-    """
-    model_config = ConfigDict(from_attributes=True)
-    
-    restaurant_id: int = Field(..., description="Unique restaurant identifier")
-    name: str = Field(..., description="Restaurant name")
-    location: str = Field(..., description="District in Yerevan")
-    venue_type: str = Field(..., description="Type of venue")
-    avg_customer_count: int = Field(..., description="Average daily customers")
-    rating: float = Field(..., description="Customer rating (0-5)")
-    owner_contact: str = Field(..., description="Owner contact info")
-
-
-class MenuItem(BaseModel):
-    """
-    Response model for menu item data.
-    
-    Includes all menu item attributes plus the unique identifier.
-    """
-    model_config = ConfigDict(from_attributes=True)
-    
-    product_id: int = Field(..., description="Unique product identifier")
-    restaurant_id: int = Field(..., description="Parent restaurant ID")
-    product_name: str = Field(..., description="Product name")
-    category_id: int = Field(..., description="Category ID")
-    base_price: float = Field(..., description="Base price in AMD")
-    cost: float = Field(..., description="Production cost in AMD")
-    portion_size: str = Field(..., description="Portion size")
-    available: bool = Field(..., description="Availability status")
-
-
-class Customer(BaseModel):
-    """
-    Response model for customer data.
-    
-    Contains anonymized customer segment information.
-    """
-    model_config = ConfigDict(from_attributes=True)
-    
-    customer_id: int = Field(..., description="Unique customer identifier")
-    gender: str = Field(..., description="Customer gender")
-    age_group: str = Field(..., description="Age group category")
-    avg_spending: float = Field(..., description="Average spending in AMD")
-    visit_frequency: int = Field(..., description="Visits per month")
-
-
-class PricePredictionResponse(BaseModel):
-    """
-    Response model for price prediction.
-    
-    Contains the predicted price and input features used.
-    """
-    predicted_price: float = Field(..., description="Predicted optimal price in AMD")
-    product_name: str = Field(..., description="Menu item name")
-    location: str = Field(..., description="Location used for prediction")
-    venue_type: str = Field(..., description="Venue type used")
-    portion_size: str = Field(..., description="Portion size category")
-    age_group: str = Field(..., description="Target age group")
-    confidence_note: str = Field(
-        default="Prediction based on CatBoost model (RMSE: 196.74) trained on Yerevan market data",
-        description="Model confidence information"
-    )
-
-
-class HistoricalAnalyticsResponse(BaseModel):
-    """
-    Response model for historical analytics data.
-    
-    Provides aggregated historical pricing and sales information.
-    """
-    menu_item: str = Field(..., description="Menu item analyzed")
-    location: str = Field(..., description="Location filter applied")
-    avg_price: float = Field(..., description="Average historical price in AMD")
-    min_price: float = Field(..., description="Minimum observed price")
-    max_price: float = Field(..., description="Maximum observed price")
-    units_sold: int = Field(..., description="Total units sold")
-    market: str = Field(..., description="Market segment")
-    season: str = Field(..., description="Season of data")
-
-
-class ForecastResponse(BaseModel):
-    """
-    Response model for price forecasting.
-    
-    Contains predicted future price and confidence metrics.
-    """
-    menu_item: str = Field(..., description="Menu item forecasted")
-    recommended_price: float = Field(..., description="Recommended price in AMD")
-    confidence: float = Field(..., ge=0, le=1, description="Confidence score (0-1)")
-    horizon_days: int = Field(..., description="Forecast horizon in days")
-    trend: str = Field(default="stable", description="Price trend direction")
-
-
-class HealthResponse(BaseModel):
-    """Response model for health check endpoint."""
-    status: str = Field(..., description="Service status")
-    version: str = Field(..., description="API version")
-    database: str = Field(..., description="Database connection status")
-
-
-class CategoryResponse(BaseModel):
-    """Response model for menu category."""
-    category_id: int = Field(..., description="Category ID")
-    category_name: str = Field(..., description="Category name")
-
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+)
+logger = logging.getLogger(__name__)
 
 # ==============================================================================
 # Data Loading and ML Model
 # ==============================================================================
 
+# Try to import database utilities
+try:
+    from db_utils import (
+        get_restaurants as db_get_restaurants,
+        get_restaurant_by_id as db_get_restaurant_by_id,
+        get_menu_items as db_get_menu_items,
+        get_menu_item_by_id as db_get_menu_item_by_id,
+        get_customers as db_get_customers,
+        get_categories as db_get_categories,
+        create_restaurant as db_create_restaurant,
+        update_restaurant as db_update_restaurant,
+        delete_restaurant as db_delete_restaurant,
+        create_menu_item as db_create_menu_item,
+        update_menu_item as db_update_menu_item,
+        delete_menu_item as db_delete_menu_item,
+        test_connection as db_test_connection,
+    )
+    DB_AVAILABLE = True
+    logger.info("Database utilities imported successfully")
+except ImportError as e:
+    logger.warning(f"Database utilities not available, using CSV fallback: {e}")
+    DB_AVAILABLE = False
+    db_get_restaurants = None
+    db_get_restaurant_by_id = None
+    db_get_menu_items = None
+    db_get_menu_item_by_id = None
+    db_get_customers = None
+    db_get_categories = None
+    db_create_restaurant = None
+    db_update_restaurant = None
+    db_delete_restaurant = None
+    db_create_menu_item = None
+    db_update_menu_item = None
+    db_delete_menu_item = None
+    db_test_connection = None
+
 
 def _load_csv(filename: str) -> List[dict]:
     """
-    Load data from a CSV file in the data directory.
+    Load data from a CSV file in the data directory (fallback when DB unavailable).
     
     Args:
         filename: Name of the CSV file to load
@@ -351,13 +148,13 @@ def _bootstrap_restaurants() -> List[dict]:
     restaurants = []
     for row in rows:
         restaurants.append({
-            "restaurant_id": int(row["restaurant_id"]),
-            "name": row["name"],
-            "location": row["location"],
-            "venue_type": row["type"],
-            "avg_customer_count": int(row["avg_customer_count"]),
-            "rating": float(row["rating"]),
-            "owner_contact": row["owner_contact"],
+                "restaurant_id": int(row["restaurant_id"]),
+                "name": row["name"],
+                "location": row["location"],
+                "venue_type": row["type"],
+                "avg_customer_count": int(row["avg_customer_count"]),
+                "rating": float(row["rating"]),
+                "owner_contact": row["owner_contact"],
         })
     return restaurants
 
@@ -368,14 +165,14 @@ def _bootstrap_menu_items() -> List[dict]:
     items = []
     for row in rows:
         items.append({
-            "product_id": int(row["product_id"]),
-            "restaurant_id": int(row["restaurant_id"]),
-            "product_name": row["product_name"],
-            "category_id": int(row["category_id"]),
-            "base_price": float(row["base_price"]),
-            "cost": float(row["cost"]),
-            "portion_size": row["portion_size"],
-            "available": row["available"].lower() == "true",
+                "product_id": int(row["product_id"]),
+                "restaurant_id": int(row["restaurant_id"]),
+                "product_name": row["product_name"],
+                "category_id": int(row["category_id"]),
+                "base_price": float(row["base_price"]),
+                "cost": float(row["cost"]),
+                "portion_size": row["portion_size"],
+                "available": row["available"].lower() == "true",
         })
     return items
 
@@ -386,11 +183,11 @@ def _bootstrap_customers() -> List[dict]:
     customers = []
     for row in rows[:500]:  # Limit for performance
         customers.append({
-            "customer_id": int(row["customer_id"]),
-            "gender": row["gender"],
-            "age_group": row["age_group"],
-            "avg_spending": float(row["avg_spending"]),
-            "visit_frequency": int(row["visit_frequency"]),
+                "customer_id": int(row["customer_id"]),
+                "gender": row["gender"],
+                "age_group": row["age_group"],
+                "avg_spending": float(row["avg_spending"]),
+                "visit_frequency": int(row["visit_frequency"]),
         })
     return customers
 
@@ -407,11 +204,42 @@ def _bootstrap_categories() -> List[dict]:
     return categories
 
 
-# Initialize data stores
-restaurants_store = _bootstrap_restaurants()
-menu_items_store = _bootstrap_menu_items()
-customers_store = _bootstrap_customers()
-categories_store = _bootstrap_categories()
+# Initialize data stores (will be populated from database or CSV)
+restaurants_store = []
+menu_items_store = []
+customers_store = []
+categories_store = []
+
+# Try to load from database first, fallback to CSV
+if DB_AVAILABLE and db_test_connection():
+    logger.info("Loading data from database...")
+    try:
+        restaurants_store = db_get_restaurants() or []
+        menu_items_store = db_get_menu_items() or []
+        customers_store = db_get_customers() or []
+        categories_store = db_get_categories() or []
+        logger.info(f"Loaded {len(restaurants_store)} restaurants, {len(menu_items_store)} menu items from database")
+        
+        # If database is empty, fallback to CSV
+        if len(restaurants_store) == 0 or len(menu_items_store) == 0:
+            logger.warning("Database appears empty, falling back to CSV data")
+            restaurants_store = _bootstrap_restaurants()
+            menu_items_store = _bootstrap_menu_items()
+            customers_store = _bootstrap_customers()
+            categories_store = _bootstrap_categories()
+            logger.info(f"Loaded {len(restaurants_store)} restaurants, {len(menu_items_store)} menu items from CSV")
+    except Exception as e:
+        logger.warning(f"Failed to load from database, using CSV fallback: {e}")
+        restaurants_store = _bootstrap_restaurants()
+        menu_items_store = _bootstrap_menu_items()
+        customers_store = _bootstrap_customers()
+        categories_store = _bootstrap_categories()
+else:
+    logger.info("Using CSV data (database not available)")
+    restaurants_store = _bootstrap_restaurants()
+    menu_items_store = _bootstrap_menu_items()
+    customers_store = _bootstrap_customers()
+    categories_store = _bootstrap_categories()
 
 # Load ML model (lazy loading)
 _ml_model = None
@@ -443,6 +271,15 @@ def get_ml_model():
                 detail=f"CatBoost model file not found at: {CATBOOST_MODEL_PATH}"
             )
         
+        # Check if file is a Git LFS pointer (too small to be a real model)
+        file_size = CATBOOST_MODEL_PATH.stat().st_size
+        if file_size < 10000:  # Real CatBoost models are much larger
+            logger.error(f"Model file appears to be a Git LFS pointer (size: {file_size} bytes). Need to pull actual file.")
+            raise HTTPException(
+                status_code=503,
+                detail=f"Model file is a Git LFS pointer. Please run: git lfs pull (or ensure model file is properly downloaded)"
+            )
+        
         try:
             from catboost import CatBoostRegressor
         except ImportError as e:
@@ -458,9 +295,10 @@ def get_ml_model():
             logger.info("CatBoost model loaded successfully!")
             return _ml_model
         except Exception as e:
+            logger.error(f"Failed to load CatBoost model: {str(e)}", exc_info=True)
             raise HTTPException(
                 status_code=503,
-                detail=f"Failed to load CatBoost model: {str(e)}"
+                detail=f"Failed to load CatBoost model: {str(e)}. Model file may be corrupted or incomplete."
             )
     
     return _ml_model
@@ -515,7 +353,7 @@ and generating price predictions using machine learning.
 - **Restaurant Management**: Full CRUD operations for restaurant data
 - **Menu Items**: Manage menu items with pricing information
 - **Price Prediction**: ML-powered optimal price recommendations
-- **Analytics**: Historical data and forecasting endpoints
+- **Analytics**: Forecasting and analytics endpoints
 
 ### Authentication
 Currently no authentication required (development phase).
@@ -552,10 +390,16 @@ def healthcheck() -> HealthResponse:
     
     Returns service status, version, and database connectivity.
     """
+    db_status = "disconnected"
+    if DB_AVAILABLE and db_test_connection():
+        db_status = "connected"
+    elif DB_AVAILABLE:
+        db_status = "unavailable"
+    
     return HealthResponse(
         status="ok",
         version="1.0.0",
-        database="connected"
+        database=db_status
     )
 
 
@@ -587,6 +431,16 @@ def list_restaurants(
     Returns:
         List of restaurants matching criteria
     """
+    # Try database first, fallback to in-memory store
+    if DB_AVAILABLE:
+        try:
+            results = db_get_restaurants(location=location, venue_type=venue_type, min_rating=min_rating)
+            if results:
+                return results
+        except Exception as e:
+            logger.warning(f"Database query failed, using in-memory store: {e}")
+    
+    # Fallback to in-memory store
     results = restaurants_store
     
     if location:
@@ -619,6 +473,16 @@ def get_restaurant(restaurant_id: int) -> Restaurant:
     Raises:
         HTTPException: 404 if restaurant not found
     """
+    # Try database first
+    if DB_AVAILABLE:
+        try:
+            record = db_get_restaurant_by_id(restaurant_id)
+            if record:
+                return record
+        except Exception as e:
+            logger.warning(f"Database query failed, using in-memory store: {e}")
+    
+    # Fallback to in-memory store
     record = _get_record_or_404(restaurants_store, "restaurant_id", restaurant_id)
     return deepcopy(record)
 
@@ -641,6 +505,18 @@ def create_restaurant(payload: RestaurantCreate) -> Restaurant:
     Returns:
         Created restaurant with assigned ID
     """
+    # Try database first
+    if DB_AVAILABLE and db_create_restaurant:
+        try:
+            record = db_create_restaurant(payload.model_dump())
+            if record:
+                # Update in-memory store for consistency
+                restaurants_store.append(record)
+                return record
+        except Exception as e:
+            logger.warning(f"Database insert failed, using in-memory store: {e}")
+    
+    # Fallback to in-memory store
     new_record = payload.model_dump()
     new_record["restaurant_id"] = _next_id(restaurants_store, "restaurant_id")
     restaurants_store.append(new_record)
@@ -668,6 +544,21 @@ def update_restaurant(restaurant_id: int, payload: RestaurantUpdate) -> Restaura
     Raises:
         HTTPException: 404 if restaurant not found
     """
+    # Try database first
+    if DB_AVAILABLE and db_update_restaurant:
+        try:
+            record = db_update_restaurant(restaurant_id, payload.model_dump())
+            if record:
+                # Update in-memory store for consistency
+                for i, r in enumerate(restaurants_store):
+                    if r["restaurant_id"] == restaurant_id:
+                        restaurants_store[i] = record
+                        break
+                return record
+        except Exception as e:
+            logger.warning(f"Database update failed, using in-memory store: {e}")
+    
+    # Fallback to in-memory store
     record = _get_record_or_404(restaurants_store, "restaurant_id", restaurant_id)
     record.update(payload.model_dump())
     return deepcopy(record)
@@ -694,6 +585,20 @@ def delete_restaurant(restaurant_id: int) -> Response:
     Raises:
         HTTPException: 404 if restaurant not found
     """
+    # Verify restaurant exists first
+    _get_record_or_404(restaurants_store, "restaurant_id", restaurant_id)
+    
+    # Try database first
+    if DB_AVAILABLE and db_delete_restaurant:
+        try:
+            if db_delete_restaurant(restaurant_id):
+                # Remove from in-memory store
+                restaurants_store[:] = [r for r in restaurants_store if r["restaurant_id"] != restaurant_id]
+                return Response(status_code=204)
+        except Exception as e:
+            logger.warning(f"Database delete failed, using in-memory store: {e}")
+    
+    # Fallback to in-memory store
     record = _get_record_or_404(restaurants_store, "restaurant_id", restaurant_id)
     restaurants_store.remove(record)
     return Response(status_code=204)
@@ -731,6 +636,23 @@ def list_menu_items(
     Returns:
         List of menu items matching criteria
     """
+    # Try database first
+    if DB_AVAILABLE:
+        try:
+            results = db_get_menu_items(
+                restaurant_id=restaurant_id,
+                category_id=category_id,
+                available=available,
+                min_price=min_price,
+                max_price=max_price
+            )
+            # Only use database results if they exist and are not empty
+            if results is not None and len(results) > 0:
+                return results
+        except Exception as e:
+            logger.warning(f"Database query failed, using in-memory store: {e}")
+    
+    # Fallback to in-memory store
     items = menu_items_store
     
     if restaurant_id is not None:
@@ -1055,55 +977,6 @@ def predict_price(
 
 
 @app.get(
-    "/analytics/historical",
-    response_model=HistoricalAnalyticsResponse,
-    tags=["Analytics"],
-    summary="Get historical analytics",
-    description="Retrieve historical pricing and sales data for analysis."
-)
-def get_historical_snapshot(
-    menu_item: str = Query("Cappuccino", description="Menu item to analyze"),
-    location: str = Query("Kentron", description="Location filter")
-) -> HistoricalAnalyticsResponse:
-    """
-    Get historical analytics for a menu item.
-    
-    Args:
-        menu_item: Name of the menu item
-        location: District to filter by
-        
-    Returns:
-        Historical analytics data
-    """
-    # Filter menu items by name
-    matching_items = [
-        i for i in menu_items_store 
-        if i["product_name"].lower() == menu_item.lower()
-    ]
-    
-    if matching_items:
-        prices = [i["base_price"] for i in matching_items]
-        avg_price = sum(prices) / len(prices)
-        min_price = min(prices)
-        max_price = max(prices)
-    else:
-        avg_price = 1800
-        min_price = 1500
-        max_price = 2200
-    
-    return HistoricalAnalyticsResponse(
-        menu_item=menu_item,
-        location=location,
-        avg_price=round(avg_price, 2),
-        min_price=round(min_price, 2),
-        max_price=round(max_price, 2),
-        units_sold=1200,
-        market=location,
-        season="Winter"
-    )
-
-
-@app.get(
     "/analytics/forecast",
     response_model=ForecastResponse,
     tags=["Analytics"],
@@ -1153,6 +1026,503 @@ def get_price_forecast(
         horizon_days=horizon_days,
         trend=trend
     )
+
+
+@app.get(
+    "/analytics/price-distribution",
+    response_model=PriceDistributionResponse,
+    tags=["Analytics"],
+    summary="Get price distribution",
+    description="Get price distribution statistics for menu items with optional filters."
+)
+def get_price_distribution(
+    menu_item: Optional[str] = Query(None, description="Filter by menu item name"),
+    location: Optional[str] = Query(None, description="Filter by location")
+) -> PriceDistributionResponse:
+    """
+    Get price distribution analytics.
+    
+    Args:
+        menu_item: Optional menu item filter
+        location: Optional location filter
+        
+    Returns:
+        Price distribution data with statistics
+        
+    Raises:
+        HTTPException: 500 if processing fails
+    """
+    try:
+        logger.info(f"Price distribution request: menu_item={menu_item}, location={location}")
+        
+        # Filter menu items
+        filtered_items = menu_items_store
+        if menu_item:
+            filtered_items = [i for i in filtered_items if i["product_name"].lower() == menu_item.lower()]
+        if location:
+            # Get restaurant IDs for this location
+            location_restaurant_ids = {
+                r["restaurant_id"] for r in restaurants_store 
+                if r["location"].lower() == location.lower()
+            }
+            filtered_items = [i for i in filtered_items if i["restaurant_id"] in location_restaurant_ids]
+        
+        if not filtered_items:
+            logger.warning(f"No items found for price distribution: menu_item={menu_item}, location={location}")
+            return PriceDistributionResponse(
+                menu_item=menu_item,
+                location=location,
+                total_items=0,
+                distribution=[],
+                avg_price=0.0,
+                median_price=0.0,
+                std_dev=0.0
+            )
+        
+        prices = [i["base_price"] for i in filtered_items]
+        prices_sorted = sorted(prices)
+        
+        # Calculate statistics
+        avg_price = sum(prices) / len(prices)
+        median_price = prices_sorted[len(prices_sorted) // 2] if prices_sorted else 0.0
+        variance = sum((p - avg_price) ** 2 for p in prices) / len(prices)
+        std_dev = variance ** 0.5
+        
+        # Create price distribution buckets
+        min_price = min(prices)
+        max_price = max(prices)
+        bucket_size = max(500, (max_price - min_price) / 10)  # At least 10 buckets, min 500 AMD per bucket
+        
+        distribution_dict = {}
+        for price in prices:
+            bucket_start = int((price // bucket_size) * bucket_size)
+            bucket_end = bucket_start + int(bucket_size)
+            bucket_key = f"{bucket_start}-{bucket_end}"
+            distribution_dict[bucket_key] = distribution_dict.get(bucket_key, 0) + 1
+        
+        distribution = [
+            PriceDistributionItem(
+                price_range=range_key,
+                count=count,
+                percentage=round((count / len(prices)) * 100, 2)
+            )
+            for range_key, count in sorted(distribution_dict.items(), key=lambda x: int(x[0].split('-')[0]))
+        ]
+        
+        logger.info(f"Price distribution calculated: {len(filtered_items)} items, {len(distribution)} buckets")
+        
+        return PriceDistributionResponse(
+            menu_item=menu_item,
+            location=location,
+            total_items=len(filtered_items),
+            distribution=distribution,
+            avg_price=round(avg_price, 2),
+            median_price=round(median_price, 2),
+            std_dev=round(std_dev, 2)
+        )
+    except Exception as e:
+        logger.error(f"Error calculating price distribution: {str(e)}", exc_info=True)
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to calculate price distribution: {str(e)}"
+        )
+
+
+@app.get(
+    "/analytics/market-comparison",
+    response_model=MarketComparisonResponse,
+    tags=["Analytics"],
+    summary="Compare market prices",
+    description="Compare prices for a specific menu item across different restaurants and locations."
+)
+def get_market_comparison(
+    product_name: str = Query(..., description="Menu item name to compare"),
+    location: Optional[str] = Query(None, description="Filter by location"),
+    venue_type: Optional[str] = Query(None, description="Filter by venue type")
+) -> MarketComparisonResponse:
+    """
+    Get market price comparison for a menu item.
+    
+    Args:
+        product_name: Name of the menu item to compare
+        location: Optional location filter
+        venue_type: Optional venue type filter
+        
+    Returns:
+        Market comparison data with prices across restaurants
+        
+    Raises:
+        HTTPException: 500 if processing fails
+    """
+    try:
+        logger.info(f"Market comparison request: product_name={product_name}, location={location}, venue_type={venue_type}")
+        
+        # Find all menu items with this product name
+        matching_items = [
+            i for i in menu_items_store 
+            if i["product_name"].lower() == product_name.lower()
+        ]
+        
+        # Apply filters
+        if location:
+            location_restaurant_ids = {
+                r["restaurant_id"] for r in restaurants_store 
+                if r["location"].lower() == location.lower()
+            }
+            matching_items = [i for i in matching_items if i["restaurant_id"] in location_restaurant_ids]
+        
+        if venue_type:
+            venue_restaurant_ids = {
+                r["restaurant_id"] for r in restaurants_store 
+                if r["venue_type"].lower() == venue_type.lower()
+            }
+            matching_items = [i for i in matching_items if i["restaurant_id"] in venue_restaurant_ids]
+        
+        if not matching_items:
+            logger.warning(f"No items found for market comparison: product_name={product_name}")
+            return MarketComparisonResponse(
+                product_name=product_name,
+                location=location,
+                venue_type=venue_type,
+                comparisons=[],
+                market_avg_price=0.0,
+                market_min_price=0.0,
+                market_max_price=0.0
+            )
+        
+        # Build restaurant lookup
+        restaurant_dict = {r["restaurant_id"]: r for r in restaurants_store}
+        
+        # Build comparison items
+        comparisons = []
+        for item in matching_items:
+            restaurant = restaurant_dict.get(item["restaurant_id"], {})
+            price = item["base_price"]
+            cost = item.get("cost", 0)
+            margin = ((price - cost) / price * 100) if price > 0 else 0.0
+            
+            comparisons.append(MarketComparisonItem(
+                restaurant_id=item["restaurant_id"],
+                restaurant_name=restaurant.get("name", f"Restaurant {item['restaurant_id']}"),
+                location=restaurant.get("location", "Unknown"),
+                venue_type=restaurant.get("venue_type", "Unknown"),
+                price=round(price, 2),
+                cost=round(cost, 2),
+                margin=round(margin, 2)
+            ))
+        
+        prices = [c.price for c in comparisons]
+        market_avg_price = sum(prices) / len(prices) if prices else 0.0
+        market_min_price = min(prices) if prices else 0.0
+        market_max_price = max(prices) if prices else 0.0
+        
+        logger.info(f"Market comparison calculated: {len(comparisons)} restaurants found")
+        
+        return MarketComparisonResponse(
+            product_name=product_name,
+            location=location,
+            venue_type=venue_type,
+            comparisons=comparisons,
+            market_avg_price=round(market_avg_price, 2),
+            market_min_price=round(market_min_price, 2),
+            market_max_price=round(market_max_price, 2)
+        )
+    except Exception as e:
+        logger.error(f"Error calculating market comparison: {str(e)}", exc_info=True)
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to calculate market comparison: {str(e)}"
+        )
+
+
+@app.get(
+    "/analytics/categories",
+    response_model=CategoryAnalyticsResponse,
+    tags=["Analytics"],
+    summary="Get category analytics",
+    description="Get analytics aggregated by menu category."
+)
+def get_category_analytics(
+    location: Optional[str] = Query(None, description="Filter by location"),
+    venue_type: Optional[str] = Query(None, description="Filter by venue type")
+) -> CategoryAnalyticsResponse:
+    """
+    Get category-level analytics.
+    
+    Args:
+        location: Optional location filter
+        venue_type: Optional venue type filter
+        
+    Returns:
+        Analytics aggregated by category
+        
+    Raises:
+        HTTPException: 500 if processing fails
+    """
+    try:
+        logger.info(f"Category analytics request: location={location}, venue_type={venue_type}")
+        
+        # Filter menu items
+        filtered_items = menu_items_store
+        if location:
+            location_restaurant_ids = {
+                r["restaurant_id"] for r in restaurants_store 
+                if r["location"].lower() == location.lower()
+            }
+            filtered_items = [i for i in filtered_items if i["restaurant_id"] in location_restaurant_ids]
+        
+        if venue_type:
+            venue_restaurant_ids = {
+                r["restaurant_id"] for r in restaurants_store 
+                if r["venue_type"].lower() == venue_type.lower()
+            }
+            filtered_items = [i for i in filtered_items if i["restaurant_id"] in venue_restaurant_ids]
+        
+        # Group by category
+        category_dict = {}
+        for item in filtered_items:
+            cat_id = item["category_id"]
+            if cat_id not in category_dict:
+                category_dict[cat_id] = {
+                    "category_id": cat_id,
+                    "category_name": f"Category {cat_id}",  # Would need category lookup in real implementation
+                    "prices": [],
+                    "items": []
+                }
+            category_dict[cat_id]["prices"].append(item["base_price"])
+            category_dict[cat_id]["items"].append(item)
+        
+        # Build response
+        categories = []
+        for cat_id, cat_data in category_dict.items():
+            prices = cat_data["prices"]
+            categories.append(CategoryAnalyticsItem(
+                category_id=cat_id,
+                category_name=cat_data["category_name"],
+                item_count=len(cat_data["items"]),
+                avg_price=round(sum(prices) / len(prices), 2) if prices else 0.0,
+                min_price=round(min(prices), 2) if prices else 0.0,
+                max_price=round(max(prices), 2) if prices else 0.0,
+                total_revenue=round(sum(prices) * 100, 2)  # Estimated (would need actual sales data)
+            ))
+        
+        logger.info(f"Category analytics calculated: {len(categories)} categories found")
+        
+        return CategoryAnalyticsResponse(
+            location=location,
+            venue_type=venue_type,
+            categories=sorted(categories, key=lambda x: x.item_count, reverse=True),
+            total_categories=len(categories)
+        )
+    except Exception as e:
+        logger.error(f"Error calculating category analytics: {str(e)}", exc_info=True)
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to calculate category analytics: {str(e)}"
+        )
+
+
+@app.get(
+    "/analytics/revenue",
+    response_model=RevenueAnalyticsResponse,
+    tags=["Analytics"],
+    summary="Get revenue analytics",
+    description="Get revenue and profit margin analytics by restaurant."
+)
+def get_revenue_analytics(
+    location: Optional[str] = Query(None, description="Filter by location"),
+    venue_type: Optional[str] = Query(None, description="Filter by venue type")
+) -> RevenueAnalyticsResponse:
+    """
+    Get revenue and margin analytics.
+    
+    Args:
+        location: Optional location filter
+        venue_type: Optional venue type filter
+        
+    Returns:
+        Revenue analytics by restaurant
+        
+    Raises:
+        HTTPException: 500 if processing fails
+    """
+    try:
+        logger.info(f"Revenue analytics request: location={location}, venue_type={venue_type}")
+        
+        # Filter restaurants
+        filtered_restaurants = restaurants_store
+        if location:
+            filtered_restaurants = [
+                r for r in filtered_restaurants 
+                if r["location"].lower() == location.lower()
+            ]
+        if venue_type:
+            filtered_restaurants = [
+                r for r in filtered_restaurants 
+                if r["venue_type"].lower() == venue_type.lower()
+            ]
+        
+        # Calculate revenue per restaurant
+        restaurant_dict = {r["restaurant_id"]: r for r in filtered_restaurants}
+        restaurant_items = {}
+        
+        for item in menu_items_store:
+            restaurant_id = item["restaurant_id"]
+            if restaurant_id in restaurant_dict:
+                if restaurant_id not in restaurant_items:
+                    restaurant_items[restaurant_id] = {"items": [], "revenue": 0.0, "cost": 0.0}
+                restaurant_items[restaurant_id]["items"].append(item)
+                # Estimate revenue (price * avg daily sales * 30 days)
+                avg_daily_sales = restaurant_dict[restaurant_id].get("avg_customer_count", 50)
+                estimated_monthly_sales = avg_daily_sales * 0.3  # 30% order this item
+                restaurant_items[restaurant_id]["revenue"] += item["base_price"] * estimated_monthly_sales * 30
+                restaurant_items[restaurant_id]["cost"] += item.get("cost", 0) * estimated_monthly_sales * 30
+        
+        # Build response
+        restaurants = []
+        total_revenue = 0.0
+        total_profit = 0.0
+        
+        for restaurant_id, data in restaurant_items.items():
+            restaurant = restaurant_dict[restaurant_id]
+            revenue = data["revenue"]
+            cost = data["cost"]
+            profit = revenue - cost
+            margin = (profit / revenue * 100) if revenue > 0 else 0.0
+            
+            restaurants.append(RevenueAnalyticsItem(
+                restaurant_id=restaurant_id,
+                restaurant_name=restaurant.get("name", f"Restaurant {restaurant_id}"),
+                total_revenue=round(revenue, 2),
+                total_cost=round(cost, 2),
+                profit=round(profit, 2),
+                margin_percentage=round(margin, 2),
+                item_count=len(data["items"])
+            ))
+            
+            total_revenue += revenue
+            total_profit += profit
+        
+        avg_margin = (total_profit / total_revenue * 100) if total_revenue > 0 else 0.0
+        
+        logger.info(f"Revenue analytics calculated: {len(restaurants)} restaurants, total_revenue={total_revenue}")
+        
+        return RevenueAnalyticsResponse(
+            location=location,
+            venue_type=venue_type,
+            restaurants=sorted(restaurants, key=lambda x: x.total_revenue, reverse=True),
+            total_revenue=round(total_revenue, 2),
+            total_profit=round(total_profit, 2),
+            avg_margin=round(avg_margin, 2)
+        )
+    except Exception as e:
+        logger.error(f"Error calculating revenue analytics: {str(e)}", exc_info=True)
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to calculate revenue analytics: {str(e)}"
+        )
+
+
+@app.get(
+    "/analytics/time-series",
+    response_model=TimeSeriesResponse,
+    tags=["Analytics"],
+    summary="Get time series price data",
+    description="Get historical price data as time series for trend visualization."
+)
+def get_time_series(
+    menu_item: str = Query(..., description="Menu item name"),
+    location: Optional[str] = Query(None, description="Filter by location"),
+    days: int = Query(30, ge=7, le=365, description="Number of days to retrieve")
+) -> TimeSeriesResponse:
+    """
+    Get time series price data for a menu item.
+    
+    Note: This is a simplified implementation. In production, this would query
+    actual historical price data from the database with timestamps.
+    
+    Args:
+        menu_item: Menu item name
+        location: Optional location filter
+        days: Number of days to retrieve
+        
+    Returns:
+        Time series data points
+        
+    Raises:
+        HTTPException: 500 if processing fails
+    """
+    try:
+        logger.info(f"Time series request: menu_item={menu_item}, location={location}, days={days}")
+        
+        from datetime import datetime, timedelta
+        
+        # Find matching items
+        matching_items = [
+            i for i in menu_items_store 
+            if i["product_name"].lower() == menu_item.lower()
+        ]
+        
+        if location:
+            location_restaurant_ids = {
+                r["restaurant_id"] for r in restaurants_store 
+                if r["location"].lower() == location.lower()
+            }
+            matching_items = [i for i in matching_items if i["restaurant_id"] in location_restaurant_ids]
+        
+        if not matching_items:
+            # Return empty series
+            end_date = datetime.now()
+            start_date = end_date - timedelta(days=days)
+            logger.warning(f"No items found for time series: menu_item={menu_item}, location={location}")
+            return TimeSeriesResponse(
+                menu_item=menu_item,
+                location=location,
+                data_points=[],
+                start_date=start_date.isoformat(),
+                end_date=end_date.isoformat()
+            )
+        
+        # Calculate average price
+        avg_price = sum(i["base_price"] for i in matching_items) / len(matching_items)
+        
+        # Generate synthetic time series (in production, this would come from actual historical data)
+        end_date = datetime.now()
+        start_date = end_date - timedelta(days=days)
+        
+        data_points = []
+        current_date = start_date
+        base_price = avg_price
+        import random
+        
+        while current_date <= end_date:
+            # Simulate price variation (±5%)
+            variation = random.uniform(-0.05, 0.05)
+            price = base_price * (1 + variation)
+            
+            data_points.append(TimeSeriesDataPoint(
+                date=current_date.isoformat(),
+                price=round(price, 2),
+                volume=random.randint(10, 50) if random.random() > 0.7 else None
+            ))
+            
+            current_date += timedelta(days=1)
+        
+        logger.info(f"Time series generated: {len(data_points)} data points")
+        
+        return TimeSeriesResponse(
+            menu_item=menu_item,
+            location=location,
+            data_points=data_points,
+            start_date=start_date.isoformat(),
+            end_date=end_date.isoformat()
+        )
+    except Exception as e:
+        logger.error(f"Error generating time series: {str(e)}", exc_info=True)
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to generate time series: {str(e)}"
+        )
 
 
 # ==============================================================================

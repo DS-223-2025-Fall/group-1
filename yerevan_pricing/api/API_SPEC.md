@@ -13,7 +13,7 @@ This API provides endpoints for the Yerevan Dynamic Pricing system, enabling:
 - Restaurant and menu item management
 - Customer data access
 - ML-powered price prediction
-- Historical analytics and forecasting
+- Analytics and forecasting
 
 ---
 
@@ -56,9 +56,13 @@ This API provides endpoints for the Yerevan Dynamic Pricing system, enabling:
 ### Analytics
 | Method | Path | Description |
 |--------|------|-------------|
-| POST | `/predict-price` | ML price prediction |
-| GET | `/analytics/historical` | Historical data |
+| GET | `/predict-price` | ML price prediction |
 | GET | `/analytics/forecast` | Price forecast |
+| GET | `/analytics/price-distribution` | Price distribution statistics |
+| GET | `/analytics/market-comparison` | Compare prices across restaurants |
+| GET | `/analytics/categories` | Category-level analytics |
+| GET | `/analytics/revenue` | Revenue and profit margin analytics |
+| GET | `/analytics/time-series` | Time series price data for trends |
 
 ### Reference Data
 | Method | Path | Description |
@@ -254,11 +258,6 @@ Use the ML model to predict optimal pricing.
 
 ---
 
-### Historical Analytics
-
-#### `GET /analytics/historical`
-
-Get historical pricing data for a menu item.
 
 **Query Parameters:**
 | Parameter | Type | Default | Description |
@@ -302,6 +301,180 @@ Get price forecast for future planning.
   "confidence": 0.85,
   "horizon_days": 30,
   "trend": "slight_increase"
+}
+```
+
+---
+
+### Price Distribution
+
+#### `GET /analytics/price-distribution`
+
+Get price distribution statistics for menu items with optional filters.
+
+**Query Parameters:**
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `menu_item` | string (optional) | Filter by menu item name |
+| `location` | string (optional) | Filter by location |
+
+**Response:**
+```json
+{
+  "menu_item": "Cappuccino",
+  "location": "Kentron",
+  "total_items": 45,
+  "distribution": [
+    {
+      "price_range": "1000-1500",
+      "count": 12,
+      "percentage": 26.67
+    }
+  ],
+  "avg_price": 1650.00,
+  "median_price": 1600.00,
+  "std_dev": 250.50
+}
+```
+
+---
+
+### Market Comparison
+
+#### `GET /analytics/market-comparison`
+
+Compare prices for a specific menu item across different restaurants and locations.
+
+**Query Parameters:**
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `product_name` | string (required) | Menu item name to compare |
+| `location` | string (optional) | Filter by location |
+| `venue_type` | string (optional) | Filter by venue type |
+
+**Response:**
+```json
+{
+  "product_name": "Cappuccino",
+  "location": "Kentron",
+  "venue_type": null,
+  "comparisons": [
+    {
+      "restaurant_id": 1,
+      "restaurant_name": "Gallia",
+      "location": "Kentron",
+      "venue_type": "restaurant",
+      "price": 1650.00,
+      "cost": 800.00,
+      "margin": 51.52
+    }
+  ],
+  "market_avg_price": 1650.00,
+  "market_min_price": 1400.00,
+  "market_max_price": 1900.00
+}
+```
+
+---
+
+### Category Analytics
+
+#### `GET /analytics/categories`
+
+Get analytics aggregated by menu category.
+
+**Query Parameters:**
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `location` | string (optional) | Filter by location |
+| `venue_type` | string (optional) | Filter by venue type |
+
+**Response:**
+```json
+{
+  "location": "Kentron",
+  "venue_type": null,
+  "categories": [
+    {
+      "category_id": 1,
+      "category_name": "Category 1",
+      "item_count": 150,
+      "avg_price": 1800.00,
+      "min_price": 500.00,
+      "max_price": 5000.00,
+      "total_revenue": 27000000.00
+    }
+  ],
+  "total_categories": 12
+}
+```
+
+---
+
+### Revenue Analytics
+
+#### `GET /analytics/revenue`
+
+Get revenue and profit margin analytics by restaurant.
+
+**Query Parameters:**
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `location` | string (optional) | Filter by location |
+| `venue_type` | string (optional) | Filter by venue type |
+
+**Response:**
+```json
+{
+  "location": "Kentron",
+  "venue_type": null,
+  "restaurants": [
+    {
+      "restaurant_id": 1,
+      "restaurant_name": "Gallia",
+      "total_revenue": 1500000.00,
+      "total_cost": 750000.00,
+      "profit": 750000.00,
+      "margin_percentage": 50.00,
+      "item_count": 45
+    }
+  ],
+  "total_revenue": 50000000.00,
+  "total_profit": 25000000.00,
+  "avg_margin": 50.00
+}
+```
+
+---
+
+### Time Series Analytics
+
+#### `GET /analytics/time-series`
+
+Get historical price data as time series for trend visualization.
+
+**Query Parameters:**
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `menu_item` | string (required) | Menu item name |
+| `location` | string (optional) | Filter by location |
+| `days` | integer | Number of days to retrieve (7-365, default: 30) |
+
+**Response:**
+```json
+{
+  "menu_item": "Cappuccino",
+  "location": "Kentron",
+  "days": 30,
+  "data_points": [
+    {
+      "date": "2024-11-01",
+      "price": 1650.00,
+      "volume": 120
+    }
+  ],
+  "trend": "stable",
+  "avg_price": 1650.00
 }
 ```
 

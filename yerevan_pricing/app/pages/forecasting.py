@@ -14,7 +14,8 @@ from app.components.navigation import render_nav_row
 from app.theme import apply_global_style
 
 # API URL from environment or default
-API_URL = os.getenv("API_URL", "http://api:8000")
+# Use group1_api service name when running in Docker, localhost when running locally
+API_URL = os.getenv("API_URL", "http://group1_api:8000")
 
 LOCATIONS = ["Ajapnyak", "Arabkir", "Kentron", "Malatia-Sebastia", "Nor Nork"]
 MENU_ITEMS = [
