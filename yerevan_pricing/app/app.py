@@ -70,14 +70,14 @@ def main():
         st.markdown(
             """
             <div class="card">
-                <div class="pill">Start here</div>
+                <div class="pill">Forecast launch</div>
                 <h3 style="margin:8px 0 6px;">Plan the next price move</h3>
                 <p style="margin:0;">Use forecasting to predict optimal menu prices and keep pace with Yerevan's market.</p>
             </div>
             """,
             unsafe_allow_html=True,
         )
-        st.page_link("pages/forecasting.py", label="Get Started")
+        st.page_link("pages/forecasting.py", label="Get Started →")
     with hero_right:
         st.markdown(
             """
@@ -88,6 +88,7 @@ def main():
             """,
             unsafe_allow_html=True,
         )
+        # Removed duplicate Get Started link to reduce confusion
 
     st.subheader("At a glance", divider="gray")
     s1, s2, s3 = st.columns(3)

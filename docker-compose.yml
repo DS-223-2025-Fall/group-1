@@ -1,0 +1,11 @@
+services:
+  docs:
+    image: squidfunk/mkdocs-material
+    working_dir: /docs
+    volumes:
+      - ./:/docs
+    ports:
+      - "8000:8000"
+    command: >
+      sh -c "pip install mkdocstrings[python] &&
+             mkdocs serve -a 0.0.0.0:8000"

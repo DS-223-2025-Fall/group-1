@@ -1,0 +1,48 @@
+site_name: My Docs
+site_description: Documentation hub for the DS223 Milestone 3 dynamic pricing platform.
+site_author: DS223 Group 1
+repo_name: DS-223-2025-Fall/group-1
+repo_url: https://github.com/DS-223-2025-Fall/group-1
+docs_dir: docs
+nav:
+  - Home: index.md
+  - ETL: etl.md
+  - API: api.md
+  - APP: app.md
+  - API models: api_models.md
+theme:
+  name: material
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - toc.integrate
+    - navigation.top
+    - search.suggest
+    - search.highlight
+    - content.tabs.link
+    - content.code.annotation
+    - content.code.copy
+  language: en
+  palette:
+    - scheme: default
+      toggle:
+        icon: material/toggle-switch-off-outline
+        name: Switch to dark mode
+      primary: teal
+      accent: purple
+    - scheme: slate
+      toggle:
+        icon: material/toggle-switch
+        name: Switch to light mode
+      primary: teal
+      accent: lime
+plugins:
+  - mkdocstrings:
+      handlers:
+        python:
+          paths: ["."]
+markdown_extensions:
+  - admonition
+  - toc:
+      permalink: true
+  - tables
