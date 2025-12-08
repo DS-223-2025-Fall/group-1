@@ -77,50 +77,70 @@ def apply_global_style():
             line-height: 1.6;
             color: #d8d9e0;
         }}
-        /* Hide the default Streamlit sidebar/page picker */
-        [data-testid="stSidebar"], [data-testid="stSidebarNav"], [data-testid="stSidebarHeader"] {{
-            display: none !important;
+        /* Sidebar tweaks: keep visible but slightly frosted */
+        [data-testid="stSidebar"] {{
+            background: rgba(10, 12, 18, 0.92);
+            border-right: 1px solid rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(6px);
         }}
-        [data-testid="collapsedControl"] {{
-            display: none !important;
+        [data-testid="stSidebar"] .block-container {{
+            padding-top: 1.2rem;
         }}
         /* Top navigation buttons */
         .nav-row .stPageLink a {{
             display: inline-flex;
             width: 100%;
             justify-content: center;
-            padding: 14px 12px;
+            padding: 16px 12px;
             border-radius: 14px;
-            background: linear-gradient(120deg, #8bbcfb, #cbe2ff);
-            border: 1px solid #9cc5ff;
-            box-shadow: 0 14px 30px rgba(0,0,0,0.25);
+            background: linear-gradient(120deg, #B6F0BA, #98E0A1);
+            border: 2px solid rgba(255, 255, 255, 0.25);
+            box-shadow: 0 18px 36px rgba(0,0,0,0.35);
+            color: #0a0a0a !important;
+            font-size: 18px !important;
+            font-weight: 800 !important;
         }}
         .nav-row .stPageLink:hover a {{
             transform: translateY(-1px) scale(1.01);
+            background: linear-gradient(120deg, #98E0A1, #7ACF89);
+            filter: brightness(1.03);
+        }}
+        /* Any page link (e.g., home CTA) */
+        .stPageLink a {{
+            background: linear-gradient(120deg, #B6F0BA, #98E0A1);
+            border: 2px solid rgba(255, 255, 255, 0.25);
+            box-shadow: 0 18px 36px rgba(0,0,0,0.35);
+            color: #0a0a0a !important;
+            font-weight: 800 !important;
+        }}
+        .stPageLink:hover a {{
+            transform: translateY(-1px) scale(1.01);
+            background: linear-gradient(120deg, #98E0A1, #7ACF89);
+            filter: brightness(1.03);
         }}
         /* Buttons */
         .stButton button,
         .stForm button,
         .stForm button[type="submit"] {{
-            background: linear-gradient(120deg, #8bbcfb, #cbe2ff) !important;
+            background: linear-gradient(120deg, #B6F0BA, #98E0A1) !important;
             color: #0a0a0a !important;
-            border: 1px solid #9cc5ff !important;
-            border-radius: 18px !important;
-            padding: 0.9rem 1.2rem !important;
+            border: 2px solid rgba(255, 255, 255, 0.25) !important;
+            border-radius: 14px !important;
+            padding: 0.85rem 1.1rem !important;
             font-weight: 800 !important;
-            font-size: 22px !important;
+            font-size: 18px !important;
             transition: all 0.15s ease !important;
             width: 100%;
-            box-shadow: 0 14px 30px rgba(0,0,0,0.25);
+            box-shadow: 0 18px 36px rgba(0,0,0,0.35);
         }}
         .stButton button *, .stForm button *, .stForm button[type="submit"] * {{
             color: #0a0a0a !important;
             font-weight: 800 !important;
         }}
         .stButton button:hover, .stForm button:hover, .stPageLink:hover {{
-            background: linear-gradient(120deg, #c8ddff, var(--accent));
+            background: linear-gradient(120deg, #98E0A1, #7ACF89) !important;
             transform: translateY(-1px) scale(1.01);
-            border-color: #c8ddff;
+            border-color: rgba(255, 255, 255, 0.35) !important;
         }}
         /* Page links styled as wide, friendly pills */
         .stPageLink {{
@@ -163,6 +183,16 @@ def apply_global_style():
             color: var(--text-main);
             border-radius: 12px;
             border: 1px solid var(--border-subtle);
+        }}
+        /* Number input steppers */
+        .stNumberInput button[kind="header"] {{
+            background: linear-gradient(120deg, #B6F0BA, #98E0A1) !important;
+            color: #0a0a0a !important;
+            border: 1px solid rgba(255, 255, 255, 0.25) !important;
+            box-shadow: 0 8px 18px rgba(0,0,0,0.25);
+        }}
+        .stNumberInput button[kind="header"]:hover {{
+            background: linear-gradient(120deg, #98E0A1, #7ACF89) !important;
         }}
         /* Metrics */
         [data-testid="stMetricValue"] {{
