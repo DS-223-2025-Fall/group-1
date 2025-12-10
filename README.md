@@ -24,21 +24,7 @@ The platform provides **ML-powered price predictions** and **forecasting** for m
 
 ---
 
-## 📸 Screenshots
 
-![Screenshot 1](images/5312493994329705742.jpg)
-
-![Screenshot 2](images/5312493994329705743.jpg)
-
-![Screenshot 3](images/5312493994329705744.jpg)
-
-![Screenshot 4](images/5312493994329705746.jpg)
-
-![Screenshot 5](images/5312493994329705750.jpg)
-
-![Screenshot 6](images/5312493994329705751.jpg)
-
----
 
 ## 🚀 Running Instructions
 
@@ -89,3 +75,11 @@ docker-compose up --build
 - **Docker & Docker Compose**  
 - **MkDocs Material**
 - **GitHub PR workflow**  
+---
+![Head Page](images/head_page.png)
+![Forecasting Screenshot](images/forecasting.png)
+![Comparison View](images/comparison.png)
+![Menu Saved](images/menu_saved.png)
+![Swagger UI 1](images/swagger1.jpg)
+![Swagger UI 2](images/swagger2.jpg)
+![Docker Screenshot](images/docker.jpg)
