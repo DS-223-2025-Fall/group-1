@@ -33,6 +33,7 @@ The main dashboard provides an overview of the pricing platform with key metrics
 
 ### Price Prediction
 Enter restaurant details, menu category, and other parameters to receive ML-powered price predictions.
+Each prediction is now stored in the `prediction_snapshots` table so the Streamlit UI can render a restaurant-style ledger that you can download at the end of your session.
 
 **Example Parameters:**
 
@@ -46,6 +47,9 @@ Enter restaurant details, menu category, and other parameters to receive ML-powe
 
 ### Price Forecasting
 View future price trends based on historical data and seasonal patterns.
+
+### Session Menu Ledger
+The forecasting page now includes a “Saved session menu” panel that mirrors a restaurant menu board. Each prediction you run is logged with its features, confidence window, and timestamp. When you're finished adjusting prices, download the complete HTML menu or reset the session to start from a clean slate.
 
 ### Historical Analysis
 Explore past pricing data with interactive charts and filters:
@@ -64,7 +68,7 @@ Compare prices across different markets and identify competitive positioning opp
 ### Predict Price Endpoint
 
 ```bash
-curl -X GET "http://localhost:8008/predict-price?product_name=Cappuccino&location=Kentron&venue_type=coffee_house&portion_size=medium&age_group=25-34"
+curl -X GET "http://localhost:8008/predict-price?product_name=Cappuccino&location=Kentron&venue_type=coffee_house&portion_size=medium&age_group=25-34&session_id=1b2c3d4e-5678-90ab-cdef-1234567890ab"
 ```
 
 **Response:**
@@ -76,7 +80,9 @@ curl -X GET "http://localhost:8008/predict-price?product_name=Cappuccino&locatio
   "venue_type": "coffee_house",
   "portion_size": "medium",
   "age_group": "25-34",
-  "confidence_note": "Prediction based on CatBoost model trained on Yerevan market data"
+  "confidence_note": "Prediction based on CatBoost model trained on Yerevan market data",
+  "session_id": "1b2c3d4e-5678-90ab-cdef-1234567890ab",
+  "snapshot_id": 42
 }
 ```
 
@@ -125,6 +131,7 @@ The platform uses a star schema with the following tables:
 |-------|-------------|
 | `fact_sales` | Sales transactions |
 | `fact_market_prices` | Market price records |
+| `prediction_snapshots` | Session-level ledger of predicted prices |
 
 ---
 

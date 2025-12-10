@@ -232,6 +232,7 @@ Use the ML model to predict optimal pricing.
 | `venue_type` | string | Yes | Type of venue |
 | `portion_size` | string | No | small/medium/large (default: medium) |
 | `age_group` | string | No | Target age group (default: 25-34) |
+| `session_id` | string | No | Client session identifier to persist the snapshot |
 
 **Valid Values:**
 
@@ -252,9 +253,56 @@ Use the ML model to predict optimal pricing.
   "venue_type": "coffee_house",
   "portion_size": "medium",
   "age_group": "25-34",
-  "confidence_note": "Prediction based on Random Forest model trained on Yerevan market data"
+  "confidence_note": "Prediction based on CatBoost model trained on Yerevan market data",
+  "session_id": "c0a77cb7-89f4-4f5b-94e6-22f6b3fd03f9",
+  "snapshot_id": 42
 }
 ```
+
+When `session_id` is supplied the API records the full feature vector plus predicted price into the `prediction_snapshots` table so the UI can render downloadable menus.
+
+---
+
+### Prediction Snapshots
+
+#### `GET /prediction-snapshots`
+
+Fetch all saved predictions for a specific Streamlit session.
+
+**Query Parameters:**
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `session_id` | string | Yes | Session identifier matching the `/predict-price` call |
+
+**Response:**
+```json
+[
+  {
+    "snapshot_id": 42,
+    "session_id": "c0a77cb7-89f4-4f5b-94e6-22f6b3fd03f9",
+    "product_name": "Cappuccino",
+    "location": "Kentron",
+    "venue_type": "coffee_house",
+    "portion_size": "medium",
+    "age_group": "25-34",
+    "predicted_price": 1850.5,
+    "confidence_low": 1665.0,
+    "confidence_high": 2036.0,
+    "created_at": "2024-05-21T08:12:11.440123+00:00"
+  }
+]
+```
+
+#### `DELETE /prediction-snapshots`
+
+Clear all saved predictions for a session once the download is complete.
+
+**Query Parameters:**
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `session_id` | string | Yes | Session identifier to purge |
+
+**Response:** `204 No Content`
 
 ---
 

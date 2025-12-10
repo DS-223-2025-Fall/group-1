@@ -17,6 +17,7 @@ from __future__ import annotations
 import os
 import pickle
 from copy import deepcopy
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import List, Optional, Literal
 
@@ -45,6 +46,7 @@ from schema import (
     CategoryResponse,
     PriceDistributionResponse,
     PriceDistributionItem,
+    PredictionSnapshotResponse,
     MarketComparisonResponse,
     MarketComparisonItem,
     CategoryAnalyticsResponse,
@@ -102,6 +104,10 @@ try:
         create_menu_item as db_create_menu_item,
         update_menu_item as db_update_menu_item,
         delete_menu_item as db_delete_menu_item,
+        ensure_prediction_snapshot_table as db_ensure_prediction_snapshot_table,
+        save_prediction_snapshot as db_save_prediction_snapshot,
+        get_prediction_snapshots as db_get_prediction_snapshots,
+        delete_prediction_snapshots as db_delete_prediction_snapshots,
         test_connection as db_test_connection,
     )
     DB_AVAILABLE = True
@@ -121,6 +127,10 @@ except ImportError as e:
     db_create_menu_item = None
     db_update_menu_item = None
     db_delete_menu_item = None
+    db_ensure_prediction_snapshot_table = None
+    db_save_prediction_snapshot = None
+    db_get_prediction_snapshots = None
+    db_delete_prediction_snapshots = None
     db_test_connection = None
 
 
@@ -210,11 +220,17 @@ restaurants_store = []
 menu_items_store = []
 customers_store = []
 categories_store = []
+prediction_snapshots_store = []
 
 # Try to load from database first, fallback to CSV
 if DB_AVAILABLE and db_test_connection():
     logger.info("Loading data from database...")
     try:
+        if db_ensure_prediction_snapshot_table:
+            if db_ensure_prediction_snapshot_table():
+                logger.info("prediction_snapshots table available")
+            else:
+                logger.warning("prediction_snapshots table check failed; using in-memory fallback if insert fails")
         restaurants_store = db_get_restaurants() or []
         menu_items_store = db_get_menu_items() or []
         customers_store = db_get_customers() or []
@@ -336,6 +352,81 @@ def _get_record_or_404(store: List[dict], key: str, value: int) -> dict:
         if record[key] == value:
             return record
     raise HTTPException(status_code=404, detail=f"{key}={value} not found")
+
+
+def _record_prediction_snapshot(session_id: Optional[str], payload: dict) -> Optional[dict]:
+    """
+    Persist a prediction snapshot either in Postgres or in-memory fallback.
+
+    Args:
+        session_id: Streamlit session identifier.
+        payload: Snapshot fields excluding identifiers.
+
+    Returns:
+        Snapshot dictionary or None when session_id missing.
+    """
+    if not session_id:
+        return None
+
+    snapshot_payload = {
+        "session_id": session_id,
+        **payload,
+    }
+
+    if DB_AVAILABLE and db_save_prediction_snapshot:
+        try:
+            saved = db_save_prediction_snapshot(snapshot_payload)
+            if saved:
+                return saved
+        except Exception as exc:
+            logger.warning(f"Failed to persist prediction snapshot to DB: {exc}")
+
+    snapshot_payload["snapshot_id"] = _next_id(prediction_snapshots_store, "snapshot_id")
+    snapshot_payload["created_at"] = datetime.now(timezone.utc)
+    prediction_snapshots_store.append(snapshot_payload)
+    return snapshot_payload
+
+
+def _get_prediction_snapshots_for_session(session_id: str) -> List[dict]:
+    """
+    Retrieve all snapshots for a session from DB or fallback store.
+    """
+    if not session_id:
+        return []
+
+    if DB_AVAILABLE and db_get_prediction_snapshots:
+        try:
+            records = db_get_prediction_snapshots(session_id)
+            if records is not None:
+                return records
+        except Exception as exc:
+            logger.warning(f"Failed to load prediction snapshots from DB: {exc}")
+
+    return [
+        snap for snap in prediction_snapshots_store
+        if snap.get("session_id") == session_id
+    ]
+
+
+def _clear_prediction_snapshots_for_session(session_id: str) -> None:
+    """
+    Delete all snapshots for the provided session identifier.
+    """
+    if not session_id:
+        return
+
+    if DB_AVAILABLE and db_delete_prediction_snapshots:
+        try:
+            db_delete_prediction_snapshots(session_id)
+            return
+        except Exception as exc:
+            logger.warning(f"Failed to delete prediction snapshots from DB: {exc}")
+
+    global prediction_snapshots_store
+    prediction_snapshots_store = [
+        snap for snap in prediction_snapshots_store
+        if snap.get("session_id") != session_id
+    ]
 
 
 # ==============================================================================
@@ -893,7 +984,11 @@ def predict_price(
     location: str = Query(..., description="Location in Yerevan"),
     venue_type: str = Query(..., description="Type of venue"),
     portion_size: str = Query("medium", description="Portion size (small/medium/large)"),
-    age_group: str = Query("25-34", description="Target age group")
+    age_group: str = Query("25-34", description="Target age group"),
+    session_id: Optional[str] = Query(
+        None,
+        description="Optional session identifier used to save the prediction snapshot"
+    )
 ) -> PricePredictionResponse:
     """
     Predict optimal price using CatBoost ML model.
@@ -918,6 +1013,7 @@ def predict_price(
         HTTPException: 503 if CatBoost model not available, 404 if product not found
     """
     try:
+        clean_session_id = session_id.strip() if session_id else None
         model = get_ml_model()
         
         # Look up product metadata from menu items
@@ -959,16 +1055,34 @@ def predict_price(
         
         # CatBoost handles categorical features natively
         predicted_price = float(model.predict(input_data)[0])
+        predicted_price_rounded = round(predicted_price, 2)
+        confidence_low = round(predicted_price * 0.9, 2)
+        confidence_high = round(predicted_price * 1.1, 2)
         confidence_note = "Prediction based on CatBoost model (RMSE: 196.74) trained on Yerevan market data"
-        
+        snapshot = _record_prediction_snapshot(
+            clean_session_id,
+            {
+                "product_name": product_name,
+                "location": location,
+                "venue_type": venue_type,
+                "portion_size": portion_size,
+                "age_group": age_group,
+                "predicted_price": predicted_price_rounded,
+                "confidence_low": confidence_low,
+                "confidence_high": confidence_high,
+            },
+        )
+
         return PricePredictionResponse(
-            predicted_price=round(predicted_price, 2),
+            predicted_price=predicted_price_rounded,
             product_name=product_name,
             location=location,
             venue_type=venue_type,
             portion_size=portion_size,
             age_group=age_group,
-            confidence_note=confidence_note
+            confidence_note=confidence_note,
+            session_id=clean_session_id,
+            snapshot_id=snapshot.get("snapshot_id") if snapshot else None
         )
         
     except FileNotFoundError:
@@ -981,6 +1095,52 @@ def predict_price(
             status_code=500,
             detail=f"Prediction error: {str(e)}"
         )
+
+
+# ==============================================================================
+# Prediction Snapshot Endpoints
+# ==============================================================================
+
+
+@app.get(
+    "/prediction-snapshots",
+    response_model=List[PredictionSnapshotResponse],
+    tags=["Analytics"],
+    summary="List saved prediction snapshots",
+    description="Return all saved predictions for the provided session identifier."
+)
+def list_prediction_snapshots(
+    session_id: str = Query(..., description="Session identifier associated with saved predictions")
+) -> List[PredictionSnapshotResponse]:
+    """
+    Retrieve saved predictions for a Streamlit session.
+    """
+    clean_session_id = session_id.strip()
+    if not clean_session_id:
+        raise HTTPException(status_code=400, detail="session_id is required")
+
+    return _get_prediction_snapshots_for_session(clean_session_id)
+
+
+@app.delete(
+    "/prediction-snapshots",
+    status_code=204,
+    tags=["Analytics"],
+    summary="Clear saved prediction snapshots",
+    description="Remove all saved predictions for a session once they are downloaded."
+)
+def clear_prediction_snapshots(
+    session_id: str = Query(..., description="Session identifier to delete")
+) -> Response:
+    """
+    Delete all prediction snapshots associated with a session.
+    """
+    clean_session_id = session_id.strip()
+    if not clean_session_id:
+        raise HTTPException(status_code=400, detail="session_id is required")
+
+    _clear_prediction_snapshots_for_session(clean_session_id)
+    return Response(status_code=204)
 
 
 # ==============================================================================
