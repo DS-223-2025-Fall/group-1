@@ -8,6 +8,7 @@ Author: Backend Team (NarekN7)
 Version: 1.0.0
 """
 
+from datetime import datetime
 from enum import Enum
 from typing import List, Optional
 from pydantic import BaseModel, Field, ConfigDict
@@ -247,6 +248,31 @@ class PricePredictionResponse(BaseModel):
         default="Prediction based on CatBoost model (RMSE: 196.74) trained on Yerevan market data",
         description="Model confidence information"
     )
+    session_id: Optional[str] = Field(
+        default=None,
+        description="Session identifier associated with this prediction"
+    )
+    snapshot_id: Optional[int] = Field(
+        default=None,
+        description="Identifier of the saved snapshot (if persisted)"
+    )
+
+
+class PredictionSnapshotResponse(BaseModel):
+    """
+    Response model representing stored prediction snapshots.
+    """
+    snapshot_id: int = Field(..., description="Snapshot identifier")
+    session_id: str = Field(..., description="Session identifier")
+    product_name: str = Field(..., description="Menu item name")
+    location: str = Field(..., description="Yerevan district")
+    venue_type: str = Field(..., description="Venue type used for prediction")
+    portion_size: str = Field(..., description="Portion size category")
+    age_group: str = Field(..., description="Target age group")
+    predicted_price: float = Field(..., description="Predicted price in AMD")
+    confidence_low: float = Field(..., description="Lower bound of confidence window")
+    confidence_high: float = Field(..., description="Upper bound of confidence window")
+    created_at: datetime = Field(..., description="Timestamp when prediction was saved")
 
 
 class ForecastResponse(BaseModel):
@@ -374,4 +400,3 @@ class TimeSeriesResponse(BaseModel):
     data_points: List[TimeSeriesDataPoint] = Field(..., description="Time series data points")
     start_date: str = Field(..., description="Start date of series")
     end_date: str = Field(..., description="End date of series")
-

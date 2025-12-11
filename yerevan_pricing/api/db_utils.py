@@ -241,6 +241,139 @@ def create_restaurant(data: Dict[str, Any]) -> Optional[Dict[str, Any]]:
     return result[0] if result else None
 
 
+def save_prediction_snapshot(data: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+    """
+    Persist a predicted price snapshot for a Streamlit session.
+
+    Args:
+        data: Dictionary with session and feature columns.
+
+    Returns:
+        Inserted row dictionary or None on failure.
+    """
+    query = """
+        INSERT INTO prediction_snapshots (
+            session_id,
+            product_name,
+            location,
+            venue_type,
+            portion_size,
+            age_group,
+            predicted_price,
+            confidence_low,
+            confidence_high
+        )
+        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+        RETURNING snapshot_id, session_id, product_name, location, venue_type,
+                  portion_size, age_group, predicted_price, confidence_low,
+                  confidence_high, created_at
+    """
+    params = (
+        data["session_id"],
+        data["product_name"],
+        data["location"],
+        data["venue_type"],
+        data["portion_size"],
+        data["age_group"],
+        data["predicted_price"],
+        data["confidence_low"],
+        data["confidence_high"],
+    )
+    result = execute_query(query, params)
+    return result[0] if result else None
+
+
+def get_prediction_snapshots(session_id: str) -> List[Dict[str, Any]]:
+    """
+    Fetch all prediction snapshots for a given session.
+
+    Args:
+        session_id: Streamlit session identifier.
+
+    Returns:
+        List of snapshot dictionaries.
+    """
+    query = """
+        SELECT
+            snapshot_id,
+            session_id,
+            product_name,
+            location,
+            venue_type,
+            portion_size,
+            age_group,
+            predicted_price,
+            confidence_low,
+            confidence_high,
+            created_at
+        FROM prediction_snapshots
+        WHERE session_id = %s
+        ORDER BY created_at ASC
+    """
+    result = execute_query(query, (session_id,))
+    return result or []
+
+
+def delete_prediction_snapshots(session_id: str) -> None:
+    """
+    Remove all snapshots for the provided session.
+
+    Args:
+        session_id: Streamlit session identifier.
+    """
+    query = "DELETE FROM prediction_snapshots WHERE session_id = %s"
+    execute_query(query, (session_id,), fetch=False)
+
+
+def ensure_prediction_snapshot_table() -> bool:
+    """
+    Ensure the prediction_snapshots table exists (idempotent).
+
+    Returns:
+        True if the DDL ran successfully, False otherwise.
+    """
+    if get_connection is None:
+        return False
+
+    conn = get_connection()
+    if not conn:
+        return False
+
+    try:
+        with conn.cursor() as cur:
+            cur.execute(
+                """
+                CREATE TABLE IF NOT EXISTS prediction_snapshots (
+                    snapshot_id      SERIAL PRIMARY KEY,
+                    session_id       UUID NOT NULL,
+                    product_name     VARCHAR(255),
+                    location         VARCHAR(255),
+                    venue_type       VARCHAR(100),
+                    portion_size     VARCHAR(50),
+                    age_group        VARCHAR(50),
+                    predicted_price  NUMERIC(10,2),
+                    confidence_low   NUMERIC(10,2),
+                    confidence_high  NUMERIC(10,2),
+                    created_at       TIMESTAMPTZ DEFAULT NOW()
+                );
+                """
+            )
+            cur.execute(
+                """
+                CREATE INDEX IF NOT EXISTS idx_prediction_snapshots_session
+                ON prediction_snapshots (session_id);
+                """
+            )
+        conn.commit()
+        return True
+    except Exception as exc:
+        print(f"❌ Failed to ensure prediction_snapshots table: {exc}")
+        conn.rollback()
+        return False
+    finally:
+        conn.close()
+
+
 def update_restaurant(restaurant_id: int, data: Dict[str, Any]) -> Optional[Dict[str, Any]]:
     """Update an existing restaurant."""
     query = """
@@ -327,4 +460,3 @@ def test_connection() -> bool:
         conn.close()
         return True
     return False
-

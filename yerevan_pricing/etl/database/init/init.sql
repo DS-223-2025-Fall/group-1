@@ -1,4 +1,5 @@
 -- DROP OLD TABLES (order matters)
+DROP TABLE IF EXISTS prediction_snapshots CASCADE;
 DROP TABLE IF EXISTS fact_sales CASCADE;
 DROP TABLE IF EXISTS fact_market_prices CASCADE;
 DROP TABLE IF EXISTS dim_menu_item CASCADE;
@@ -98,3 +99,23 @@ CREATE TABLE fact_market_prices (
     price       NUMERIC(10,2),
     usdprice    NUMERIC(10,2)
 );
+
+------------------------------------------------
+-- PREDICTION SNAPSHOT TABLE
+------------------------------------------------
+
+CREATE TABLE prediction_snapshots (
+    snapshot_id      SERIAL PRIMARY KEY,
+    session_id       UUID NOT NULL,
+    product_name     VARCHAR(255),
+    location         VARCHAR(255),
+    venue_type       VARCHAR(100),
+    portion_size     VARCHAR(50),
+    age_group        VARCHAR(50),
+    predicted_price  NUMERIC(10,2),
+    confidence_low   NUMERIC(10,2),
+    confidence_high  NUMERIC(10,2),
+    created_at       TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE INDEX idx_prediction_snapshots_session ON prediction_snapshots (session_id);

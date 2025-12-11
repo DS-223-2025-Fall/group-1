@@ -3,17 +3,21 @@ from pathlib import Path
 
 import streamlit as st
 
-FONT_STACK = "'Segoe UI', 'Helvetica Neue', Arial, sans-serif"
+FONT_STACK = "'Inter', 'Source Sans Pro', 'Segoe UI', sans-serif"
+
+# Inside Docker this will be /app, and cafe.png is copied next to theme.py
 APP_DIR = Path(__file__).resolve().parent
-BACKGROUND_IMAGE = APP_DIR / "background photo_1.jpg"
+BACKGROUND_IMAGE = APP_DIR / "cafe.png"
 
 
 def _background_data_url() -> str:
     """Return a base64 data URL for the shared background image."""
     try:
         encoded = base64.b64encode(BACKGROUND_IMAGE.read_bytes()).decode()
-        return f"data:image/jpeg;base64,{encoded}"
+        return f"data:image/png;base64,{encoded}"
     except FileNotFoundError:
+        # If something goes wrong, fail gracefully with no image
+        st.warning(f"Background image not found at: {BACKGROUND_IMAGE}")
         return ""
 
 
@@ -21,200 +25,65 @@ BACKGROUND_URL = _background_data_url()
 
 
 def apply_global_style():
-    """Inject shared styling: dark gradient, accent color, and cleaner containers."""
+    """Inject shared styling aligned with the warm evening Yerevan theme."""
     st.markdown(
         f"""
         <style>
         :root {{
-            --bg-primary: #050505;
-            --bg-card: rgba(18, 20, 26, 0.94);
-            --border-subtle: #1a1d27;
-            --text-main: #f2f3f7;
-            --text-muted: #b6b7c4;
-            --accent: #7fb6f6;
-            --accent-strong: #6aa1e6;
+            --ink: #10141d;
+            --card: rgba(20, 22, 30, 0.92);
+            --card-soft: rgba(15, 17, 24, 0.85);
+            --muted: #c4c6d3;
+            --cream: #f1e7d6;
+            --border: rgba(255, 255, 255, 0.08);
         }}
+
         html, body, [class*="css"] {{
             font-family: {FONT_STACK};
-            background: transparent;
-            color: var(--text-main);
+            color: var(--cream);
         }}
+
+        /* App background: softer gradient so the cafe photo is visible */
         .stApp {{
-            background: linear-gradient(180deg, rgba(5, 5, 5, 0.78), rgba(5, 5, 5, 0.86)), url("{BACKGROUND_URL}");
-            background-size: cover;
-            background-position: center;
+            background:
+                linear-gradient(
+                    180deg,
+                    rgba(7, 7, 10, 0.40),
+                    rgba(7, 7, 10, 0.70)
+                ),
+                url("{BACKGROUND_URL}") center/cover fixed;
             background-attachment: fixed;
         }}
-        .block-container {{
-            padding-top: 2.6rem;
-            padding-bottom: 2rem;
-            max-width: 1180px;
-            margin: 0 auto;
+
+        .stPageLink a,
+        .stButton > button,
+        .stDownloadButton > button,
+        .stForm button {{
+            border-radius: 18px !important;
+            border: none !important;
+            background: linear-gradient(135deg, #c4f1b4, #275241) !important;
+            color: #fdf9ec !important;
+            font-weight: 700 !important;
+            font-size: 16px !important;
+            padding: 0.9rem 1.4rem !important;
+            box-shadow: 0 18px 32px rgba(9, 24, 16, 0.55);
+            transition: transform 0.15s ease, filter 0.15s ease;
         }}
-        h1, h2, h3, h4, h5, h6 {{
-            color: var(--text-main);
+
+        .stPageLink a:hover,
+        .stButton > button:hover,
+        .stDownloadButton > button:hover,
+        .stForm button:hover {{
+            filter: brightness(1.05);
+            transform: translateY(-1px);
         }}
-        p, label, span, .stMarkdown, .stCaption {{
-            color: var(--text-muted);
-        }}
-        .card {{
-            background: rgba(14, 16, 22, 0.88);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            padding: 22px;
-            border-radius: 16px;
-            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
-            backdrop-filter: blur(4px);
-        }}
-        .page-title {{
-            font-size: 30px;
-            font-weight: 800;
-            letter-spacing: 0.3px;
-            color: var(--text-main);
-            margin-bottom: 8px;
-        }}
-        .lede {{
-            font-size: 17px;
-            line-height: 1.6;
-            color: #d8d9e0;
-        }}
-        /* Sidebar tweaks: keep visible but slightly frosted */
-        [data-testid="stSidebar"] {{
-            background: rgba(10, 12, 18, 0.92);
-            border-right: 1px solid rgba(255, 255, 255, 0.06);
-            backdrop-filter: blur(6px);
-        }}
-        [data-testid="stSidebar"] .block-container {{
-            padding-top: 1.2rem;
-        }}
-        /* Top navigation buttons */
-        .nav-row .stPageLink a {{
-            display: inline-flex;
-            width: 100%;
-            justify-content: center;
-            padding: 16px 12px;
-            border-radius: 14px;
-            background: linear-gradient(120deg, #B6F0BA, #98E0A1);
-            border: 2px solid rgba(255, 255, 255, 0.25);
-            box-shadow: 0 18px 36px rgba(0,0,0,0.35);
-            color: #0a0a0a !important;
-            font-size: 18px !important;
-            font-weight: 800 !important;
-        }}
-        .nav-row .stPageLink:hover a {{
-            transform: translateY(-1px) scale(1.01);
-            background: linear-gradient(120deg, #98E0A1, #7ACF89);
-            filter: brightness(1.03);
-        }}
-        /* Any page link (e.g., home CTA) */
-        .stPageLink a {{
-            background: linear-gradient(120deg, #B6F0BA, #98E0A1);
-            border: 2px solid rgba(255, 255, 255, 0.25);
-            box-shadow: 0 18px 36px rgba(0,0,0,0.35);
-            color: #0a0a0a !important;
-            font-weight: 800 !important;
-        }}
-        .stPageLink:hover a {{
-            transform: translateY(-1px) scale(1.01);
-            background: linear-gradient(120deg, #98E0A1, #7ACF89);
-            filter: brightness(1.03);
-        }}
-        /* Buttons */
-        .stButton button,
-        .stForm button,
-        .stForm button[type="submit"] {{
-            background: linear-gradient(120deg, #B6F0BA, #98E0A1) !important;
-            color: #0a0a0a !important;
-            border: 2px solid rgba(255, 255, 255, 0.25) !important;
-            border-radius: 14px !important;
-            padding: 0.85rem 1.1rem !important;
-            font-weight: 800 !important;
-            font-size: 18px !important;
-            transition: all 0.15s ease !important;
-            width: 100%;
-            box-shadow: 0 18px 36px rgba(0,0,0,0.35);
-        }}
-        .stButton button *, .stForm button *, .stForm button[type="submit"] * {{
-            color: #0a0a0a !important;
-            font-weight: 800 !important;
-        }}
-        .stButton button:hover, .stForm button:hover, .stPageLink:hover {{
-            background: linear-gradient(120deg, #98E0A1, #7ACF89) !important;
-            transform: translateY(-1px) scale(1.01);
-            border-color: rgba(255, 255, 255, 0.35) !important;
-        }}
-        /* Page links styled as wide, friendly pills */
-        .stPageLink {{
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            width: 100%;
-            justify-content: center;
-            font-size: 20px;
-            font-weight: 800;
-            text-decoration: none !important;
-            box-shadow: 0 14px 30px rgba(0,0,0,0.25);
-            color: #0a0a0a !important;
-        }}
-        .stPageLink a {{
-            color: #0a0a0a !important;
-            text-decoration: none !important;
-            font-weight: 800 !important;
-        }}
-        .stPageLink:hover a {{
-            color: #0a0a0a !important;
-        }}
-        .stPageLink span {{
-            color: #0a0a0a !important;
-            font-weight: 800 !important;
-        }}
-        .stPageLink * {{
-            color: #0a0a0a !important;
-            font-weight: 800 !important;
-        }}
-        /* Inputs */
-        .stSelectbox div[data-baseweb="select"], .stMultiSelect div[data-baseweb="select"], .stNumberInput input {{
-            background-color: #121622;
-            color: var(--text-main);
-            border-radius: 12px;
-            border: 1px solid var(--border-subtle);
-        }}
-        .stTextInput input {{
-            background-color: #121622;
-            color: var(--text-main);
-            border-radius: 12px;
-            border: 1px solid var(--border-subtle);
-        }}
-        /* Number input steppers */
-        .stNumberInput button[kind="header"] {{
-            background: linear-gradient(120deg, #B6F0BA, #98E0A1) !important;
-            color: #0a0a0a !important;
-            border: 1px solid rgba(255, 255, 255, 0.25) !important;
-            box-shadow: 0 8px 18px rgba(0,0,0,0.25);
-        }}
-        .stNumberInput button[kind="header"]:hover {{
-            background: linear-gradient(120deg, #98E0A1, #7ACF89) !important;
-        }}
-        /* Metrics */
-        [data-testid="stMetricValue"] {{
-            color: #cfe1ff;
-            font-weight: 800;
-        }}
-        [data-testid="stMetricDelta"] {{
-            color: #9ac9ff;
-        }}
-        /* Pills */
-        .pill {{
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 6px 10px;
-            border-radius: 999px;
-            background: rgba(127, 182, 246, 0.12);
-            color: #cfe1ff;
-            border: 1px solid rgba(127, 182, 246, 0.35);
-            font-size: 12px;
-            font-weight: 600;
-            letter-spacing: 0.3px;
+
+        .stPageLink a:focus-visible,
+        .stButton > button:focus-visible,
+        .stDownloadButton > button:focus-visible,
+        .stForm button:focus-visible {{
+            outline: 2px solid #fdf9ec;
+            outline-offset: 2px;
         }}
         </style>
         """,

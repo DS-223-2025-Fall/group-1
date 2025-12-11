@@ -6,12 +6,19 @@ APP_DIR = Path(__file__).resolve().parent.parent
 PROJECT_ROOT = APP_DIR.parent
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
+if str(APP_DIR) not in sys.path:
+    sys.path.insert(0, str(APP_DIR))
 
 import streamlit as st
 import requests
 import os
-from app.components.navigation import render_nav_row
-from app.theme import apply_global_style
+
+try:
+    from app.components.navigation import render_nav_row
+    from app.theme import apply_global_style
+except ModuleNotFoundError:
+    from components.navigation import render_nav_row
+    from theme import apply_global_style
 
 API_URL = os.getenv("API_URL", "http://group1_api:8000")
 
@@ -22,7 +29,7 @@ st.set_page_config(
 )
 
 apply_global_style()
-render_nav_row()
+render_nav_row(active="comparison")
 
 # Fetch data from API
 @st.cache_data(ttl=60)
@@ -91,112 +98,138 @@ locations = fetch_locations()
 venue_types = fetch_venue_types()
 
 st.markdown('<div class="page-title">Comparison</div>', unsafe_allow_html=True)
-st.caption("Compare ML-predicted prices with actual restaurant menu prices.")
+st.caption("Line up a restaurant’s current price with the model’s recommendation and get a friendly nudge on what to do next.")
 
-left, right = st.columns([1.2, 1])
+left, right = st.columns([1.15, 1])
 
 with left:
     st.markdown('<div class="card">', unsafe_allow_html=True)
-    st.subheader("Select for Comparison", divider="gray")
-    
-    # Restaurant selection
+    st.subheader("Select a menu entry", divider="gray")
     selected_restaurant_id = st.selectbox(
         "Restaurant",
         options=[r["restaurant_id"] for r in restaurants],
-        format_func=lambda x: restaurant_dict.get(x, {}).get("name", f"Restaurant {x}"),
-        index=0 if restaurants else None
+        format_func=lambda x: restaurant_dict.get(x, {}).get("name", f"Restaurant {x}") if restaurants else "",
+        index=0 if restaurants else None,
     )
-    
-    # Get menu items for selected restaurant
+
     menu_items = fetch_menu_items(selected_restaurant_id)
     menu_dict = {m["product_id"]: m for m in menu_items}
-    
+
     selected_menu_item_id = st.selectbox(
-        "Menu Item",
+        "Menu item",
         options=[m["product_id"] for m in menu_items] if menu_items else [],
         format_func=lambda x: menu_dict.get(x, {}).get("product_name", f"Item {x}"),
-        index=0 if menu_items else None
+        index=0 if menu_items else None,
     )
-    
-    # Get prediction button
-    if st.button("Get ML Prediction", type="primary", use_container_width=True):
+    st.caption("Pick the dish you want to sanity-check against the predicted range.")
+
+    if st.button("Get ML prediction", use_container_width=True):
         if selected_menu_item_id and selected_restaurant_id:
             menu_item = menu_dict.get(selected_menu_item_id, {})
             restaurant = restaurant_dict.get(selected_restaurant_id, {})
-            
             prediction = get_prediction(
                 product_name=menu_item.get("product_name", "Cappuccino"),
                 location=restaurant.get("location", "Kentron"),
                 venue_type=restaurant.get("venue_type", "restaurant"),
                 portion_size="medium",
-                age_group="25-34"
+                age_group="25-34",
             )
-            
             if prediction:
                 st.session_state.comparison_prediction = prediction
                 st.session_state.comparison_actual = menu_item.get("base_price", 0)
                 st.session_state.comparison_item = menu_item.get("product_name", "")
                 st.session_state.comparison_restaurant = restaurant.get("name", "")
             else:
-                st.error("Failed to get prediction from ML model")
-    
+                st.error("Failed to get prediction from ML model.")
+        else:
+            st.warning("Please choose both a restaurant and a menu item.")
     st.markdown("</div>", unsafe_allow_html=True)
 
 with right:
     st.markdown('<div class="card">', unsafe_allow_html=True)
-    st.subheader("Comparison Result", divider="gray")
-    
-    if "comparison_prediction" in st.session_state and st.session_state.comparison_prediction:
-        predicted_price = st.session_state.comparison_prediction.get("predicted_price", 0)
+    st.subheader("Comparison panel", divider="gray")
+    prediction = st.session_state.get("comparison_prediction")
+    if prediction:
+        predicted_price = prediction.get("predicted_price", 0)
         actual_price = st.session_state.comparison_actual
         item_name = st.session_state.comparison_item
         restaurant_name = st.session_state.comparison_restaurant
-        
         difference = predicted_price - actual_price
-        pct_diff = (difference / actual_price * 100) if actual_price > 0 else 0
-        
-        st.metric("Restaurant Price", f"{actual_price:,.0f} AMD")
-        st.metric(
-            "ML Predicted Price", 
-            f"{predicted_price:,.0f} AMD",
-            delta=f"{difference:+,.0f} AMD ({pct_diff:+.1f}%)"
+        badge_color = "rgba(155,181,156,0.25)" if difference >= 0 else "rgba(200,107,74,0.25)"
+        badge_text = (
+            f"Under by {abs(difference):,.0f} AMD"
+            if difference >= 0
+            else f"Over by {abs(difference):,.0f} AMD"
         )
-        
+        comp_cols = st.columns(2)
+        with comp_cols[0]:
+            st.markdown(
+                f"""
+                <div class="stat-card card-compact">
+                    <div class="label">Current price</div>
+                    <div class="value">{actual_price:,.0f} AMD</div>
+                    <p>{restaurant_name}</p>
+                </div>
+                """,
+                unsafe_allow_html=True,
+            )
+        with comp_cols[1]:
+            st.markdown(
+                f"""
+                <div class="stat-card card-compact">
+                    <div class="label">Predicted price</div>
+                    <div class="value">{predicted_price:,.0f} AMD</div>
+                    <p>Model suggestion</p>
+                </div>
+                """,
+                unsafe_allow_html=True,
+            )
+        st.markdown(
+            f'<div class="pill" style="background:{badge_color};border:none;margin-top:0.6rem;">{badge_text}</div>',
+            unsafe_allow_html=True,
+        )
         if difference > 0:
-            st.warning(f"ƒsÿ‹,? ML suggests {item_name} at {restaurant_name} could be priced {abs(difference):,.0f} AMD higher")
+            st.info(
+                f"{item_name} at {restaurant_name} is priced {abs(difference):,.0f} AMD below the recommended range. Consider nudging it upward if demand holds."
+            )
         elif difference < 0:
-            st.info(f"ƒ,1‹,? ML suggests {item_name} at {restaurant_name} is priced {abs(difference):,.0f} AMD above optimal")
+            st.warning(
+                f"{item_name} at {restaurant_name} is {abs(difference):,.0f} AMD above the suggested price. Drop slightly if you need volume."
+            )
         else:
-            st.success(f"ƒo. {item_name} at {restaurant_name} is optimally priced!")
+            st.success(f"{item_name} at {restaurant_name} already sits inside the recommended window.")
     else:
-        st.metric("Restaurant Price", "--")
-        st.metric("ML Predicted Price", "--")
-        st.caption("Click 'Get ML Prediction' to compare prices")
-    
+        st.info("Select a dish and run the comparison to see model guidance.")
     st.markdown("</div>", unsafe_allow_html=True)
 
-st.divider()
+st.markdown('<div class="section-divider"></div>', unsafe_allow_html=True)
+st.subheader("Market price overview")
+search_query = st.text_input("Filter menu items", placeholder="Search by name")
+table_items = menu_items or []
+if search_query:
+    table_items = [item for item in table_items if search_query.lower() in item.get("product_name", "").lower()]
 
-# Show market comparison table
-st.subheader("Market Price Overview", divider="gray")
-if menu_items:
+if table_items:
     import pandas as pd
-    df = pd.DataFrame(menu_items[:15])
-    if not df.empty and 'product_name' in df.columns:
-        st.dataframe(
-            df[['product_name', 'base_price', 'cost', 'available']].rename(columns={
-                'product_name': 'Item',
-                'base_price': 'Price (AMD)',
-                'cost': 'Cost (AMD)',
-                'available': 'Available'
-            }),
-            use_container_width=True,
-            hide_index=True
-        )
+
+    df = pd.DataFrame(table_items)
+    table = df[["product_name", "base_price", "cost", "available"]].rename(
+        columns={
+            "product_name": "Item",
+            "base_price": "Price (AMD)",
+            "cost": "Cost (AMD)",
+            "available": "Available",
+        }
+    )
+    st.dataframe(table, use_container_width=True, hide_index=True)
+else:
+    st.caption("No menu items available for this selection yet.")
 
 st.markdown(
     """
-    <div class="pill">Tip: Use the Forecasting page to explore different scenarios before comparing.</div>
+    <div class="tip-card">
+        <strong>Tip.</strong> Use Forecasting to pressure-test multiple portions or age groups, then return here to see how a single dish stacks up against the wider market.
+    </div>
     """,
     unsafe_allow_html=True,
 )

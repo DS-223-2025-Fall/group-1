@@ -22,6 +22,7 @@ The backend lives in `yerevan_pricing/api` and exposes REST plus ML endpoints th
 | `/predict-price` | POST | CatBoost-powered optimal price recommendation. |
 | `/forecast-price` | POST | Short-horizon forecast for a menu item. |
 | `/analytics/historical` | GET | Aggregated historical pricing metrics. |
+| `/prediction-snapshots` | GET/DELETE | Saved price predictions grouped by Streamlit session. |
 
 The in-memory bootstrap performed in `main.py` uses the CSV files from `data/`. When switching to a live database, flip the feature flag or environment variable once a connection layer is implemented.
 
