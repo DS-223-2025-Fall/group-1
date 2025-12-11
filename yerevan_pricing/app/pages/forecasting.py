@@ -144,6 +144,8 @@ def ensure_prediction_session():
         st.session_state.cafe_name = ""
     if "cafe_name_input" not in st.session_state:
         st.session_state.cafe_name_input = ""
+    if "reset_session_menu_requested" not in st.session_state:
+        st.session_state.reset_session_menu_requested = False
 
 
 def fetch_prediction_snapshots():
@@ -362,6 +364,9 @@ st.set_page_config(
 apply_global_style()
 st.markdown(MENU_CARD_STYLE, unsafe_allow_html=True)
 ensure_prediction_session()
+if st.session_state.get("reset_session_menu_requested"):
+    reset_session_menu()
+    st.session_state.reset_session_menu_requested = False
 
 render_nav_row(active="forecasting")
 
@@ -557,5 +562,6 @@ with button_cols[0]:
         fetch_prediction_snapshots()
 with button_cols[1]:
     if st.button("Start new session menu", use_container_width=True):
-        reset_session_menu()
-        st.success("Session menu cleared. Run a forecast to add new dishes.")
+        st.session_state.reset_session_menu_requested = True
+        st.session_state.forecast_toast = ("success", "Session menu cleared. Run a forecast to add new dishes.")
+        st.rerun()
