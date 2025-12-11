@@ -41,6 +41,7 @@ def apply_global_style():
         html, body, [class*="css"] {{
             font-family: {FONT_STACK};
             color: var(--cream);
+            font-size: 30px;
         }}
 
         /* App background: softer gradient so the cafe photo is visible */
