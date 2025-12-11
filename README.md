@@ -78,7 +78,7 @@ docker-compose up --build
 ---
 ![Head Page](images/head_page.png)
 ![Forecasting Screenshot](images/forecasting.png)
-![Comparison View](images/comparison.png)
+![Snapshot View](images/snapshot.png)
 ![Menu Saved](images/menu_saved.png)
 ![Swagger UI 1](images/swagger1.jpg)
 ![Swagger UI 2](images/swagger2.jpg)
